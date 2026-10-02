@@ -114,7 +114,7 @@ export default function Home() {
           </div>
           <div className="space-y-6 text-sm">
             <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-1 sm:gap-4 items-baseline">
-              <div className="font-mono text-[12px] text-gray-400 dark:text-gray-500">[start date TBD] — Present</div>
+              <div className="font-mono text-[12px] text-gray-400 dark:text-gray-500">Mar 2025 — Present</div>
               <div className="space-y-1.5">
                 <h3 className="text-base font-semibold leading-tight text-gray-900 dark:text-white">
                   Freelance Web Developer — KyanDev <span className="font-normal text-gray-500 dark:text-gray-400">(Self-employed)</span>

@@ -19,13 +19,26 @@ const CELL_CLASS = [
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-// Rentang: 6 bulan terakhir (termasuk bulan berjalan).
-const MONTHS_BACK = 6;
+// Rentang: 6 bulan di mobile, 1 tahun di desktop (>= 640px).
+// Semakin banyak kolom, semakin kecil tiap sel (flex-1) sehingga di desktop
+// heatmap tampil rapat seperti GitHub, bukan sel raksasa.
+const MONTHS_MOBILE = 6;
+const MONTHS_DESKTOP = 12;
 
 export default function GitHubHeatmap({ username }: { username: string }) {
   const [days, setDays] = useState<Day[]>([]);
   const [total, setTotal] = useState<number | null>(null);
   const [status, setStatus] = useState<'loading' | 'ok' | 'error'>('loading');
+  const [monthsBack, setMonthsBack] = useState(MONTHS_MOBILE);
+
+  // Ikuti breakpoint: mobile 6 bulan, desktop 1 tahun.
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 640px)');
+    const apply = () => setMonthsBack(mq.matches ? MONTHS_DESKTOP : MONTHS_MOBILE);
+    apply();
+    mq.addEventListener('change', apply);
+    return () => mq.removeEventListener('change', apply);
+  }, []);
 
   useEffect(() => {
     let alive = true;
@@ -44,9 +57,9 @@ export default function GitHubHeatmap({ username }: { username: string }) {
         }
         // Tanggal terakhir yang tersedia (biasanya hari ini).
         const lastDate = new Date(all[all.length - 1].date + 'T00:00:00');
-        // Awal = 6 bulan ke belakang, lalu mundur ke hari Minggu terdekat
+        // Awal = N bulan ke belakang, lalu mundur ke hari Minggu terdekat
         // supaya kolom pertama penuh (tidak terpotong).
-        const start = new Date(lastDate.getFullYear(), lastDate.getMonth() - (MONTHS_BACK - 1), 1);
+        const start = new Date(lastDate.getFullYear(), lastDate.getMonth() - (monthsBack - 1), 1);
         start.setDate(start.getDate() - start.getDay()); // mundur ke Minggu
         const filtered = all.filter((x) => new Date(x.date + 'T00:00:00') >= start);
         setDays(filtered);
@@ -59,7 +72,7 @@ export default function GitHubHeatmap({ username }: { username: string }) {
     return () => {
       alive = false;
     };
-  }, [username]);
+  }, [username, monthsBack]);
 
   // Susun grid: kolom = minggu (mulai Minggu), baris = hari (0=Minggu..6=Sabtu).
   const { weeks, monthLabels } = useMemo(() => {
@@ -104,7 +117,7 @@ export default function GitHubHeatmap({ username }: { username: string }) {
   return (
     <div className="border border-gray-100 dark:border-white/[0.08] rounded-xl p-4 sm:p-5 bg-white dark:bg-ink-card">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-[11px] font-mono text-gray-400 dark:text-gray-500">CONTRIBUTIONS — LAST 6 MONTHS</p>
+        <p className="text-[11px] font-mono text-gray-400 dark:text-gray-500">CONTRIBUTIONS — LAST {monthsBack === 12 ? '12 MONTHS' : '6 MONTHS'}</p>
         {total !== null && (
           <p className="text-[11px] font-mono text-gray-500 dark:text-gray-400">{total.toLocaleString()} total</p>
         )}

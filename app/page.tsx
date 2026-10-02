@@ -225,7 +225,6 @@ export default function Home() {
               </div>
               <div className="p-4 pt-2 flex items-center justify-between">
                 <div className="flex flex-wrap gap-1 text-[10px] font-mono">
-                  <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-600 dark:text-gray-400">Astro</span>
                   <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-600 dark:text-gray-400">JS</span>
                 </div>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-white/[0.08]">Coming Soon</span>

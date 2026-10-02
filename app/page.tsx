@@ -2,6 +2,7 @@ import ChatWidget from '@/components/ChatWidget';
 import ThemeToggle from '@/components/ThemeToggle';
 import GitHubHeatmap from '@/components/GitHubHeatmap';
 import { TECHS, HERO_TECHS } from '@/components/techs';
+import CertThumb from '@/components/CertThumb';
 
 export default function Home() {
   return (
@@ -307,13 +308,7 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-2 sm:gap-4 items-center">
               <div className="font-mono text-[13px] text-gray-400 dark:text-gray-500">Sep 2026</div>
               <div className="flex items-center gap-3">
-                <div className="w-12 h-9 shrink-0 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-white/[0.03] flex items-center justify-center overflow-hidden">
-                  <svg viewBox="0 0 48 32" className="w-9 h-6" role="img" aria-label="Dicoding">
-                    <circle cx="10" cy="16" r="6" fill="#2D3E50" />
-                    <text x="10" y="21" textAnchor="middle" fontFamily="Arial, sans-serif" fontSize="9" fontWeight="700" fill="#ffffff">d</text>
-                    <text x="20" y="21" fontFamily="Arial, sans-serif" fontSize="12" fontWeight="700" fill="#2D3E50">icoding</text>
-                  </svg>
-                </div>
+                <CertThumb src="/cert-dicoding.jpg" alt="Dicoding certificate — Spec-Driven Development dengan Kiro" title="Dicoding" />
                 <div>
                   <h4 className="font-medium text-gray-900 dark:text-white text-[15px]">Spec-Driven Development dengan Kiro</h4>
                   <p className="text-[12px] text-gray-400 dark:text-gray-500">
@@ -334,12 +329,7 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-2 sm:gap-4 items-center">
               <div className="font-mono text-[13px] text-gray-400 dark:text-gray-500">Jun 2026</div>
               <div className="flex items-center gap-3">
-                <div className="w-12 h-9 shrink-0 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-white/[0.03] flex items-center justify-center overflow-hidden">
-                  <svg viewBox="0 0 48 32" className="w-9 h-6" role="img" aria-label="BNSP">
-                    <path d="M24 3l3.5 6.5L35 11l-5 5.2 1.2 7.3L24 20l-7.2 3.5L18 16.2 13 11l7.5-1.5z" fill="#c8102e" />
-                    <text x="24" y="30" textAnchor="middle" fontFamily="Arial, sans-serif" fontSize="7" fontWeight="700" fill="#1f2937">BNSP</text>
-                  </svg>
-                </div>
+                <CertThumb src="/cert-bnsp.jpg" alt="BNSP certificate — Junior Web Programmer" title="BNSP" />
                 <div>
                   <h4 className="font-medium text-gray-900 dark:text-white text-[15px]">Junior Web Programmer — BNSP</h4>
                   <p className="text-[12px] text-gray-400 dark:text-gray-500">

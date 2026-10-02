@@ -299,12 +299,29 @@ export default function Home() {
           <div className="space-y-5 text-sm">
             <span className="text-[11px] font-mono tracking-widest uppercase text-gray-400 dark:text-gray-500">PROFESSIONAL CREDENTIAL</span>
             <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-2 sm:gap-4 items-center">
-              <div className="font-mono text-[13px] text-gray-400 dark:text-gray-500">[Date TBD]</div>
+              <div className="font-mono text-[13px] text-gray-400 dark:text-gray-500">Sep 2026</div>
               <div className="flex items-center gap-3">
-                <div className="w-12 h-9 rounded border border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-white/[0.03] flex items-center justify-center text-[9px] font-mono text-gray-400 dark:text-gray-500">LOGO</div>
+                <div className="w-12 h-9 shrink-0 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-white/[0.03] flex items-center justify-center overflow-hidden">
+                  <svg viewBox="0 0 48 32" className="w-9 h-6" role="img" aria-label="Dicoding">
+                    <circle cx="10" cy="16" r="6" fill="#2D3E50" />
+                    <text x="10" y="21" textAnchor="middle" fontFamily="Arial, sans-serif" fontSize="9" fontWeight="700" fill="#ffffff">d</text>
+                    <text x="20" y="21" fontFamily="Arial, sans-serif" fontSize="12" fontWeight="700" fill="#2D3E50">icoding</text>
+                  </svg>
+                </div>
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white text-[15px]">Placeholder 01 — Certification</h4>
-                  <p className="text-[12px] text-gray-400 dark:text-gray-500">[PLACEHOLDER — to be filled by owner]</p>
+                  <h4 className="font-medium text-gray-900 dark:text-white text-[15px]">Spec-Driven Development dengan Kiro</h4>
+                  <p className="text-[12px] text-gray-400 dark:text-gray-500">
+                    Dicoding Indonesia ·{' '}
+                    <a
+                      href="https://dicoding.com/certificates/RVZKMLQJEXD5"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                      title="Valid until 22 Sep 2029"
+                    >
+                      RVZKMLQJEXD5
+                    </a>
+                  </p>
                 </div>
               </div>
             </div>

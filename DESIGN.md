@@ -27,10 +27,29 @@ colors:
   text-muted-dark: '#6b7280'      # gray-500
 
   # Accent
-  verified: '#38bdf8'         # badge centang biru
+  verified: '#1D9BF0'         # badge centang biru (verified checkmark)
   emerald: '#10b981'          # status dot (production ready / online)
   amber: '#f59e0b'            # badge in-progress
+
+  # Brand colors (logo chips — Technologies & hero badges)
+  # Diambil dari simple-icons; dipakai sebagai `fill` SVG (bukan dot).
+  brand-react: '#61DAFB'
+  brand-laravel: '#FF2D20'
+  brand-mysql: '#4479A1'
+  brand-nextjs: '#000000'
+  brand-typescript: '#3178C6'
+  brand-javascript: '#F7DF1E'
+  brand-tailwind: '#06B6D4'
+  brand-astro: '#BC52EE'
+  brand-fastapi: '#009688'
+  brand-postgresql: '#4169E1'
+  brand-nodejs: '#5FA04E'
+  brand-python: '#3776AB'
+  brand-html5: '#E34F26'
+  brand-git: '#F05032'
 ```
+
+**Catatan warna:** badge/chip **berwarna** (badge status, logo brand) dipertahankan. Hanya **GPA** (`3.69 / 4.00`) yang dirender sebagai **teks polos tanpa pill/warna**.
 
 **Implementasi Tailwind** (lihat `tailwind.config.ts`):
 ```ts
@@ -88,18 +107,21 @@ Body: `bg-white text-gray-900 dark:bg-ink dark:text-white` — **persis referens
 ### Navbar
 - Sticky, backdrop-blur, border-bottom hairline.
 - Kiri: logo inisial `RP` (bulat).
-- Kanan: link nav (`Projects`, `Experience`, `Highlights`) + tombol **Download CV** + **toggle tema**.
+- Kanan: link nav (`Projects`, `Experience`, `Highlights`) + tombol **View Resume** + **toggle tema**.
+- **Catatan:** tombol "Download CV" sudah **dihapus** (hanya satu tombol CV).
 
 ### Buttons
-- **Primary CTA** (View Resume / Download CV): pill, `bg-gray-900 dark:bg-white text-white dark:text-black`.
+- **Primary CTA** (View Resume): pill, `bg-gray-900 dark:bg-white text-white dark:text-black`.
 - **Secondary**: pill outline, border hairline, bg transparan.
 - **Explore All Projects**: pill, `bg-gray-900 text-white` (dark: `bg-white/[0.06] text-gray-300 border`).
 
 ### Badges & Pills
-- **Tech badge (hero inline)**: `rounded-md px-2 py-0.5 border border-gray-200 dark:border-white/[0.12] text-[11px] font-mono` + dot warna.
-- **Tech pills (Technologies section)**: `rounded-full px-3 py-1 border` + dot warna + label.
+- **Tech badge (hero inline)**: `rounded-md px-2 py-1 border border-dashed border-gray-300 dark:border-gray-700` + **logo brand SVG berwarna** + label. Berisi **Laravel · React · Next.js · MySQL** (`HERO_TECHS`).
+- **Tech pills (Technologies section)**: `rounded-full px-3 py-1.5 border` + **logo brand SVG berwarna** (`fill={color}`) + label. Data dari `components/techs.ts` (`TECHS`).
+- **AI Engineering group**: grup terpisah di bawah Technologies, label mono-uppercase `AI Engineering`, chips **tanpa logo** (rounded-full, border netral): LLM API Integration, RAG, MCP, Prompt Engineering, AI Agents.
 - **Status badge (Production Ready)**: `rounded text-[9px] font-mono px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20`.
 - **Coming Soon / In Progress**: pill kecil, `text-[9px] font-mono uppercase`.
+- **GPA (Education)**: **teks polos** `text-[12px] font-mono text-gray-500 dark:text-gray-400` — **tanpa** pill/background/warna.
 
 ### Featured Work Card (dark treatment)
 - `rounded-xl bg-[#121212] border border-zinc-800 p-6` + `bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px]` (dot-grid).
@@ -112,6 +134,14 @@ Body: `bg-white text-gray-900 dark:bg-ink dark:text-white` — **persis referens
 ### Chat Widget
 - **Floating button**: `rounded-full bg-gray-900 dark:bg-white text-white dark:text-black px-3.5 py-1.5 shadow-md`, teks "Chat with Kyan".
 - Panel: `rounded-2xl border shadow-xl`, header dark, message bubbles, quick-reply chips, input.
+
+### GitHub Heatmap (`components/GitHubHeatmap.tsx`)
+- Kartu: `border rounded-xl p-4 sm:p-5 bg-white dark:bg-ink-card`.
+- Header: `CONTRIBUTIONS — LAST 12 MONTHS` (mono, kiri) + `{total} total` (kanan).
+- **Rentang selalu 12 bulan** (1 tahun). Data live dari `github-contributions-api.jogruber.de` (username `kianlabs`), di-fetch client-side.
+- **Desktop (≥ 640px)**: grid `flex-1` meregang pas lebar kartu → sel kecil & rapat seperti GitHub, tanpa scroll.
+- **Mobile (< 640px)**: sel ukuran tetap (10px) di kontainer `overflow-x-auto`; **auto-scroll ke paling kanan** (bulan terakhir) saat dibuka, retry via `requestAnimationFrame`. User bisa swipe ke kiri untuk history.
+- Warna sel mengikuti palet kontribusi resmi GitHub (level 0–4, versi light & dark). Legend "Less → More" di kanan bawah.
 
 ## Spacing Scale
 

@@ -1,6 +1,7 @@
 import ChatWidget from '@/components/ChatWidget';
 import ThemeToggle from '@/components/ThemeToggle';
 import GitHubHeatmap from '@/components/GitHubHeatmap';
+import { TECHS } from '@/components/techs';
 
 export default function Home() {
   return (
@@ -80,16 +81,16 @@ export default function Home() {
                 Fresh graduate in Informatics Engineering building web apps end-to-end. Freelance web developer via KyanDev, shipping production websites with{' '}
                 <span className="inline align-middle">
                   <span className="bg-white dark:bg-ink ml-1 inline-flex items-center gap-1.5 rounded-md border border-dashed border-gray-300 dark:border-gray-700 px-2 py-1 text-xs text-gray-800 dark:text-gray-200 sm:px-2.5 sm:text-sm">
-                    <span className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500"></span>Next.js
+                    <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="#000000" aria-hidden="true"><path d="M11.214 12.603l6.851 7.56c-.97.784-2.078 1.33-3.214 1.33-1.437 0-2.805-.863-3.96-2.347-1.181 1.5-2.566 2.367-4.016 2.367-3.045 0-5.472-3.19-5.472-7.125s2.427-7.125 5.472-7.125c1.437 0 2.805.863 3.96 2.347 1.181-1.5 2.566-2.367 4.016-2.367 3.045 0 5.472 3.19 5.472 7.125 0 .61-.05 1.203-.144 1.775l-8.965-1.54zM11.214 12.603L4.363 5.043c.97-.784 2.078-1.33 3.214-1.33 1.437 0 2.805.863 3.96 2.347 1.181-1.5 2.566-2.367 4.016-2.367 3.045 0 5.472 3.19 5.472 7.125s-2.427 7.125-5.472 7.125c-1.437 0-2.805-.863-3.96-2.347-1.181 1.5-2.566 2.367-4.016 2.367z" /></svg>Next.js
                   </span>
                   <span className="bg-white dark:bg-ink ml-1 inline-flex items-center gap-1.5 rounded-md border border-dashed border-gray-300 dark:border-gray-700 px-2 py-1 text-xs text-gray-800 dark:text-gray-200 sm:px-2.5 sm:text-sm">
-                    <span className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500"></span>React
+                    <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="#61DAFB" aria-hidden="true"><path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.557 24 14.05 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.32-.186-.69-.274-1.1-.274zm-11.35 5.72c.108-.35.235-.698.38-1.043.324-.77.735-1.437 1.196-1.955.15-.17.302-.325.456-.464.354-.32.727-.564 1.114-.72.14-.058.28-.104.42-.14.13-.035.26-.06.39-.077.13-.018.26-.026.39-.026.28 0 .54.04.79.11.26.07.5.17.73.3.23.13.45.29.65.47.2.18.39.38.57.6.18.22.34.45.5.69.16.24.3.49.44.75.14.26.27.53.39.8.12.28.23.56.33.85.1.28.19.57.27.86.08.29.16.58.22.87.06.29.11.58.15.87.04.29.07.58.09.87.02.29.03.58.03.87 0 .29-.01.58-.03.87-.02.29-.05.58-.09.87-.04.29-.09.58-.15.87-.06.29-.14.58-.22.87-.08.29-.17.58-.27.86-.1.29-.21.57-.33.85-.12.27-.25.54-.39.8-.14.26-.28.51-.44.75-.16.24-.32.47-.5.69-.18.22-.37.42-.57.6-.2.18-.42.34-.65.47-.23.13-.47.23-.73.3-.25.07-.51.11-.79.11-.13 0-.26-.01-.39-.03-.13-.02-.26-.04-.39-.08-.14-.04-.28-.08-.42-.14-.39-.16-.76-.4-1.11-.72-.16-.14-.31-.3-.46-.47-.46-.52-.87-1.19-1.2-1.96-.14-.34-.27-.69-.38-1.04-.1-.35-.19-.7-.25-1.05-.07-.35-.11-.7-.14-1.05-.03-.35-.04-.7-.04-1.05 0-.35.01-.7.04-1.05.03-.35.07-.7.14-1.05.06-.35.15-.7.25-1.05z" /></svg>React
                   </span>
                   <span className="bg-white dark:bg-ink ml-1 inline-flex items-center gap-1.5 rounded-md border border-dashed border-gray-300 dark:border-gray-700 px-2 py-1 text-xs text-gray-800 dark:text-gray-200 sm:px-2.5 sm:text-sm">
-                    <span className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500"></span>TypeScript
+                    <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="#3178C6" aria-hidden="true"><path d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0 .124-.498c0-.222-.066-.413-.2-.575-.133-.162-.317-.31-.55-.444a6.32 6.32 0 0 0-.797-.41c-.293-.133-.61-.272-.955-.416a8.716 8.716 0 0 1-1.223-.59 4.283 4.283 0 0 1-.962-.742 3.24 3.24 0 0 1-.627-.95 3.23 3.23 0 0 1-.226-1.235c0-.564.12-1.06.36-1.485a3.02 3.02 0 0 1 .974-1.048 4.32 4.32 0 0 1 1.44-.6 6.94 6.94 0 0 1 1.766-.2z" /></svg>TypeScript
                   </span>
                   <span className="bg-white dark:bg-ink ml-1 inline-flex items-center gap-1.5 rounded-md border border-dashed border-gray-300 dark:border-gray-700 px-2 py-1 text-xs text-gray-800 dark:text-gray-200 sm:px-2.5 sm:text-sm">
-                    <span className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500"></span>Tailwind CSS
+                    <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="#06B6D4" aria-hidden="true"><path d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z" /></svg>Tailwind CSS
                   </span>
                 </span>{' '}
                 and modern tooling. I design, build, and ship responsive websites and web applications from architecture to deployment.
@@ -245,26 +246,15 @@ export default function Home() {
             <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Technologies</h3>
           </div>
           <div className="flex flex-wrap gap-2 text-[13px]">
-            {[
-              'React',
-              'Next.js',
-              'TypeScript',
-              'JavaScript',
-              'Tailwind CSS',
-              'Astro',
-              'FastAPI',
-              'PostgreSQL',
-              'Node.js',
-              'Python',
-              'HTML/CSS',
-              'Git',
-            ].map((label) => (
+            {TECHS.map(({ name, color, path }) => (
               <span
-                key={label}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-gray-800 dark:text-gray-300 hover:border-gray-300 dark:hover:border-white/20 transition-colors"
+                key={name}
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-gray-800 dark:text-gray-300 hover:border-gray-300 dark:hover:border-white/20 transition-colors"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-gray-400 dark:bg-gray-500"></span>
-                {label}
+                <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill={color} aria-hidden="true">
+                  <path d={path} />
+                </svg>
+                {name}
               </span>
             ))}
           </div>

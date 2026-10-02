@@ -112,7 +112,7 @@ export default function GitHubHeatmap({ username }: { username: string }) {
   if (status === 'error') {
     return (
       <div className="border border-gray-100 dark:border-white/[0.08] rounded-xl p-6 bg-white dark:bg-ink-card text-center">
-        <p className="text-[12px] text-gray-500 dark:text-gray-400">
+        <p className="text-[13px] text-gray-500 dark:text-gray-400">
           Couldn&apos;t load contribution data.{' '}
           <a href={`https://github.com/${username}`} className="underline" target="_blank" rel="noopener noreferrer">
             View on GitHub ↗
@@ -153,9 +153,9 @@ export default function GitHubHeatmap({ username }: { username: string }) {
   return (
     <div className="border border-gray-100 dark:border-white/[0.08] rounded-xl p-4 sm:p-5 bg-white dark:bg-ink-card">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-[11px] font-mono text-gray-400 dark:text-gray-500">CONTRIBUTIONS — LAST 12 MONTHS</p>
+        <p className="text-[12px] font-mono text-gray-400 dark:text-gray-500">CONTRIBUTIONS — LAST 12 MONTHS</p>
         {total !== null && (
-          <p className="text-[11px] font-mono text-gray-500 dark:text-gray-400">{total.toLocaleString()} total</p>
+          <p className="text-[12px] font-mono text-gray-500 dark:text-gray-400">{total.toLocaleString()} total</p>
         )}
       </div>
 
@@ -165,7 +165,7 @@ export default function GitHubHeatmap({ username }: { username: string }) {
             {monthLabels.map(({ label, col }) => (
               <span
                 key={`${label}-${col}`}
-                className="absolute text-[10px] text-gray-400 dark:text-gray-500"
+                className="absolute text-[11px] text-gray-400 dark:text-gray-500"
                 style={{ left: `${(col / colCount) * 100}%` }}
               >
                 {label}
@@ -181,7 +181,7 @@ export default function GitHubHeatmap({ username }: { username: string }) {
               {monthLabels.map(({ label, col }) => (
                 <span
                   key={`${label}-${col}`}
-                  className="absolute text-[10px] text-gray-400 dark:text-gray-500"
+                  className="absolute text-[11px] text-gray-400 dark:text-gray-500"
                   style={{ left: `${col * STEP}px` }}
                 >
                   {label}
@@ -195,13 +195,13 @@ export default function GitHubHeatmap({ username }: { username: string }) {
 
       {/* Legend */}
       <div className="flex items-center justify-end gap-1.5 mt-3">
-        <span className="text-[10px] text-gray-400 dark:text-gray-500">Less</span>
+        <span className="text-[11px] text-gray-400 dark:text-gray-500">Less</span>
         {CELL_CLASS.map((c, i) => (
           <div key={i} className="w-[10px] h-[10px] rounded-[2px]" data-c={i}>
             <div className={`w-full h-full rounded-[2px] ${c}`} />
           </div>
         ))}
-        <span className="text-[10px] text-gray-400 dark:text-gray-500">More</span>
+        <span className="text-[11px] text-gray-400 dark:text-gray-500">More</span>
       </div>
     </div>
   );

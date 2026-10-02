@@ -110,17 +110,17 @@ export default function Home() {
         {/* EXPERIENCE */}
         <section className="w-full space-y-5" id="experience">
           <div className="flex items-center justify-between">
-            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Experience</h3>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Experience</h3>
           </div>
           <div className="space-y-6 text-sm">
             <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-1 sm:gap-4 items-baseline">
-              <div className="font-mono text-[12px] text-gray-400 dark:text-gray-500">Mar 2025 — Present</div>
+              <div className="font-mono text-[13px] text-gray-400 dark:text-gray-500">Mar 2025 — Present</div>
               <div className="space-y-1.5">
-                <h3 className="text-base font-semibold leading-tight text-gray-900 dark:text-white">
+                <h3 className="text-lg font-semibold leading-tight text-gray-900 dark:text-white">
                   Freelance Web Developer — KyanDev <span className="font-normal text-gray-500 dark:text-gray-400">(Self-employed)</span>
                 </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Freelance / Remote</p>
-                <ul className="text-sm text-gray-500 dark:text-gray-400 space-y-1 pt-1 list-disc list-inside leading-relaxed">
+                <p className="text-[15px] text-gray-500 dark:text-gray-400">Freelance / Remote</p>
+                <ul className="text-[15px] text-gray-500 dark:text-gray-400 space-y-1 pt-1 list-disc list-inside leading-relaxed">
                   <li>Building client websites end-to-end from architecture to deployment.</li>
                   <li>Stack: Next.js, React, TypeScript, Tailwind CSS.</li>
                 </ul>
@@ -132,23 +132,23 @@ export default function Home() {
         {/* FEATURED WORK */}
         <section className="w-full space-y-5" id="featured">
           <div className="flex items-center justify-between">
-            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Featured Work</h3>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Featured Work</h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* UangKu */}
             <div className="rounded-xl bg-[#121212] bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] text-zinc-300 p-6 flex flex-col justify-between border border-zinc-800 min-h-[220px]">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono tracking-widest uppercase text-zinc-500 font-semibold">PERSONAL BUILD</span>
-                  <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Production Ready</span>
+                  <span className="text-[11px] font-mono tracking-widest uppercase text-zinc-500 font-semibold">PERSONAL BUILD</span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Production Ready</span>
                 </div>
                 <h4 className="text-xl font-bold text-white tracking-tight">UangKu</h4>
-                <p className="text-[12px] font-medium text-zinc-300">Personal Finance App</p>
-                <p className="text-[12px] text-zinc-400 leading-relaxed">
+                <p className="text-[13px] font-medium text-zinc-300">Personal Finance App</p>
+                <p className="text-[13px] text-zinc-400 leading-relaxed">
                   PWA expense tracker with offline support, budget goals, and visual insights. Built from the ground up.
                 </p>
               </div>
-              <div className="flex flex-wrap gap-1.5 pt-3 text-[10px] font-mono">
+              <div className="flex flex-wrap gap-1.5 pt-3 text-[11px] font-mono">
                 <span className="px-2 py-0.5 rounded bg-zinc-800/50 text-zinc-300 border border-zinc-700">Next.js</span>
                 <span className="px-2 py-0.5 rounded bg-zinc-800/50 text-zinc-300 border border-zinc-700">TypeScript</span>
                 <span className="px-2 py-0.5 rounded bg-zinc-800/50 text-zinc-300 border border-zinc-700">PostgreSQL</span>
@@ -158,16 +158,16 @@ export default function Home() {
             <div className="rounded-xl bg-[#121212] bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] text-zinc-300 p-6 flex flex-col justify-between border border-zinc-800 min-h-[220px]">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono tracking-widest uppercase text-zinc-500 font-semibold">PERSONAL BUILD</span>
-                  <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Production Ready</span>
+                  <span className="text-[11px] font-mono tracking-widest uppercase text-zinc-500 font-semibold">PERSONAL BUILD</span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Production Ready</span>
                 </div>
                 <h4 className="text-xl font-bold text-white tracking-tight">GaweTracker</h4>
-                <p className="text-[12px] font-medium text-zinc-300">Job Application Tracker</p>
-                <p className="text-[12px] text-zinc-400 leading-relaxed">
+                <p className="text-[13px] font-medium text-zinc-300">Job Application Tracker</p>
+                <p className="text-[13px] text-zinc-400 leading-relaxed">
                   Kanban-style dashboard to manage job hunt pipeline. Track applications, interviews, and offers.
                 </p>
               </div>
-              <div className="flex flex-wrap gap-1.5 pt-3 text-[10px] font-mono">
+              <div className="flex flex-wrap gap-1.5 pt-3 text-[11px] font-mono">
                 <span className="px-2 py-0.5 rounded bg-zinc-800/50 text-zinc-300 border border-zinc-700">Laravel</span>
                 <span className="px-2 py-0.5 rounded bg-zinc-800/50 text-zinc-300 border border-zinc-700">MySQL</span>
                 <span className="px-2 py-0.5 rounded bg-zinc-800/50 text-zinc-300 border border-zinc-700">Tailwind</span>
@@ -179,67 +179,67 @@ export default function Home() {
         {/* PROJECTS */}
         <section className="w-full space-y-5" id="projects">
           <div className="flex items-center justify-between">
-            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Projects</h3>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Projects</h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
             {/* KRING! */}
             <div className="rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card overflow-hidden flex flex-col justify-between hover:border-gray-300 dark:hover:border-white/20 transition-colors">
               <div>
                 <div className="bg-gray-50 dark:bg-white/[0.03] p-4 border-b border-gray-100 dark:border-white/[0.06] flex flex-col justify-center min-h-[75px]">
-                  <span className="text-[10px] font-mono text-gray-400 dark:text-gray-500 uppercase tracking-wider">SME & POS</span>
-                  <p className="text-[11px] font-medium text-gray-800 dark:text-gray-200">Point of Sale System.</p>
+                  <span className="text-[11px] font-mono text-gray-400 dark:text-gray-500 uppercase tracking-wider">SME & POS</span>
+                  <p className="text-[12px] font-medium text-gray-800 dark:text-gray-200">Point of Sale System.</p>
                 </div>
                 <div className="p-4 space-y-1.5">
-                  <h4 className="text-[13px] font-semibold text-gray-900 dark:text-white">KRING!</h4>
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed pt-1">Modern POS system for SMEs, TypeScript + Tailwind</p>
+                  <h4 className="text-[15px] font-semibold text-gray-900 dark:text-white">KRING!</h4>
+                  <p className="text-[13px] text-gray-500 dark:text-gray-400 leading-relaxed pt-1">Modern POS system for SMEs, TypeScript + Tailwind</p>
                 </div>
               </div>
               <div className="p-4 pt-2 flex items-center justify-between">
-                <div className="flex flex-wrap gap-1 text-[9px] font-mono">
+                <div className="flex flex-wrap gap-1 text-[10px] font-mono">
                   <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-600 dark:text-gray-400">React</span>
                   <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-600 dark:text-gray-400">TS</span>
                 </div>
-                <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-white/[0.08]">Coming Soon</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-white/[0.08]">Coming Soon</span>
               </div>
             </div>
             {/* NobarHub */}
             <div className="rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card overflow-hidden flex flex-col justify-between hover:border-gray-300 dark:hover:border-white/20 transition-colors">
               <div>
                 <div className="bg-gray-50 dark:bg-white/[0.03] p-4 border-b border-gray-100 dark:border-white/[0.06] flex flex-col justify-center min-h-[75px]">
-                  <span className="text-[10px] font-mono text-gray-400 dark:text-gray-500 uppercase tracking-wider">CATALOG</span>
-                  <p className="text-[11px] font-medium text-gray-800 dark:text-gray-200">Movie discovery platform.</p>
+                  <span className="text-[11px] font-mono text-gray-400 dark:text-gray-500 uppercase tracking-wider">CATALOG</span>
+                  <p className="text-[12px] font-medium text-gray-800 dark:text-gray-200">Movie discovery platform.</p>
                 </div>
                 <div className="p-4 space-y-1.5">
-                  <h4 className="text-[13px] font-semibold text-gray-900 dark:text-white">NobarHub</h4>
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed pt-1">Search and explore movies with TMDb API integration</p>
+                  <h4 className="text-[15px] font-semibold text-gray-900 dark:text-white">NobarHub</h4>
+                  <p className="text-[13px] text-gray-500 dark:text-gray-400 leading-relaxed pt-1">Search and explore movies with TMDb API integration</p>
                 </div>
               </div>
               <div className="p-4 pt-2 flex items-center justify-between">
-                <div className="flex flex-wrap gap-1 text-[9px] font-mono">
+                <div className="flex flex-wrap gap-1 text-[10px] font-mono">
                   <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-600 dark:text-gray-400">Astro</span>
                   <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-600 dark:text-gray-400">JS</span>
                 </div>
-                <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-white/[0.08]">Coming Soon</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-white/[0.08]">Coming Soon</span>
               </div>
             </div>
             {/* JamKosong */}
             <div className="rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card overflow-hidden flex flex-col justify-between hover:border-gray-300 dark:hover:border-white/20 transition-colors">
               <div>
                 <div className="bg-gray-50 dark:bg-white/[0.03] p-4 border-b border-gray-100 dark:border-white/[0.06] flex flex-col justify-center min-h-[75px] relative">
-                  <span className="text-[10px] font-mono text-gray-400 dark:text-gray-500 uppercase tracking-wider">BOOKING</span>
-                  <p className="text-[11px] font-medium text-gray-800 dark:text-gray-200">Room scheduling app.</p>
-                  <span className="absolute top-2 right-2 text-[9px] font-mono px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20">IN PROGRESS</span>
+                  <span className="text-[11px] font-mono text-gray-400 dark:text-gray-500 uppercase tracking-wider">BOOKING</span>
+                  <p className="text-[12px] font-medium text-gray-800 dark:text-gray-200">Room scheduling app.</p>
+                  <span className="absolute top-2 right-2 text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20">IN PROGRESS</span>
                 </div>
                 <div className="p-4 space-y-1.5">
-                  <h4 className="text-[13px] font-semibold text-gray-900 dark:text-white">JamKosong</h4>
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed pt-1">Meeting room booking with real-time availability</p>
+                  <h4 className="text-[15px] font-semibold text-gray-900 dark:text-white">JamKosong</h4>
+                  <p className="text-[13px] text-gray-500 dark:text-gray-400 leading-relaxed pt-1">Meeting room booking with real-time availability</p>
                 </div>
               </div>
               <div className="p-4 pt-2 flex items-center justify-between">
-                <div className="flex flex-wrap gap-1 text-[9px] font-mono">
+                <div className="flex flex-wrap gap-1 text-[10px] font-mono">
                   <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-600 dark:text-gray-400">Next.js</span>
                 </div>
-                <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-white/[0.08]">Coming Soon</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-white/[0.08]">Coming Soon</span>
               </div>
             </div>
           </div>
@@ -248,7 +248,7 @@ export default function Home() {
               href="https://github.com/kianlabs"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-gray-200 dark:border-white/[0.12] text-gray-700 dark:text-gray-300 text-[12px] font-medium hover:border-gray-300 dark:hover:border-white/25 transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-gray-200 dark:border-white/[0.12] text-gray-700 dark:text-gray-300 text-[14px] font-medium hover:border-gray-300 dark:hover:border-white/25 transition-colors"
             >
               <span>Explore All Projects</span>
               <span className="text-[13px] leading-none">›</span>
@@ -259,10 +259,10 @@ export default function Home() {
         {/* TECHNOLOGIES */}
         <section className="w-full space-y-5" id="stack">
           <div className="flex items-center justify-between">
-            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Technologies</h3>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Technologies</h3>
           </div>
           <div className="space-y-4">
-            <div className="flex flex-wrap gap-2 text-[13px]">
+            <div className="flex flex-wrap gap-2 text-[15px]">
               {TECHS.map(({ name, color, path }) => (
                 <span
                   key={name}
@@ -276,8 +276,8 @@ export default function Home() {
               ))}
             </div>
             <div className="space-y-2.5">
-              <span className="block text-[10px] font-mono tracking-widest uppercase text-gray-400 dark:text-gray-500">AI Engineering</span>
-              <div className="flex flex-wrap gap-2 text-[13px]">
+              <span className="block text-[11px] font-mono tracking-widest uppercase text-gray-400 dark:text-gray-500">AI Engineering</span>
+              <div className="flex flex-wrap gap-2 text-[15px]">
                 {['LLM API Integration', 'RAG', 'MCP', 'Prompt Engineering', 'AI Agents'].map((name) => (
                   <span
                     key={name}
@@ -294,27 +294,27 @@ export default function Home() {
         {/* CERTIFICATIONS */}
         <section className="w-full space-y-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Certifications</h3>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Certifications</h3>
           </div>
           <div className="space-y-5 text-sm">
-            <span className="text-[10px] font-mono tracking-widest uppercase text-gray-400 dark:text-gray-500">PROFESSIONAL CREDENTIAL</span>
+            <span className="text-[11px] font-mono tracking-widest uppercase text-gray-400 dark:text-gray-500">PROFESSIONAL CREDENTIAL</span>
             <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-2 sm:gap-4 items-center">
-              <div className="font-mono text-[12px] text-gray-400 dark:text-gray-500">[Date TBD]</div>
+              <div className="font-mono text-[13px] text-gray-400 dark:text-gray-500">[Date TBD]</div>
               <div className="flex items-center gap-3">
                 <div className="w-12 h-9 rounded border border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-white/[0.03] flex items-center justify-center text-[9px] font-mono text-gray-400 dark:text-gray-500">LOGO</div>
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white text-[13px]">Placeholder 01 — Certification</h4>
-                  <p className="text-[11px] text-gray-400 dark:text-gray-500">[PLACEHOLDER — to be filled by owner]</p>
+                  <h4 className="font-medium text-gray-900 dark:text-white text-[15px]">Placeholder 01 — Certification</h4>
+                  <p className="text-[12px] text-gray-400 dark:text-gray-500">[PLACEHOLDER — to be filled by owner]</p>
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-2 sm:gap-4 items-center">
-              <div className="font-mono text-[12px] text-gray-400 dark:text-gray-500">[Date TBD]</div>
+              <div className="font-mono text-[13px] text-gray-400 dark:text-gray-500">[Date TBD]</div>
               <div className="flex items-center gap-3">
                 <div className="w-12 h-9 rounded border border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-white/[0.03] flex items-center justify-center text-[9px] font-mono text-gray-400 dark:text-gray-500">LOGO</div>
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white text-[13px]">Placeholder 02 — Technical Workshop</h4>
-                  <p className="text-[11px] text-gray-400 dark:text-gray-500">[PLACEHOLDER — to be filled by owner]</p>
+                  <h4 className="font-medium text-gray-900 dark:text-white text-[15px]">Placeholder 02 — Technical Workshop</h4>
+                  <p className="text-[12px] text-gray-400 dark:text-gray-500">[PLACEHOLDER — to be filled by owner]</p>
                 </div>
               </div>
             </div>
@@ -324,16 +324,16 @@ export default function Home() {
         {/* EDUCATION */}
         <section className="w-full space-y-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Education</h3>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Education</h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-1 sm:gap-4 items-baseline text-sm">
-            <div className="font-mono text-[12px] text-gray-400 dark:text-gray-500">2022 – 2026</div>
+            <div className="font-mono text-[13px] text-gray-400 dark:text-gray-500">2022 – 2026</div>
             <div className="space-y-0.5">
               <div className="flex flex-wrap items-center gap-2">
-                <h4 className="font-semibold text-gray-900 dark:text-white text-base">Bachelor of Informatics Engineering</h4>
-                <span className="text-[12px] font-mono text-gray-500 dark:text-gray-400">3.69 / 4.00</span>
+                <h4 className="font-semibold text-gray-900 dark:text-white text-lg">Bachelor of Informatics Engineering</h4>
+                <span className="text-[13px] font-mono text-gray-500 dark:text-gray-400">3.69 / 4.00</span>
               </div>
-              <p className="text-gray-500 dark:text-gray-400 text-[12px]">Universitas Duta Bangsa Surakarta</p>
+              <p className="text-gray-500 dark:text-gray-400 text-[13px]">Universitas Duta Bangsa Surakarta</p>
             </div>
           </div>
         </section>
@@ -341,16 +341,16 @@ export default function Home() {
         {/* OUTSIDE THE IDE */}
         <section className="w-full space-y-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Outside the IDE</h3>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Outside the IDE</h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_130px] gap-6 items-center">
             <div className="space-y-3">
-              <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+              <p className="text-[15px] text-gray-500 dark:text-gray-400 leading-relaxed">
                 When I&apos;m not shipping code, I&apos;m exploring new tech, running my small fashion affiliate business, or experimenting with AI tools and workflows. I recharge by learning — then bring it back into my builds.
               </p>
               <div className="flex flex-wrap gap-1.5 pt-1">
                 {['Technology', 'Business', 'AI'].map((t) => (
-                  <span key={t} className="px-2.5 py-0.5 rounded-full border border-gray-200 dark:border-white/[0.12] text-gray-600 dark:text-gray-400 text-[11px]">{t}</span>
+                  <span key={t} className="px-2.5 py-0.5 rounded-full border border-gray-200 dark:border-white/[0.12] text-gray-600 dark:text-gray-400 text-[12px]">{t}</span>
                 ))}
               </div>
             </div>
@@ -369,8 +369,8 @@ export default function Home() {
         {/* GITHUB ACTIVITY */}
         <section className="w-full space-y-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">GitHub Activity</h3>
-            <a href="https://github.com/kianlabs" className="text-[11px] text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors font-mono" target="_blank" rel="noopener noreferrer">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">GitHub Activity</h3>
+            <a href="https://github.com/kianlabs" className="text-[12px] text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors font-mono" target="_blank" rel="noopener noreferrer">
               github.com/kianlabs ↗
             </a>
           </div>
@@ -382,14 +382,14 @@ export default function Home() {
         {/* LET'S WORK TOGETHER */}
         <section className="w-full space-y-5" id="contact">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">Let&apos;s work together.</h3>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white tracking-tight">Let&apos;s work together.</h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_260px] gap-6 items-start">
             <div className="space-y-3">
-              <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+              <p className="text-[15px] text-gray-500 dark:text-gray-400 leading-relaxed">
                 Available for freelance web development and full-stack projects, from new builds to existing websites. I also help build robust APIs, performant architectures, and responsive user interfaces.
               </p>
-              <div className="flex items-center gap-2 pt-2 text-[12px] text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-2 pt-2 text-[13px] text-gray-500 dark:text-gray-400">
                 <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                 <span>Typical response time: under 24 hours</span>
               </div>
@@ -399,8 +399,8 @@ export default function Home() {
                 <div className="flex items-center gap-2.5">
                   <svg className="w-4 h-4 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z" /></svg>
                   <div>
-                    <p className="text-[11px] font-medium text-gray-900 dark:text-white">Email</p>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400">ridzkyan0504@gmail.com</p>
+                    <p className="text-[13px] font-medium text-gray-900 dark:text-white">Email</p>
+                    <p className="text-[12px] text-gray-500 dark:text-gray-400">ridzkyan0504@gmail.com</p>
                   </div>
                 </div>
                 <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[14px]">→</span>
@@ -409,8 +409,8 @@ export default function Home() {
                 <div className="flex items-center gap-2.5">
                   <svg className="w-4 h-4 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
                   <div>
-                    <p className="text-[11px] font-medium text-gray-900 dark:text-white">GitHub</p>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400">@kianlabs</p>
+                    <p className="text-[13px] font-medium text-gray-900 dark:text-white">GitHub</p>
+                    <p className="text-[12px] text-gray-500 dark:text-gray-400">@kianlabs</p>
                   </div>
                 </div>
                 <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[14px]">→</span>
@@ -419,8 +419,8 @@ export default function Home() {
                 <div className="flex items-center gap-2.5">
                   <svg className="w-4 h-4 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg>
                   <div>
-                    <p className="text-[11px] font-medium text-gray-900 dark:text-white">LinkedIn</p>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400">Ridzkyan Pratama</p>
+                    <p className="text-[13px] font-medium text-gray-900 dark:text-white">LinkedIn</p>
+                    <p className="text-[12px] text-gray-500 dark:text-gray-400">Ridzkyan Pratama</p>
                   </div>
                 </div>
                 <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[14px]">→</span>
@@ -429,8 +429,8 @@ export default function Home() {
                 <div className="flex items-center gap-2.5">
                   <svg className="w-4 h-4 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" /></svg>
                   <div>
-                    <p className="text-[11px] font-medium text-gray-900 dark:text-white">Schedule a Call</p>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400">Let&apos;s discuss your project</p>
+                    <p className="text-[13px] font-medium text-gray-900 dark:text-white">Schedule a Call</p>
+                    <p className="text-[12px] text-gray-500 dark:text-gray-400">Let&apos;s discuss your project</p>
                   </div>
                 </div>
                 <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[14px]">→</span>
@@ -443,12 +443,12 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer className="w-full border-t border-gray-100 dark:border-gray-800 py-8 mt-12">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-gray-400 dark:text-gray-500">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[12px] text-gray-400 dark:text-gray-500">
           <div className="space-y-0.5 text-center sm:text-left">
             <p className="italic text-gray-500 dark:text-gray-400">&quot;Repetition until it becomes technique.&quot;</p>
             <p>© 2026 Ridzkyan Buti Pratama · Built with Next.js</p>
           </div>
-          <div className="font-mono text-[10px]">Surakarta, ID</div>
+          <div className="font-mono text-[12px]">Surakarta, ID</div>
         </div>
       </footer>
 

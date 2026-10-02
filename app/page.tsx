@@ -78,7 +78,7 @@ export default function Home() {
             <div className="space-y-5 sm:space-y-6">
               <h2 className="max-w-full text-[1.7rem] font-normal tracking-tight leading-tight text-gray-900 dark:text-white sm:text-[2.05rem] md:text-[2.15rem]">
                 Full-Stack Web Developer{' '}
-                <span className="text-[0.95em] font-light text-gray-500 dark:text-gray-400">— Next.js · React · TypeScript</span>
+                <span className="text-[0.95em] font-light text-gray-500 dark:text-gray-400">— Laravel · React · Next.js</span>
               </h2>
               <p className="text-base font-light leading-7 text-gray-500 dark:text-gray-400 sm:text-lg sm:leading-8">
                 Fresh graduate in Informatics Engineering building web apps end-to-end. Freelance web developer via KyanDev, shipping production websites with{' '}

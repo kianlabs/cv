@@ -39,7 +39,6 @@ export const metadata: Metadata = {
   },
 };
 
-// Anti-FOUC: set theme class before first paint (pola sama dengan referensi).
 const themeInit = `(function(){try{var s=localStorage.getItem('theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches;var dark=s?s==='dark':m;document.documentElement.classList.toggle('dark',dark);}catch(e){document.documentElement.classList.add('dark');}})();`;
 
 export default function RootLayout({

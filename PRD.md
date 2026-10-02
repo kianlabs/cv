@@ -40,7 +40,6 @@ Desain = replikasi persis `renlenon.vercel.app`. Folder ini = repo GitHub `kianl
 | `stitch-export.html` | Acuan struktur & konten lama (light theme, bukan lagi acuan visual) |
 | `DESIGN.md` | Token desain — **direvisi** ke dark minimalist (acuan styling) |
 | `cv-ridzkyan.pdf` | File CV final → `public/cv-ridzkyan.pdf` (akses `/cv-ridzkyan.pdf`) |
-| `screen.png` | Screenshot desain lama (referensi historis) |
 
 ## 4. Struktur halaman (SAMA PERSIS dengan referensi)
 

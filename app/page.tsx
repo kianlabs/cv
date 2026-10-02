@@ -3,6 +3,7 @@ import ThemeToggle from '@/components/ThemeToggle';
 import GitHubHeatmap from '@/components/GitHubHeatmap';
 import { TECHS, HERO_TECHS } from '@/components/techs';
 import CertThumb from '@/components/CertThumb';
+import AvatarSwap from '@/components/AvatarSwap';
 
 export default function Home() {
   return (
@@ -42,13 +43,14 @@ export default function Home() {
         <section className="flex flex-col justify-center pt-6 pb-8 sm:pt-10 sm:pb-8" id="about">
           <div className="space-y-6 sm:space-y-10">
             <div className="flex items-center gap-4 sm:gap-6">
-              <div className="h-32 w-32 shrink-0 overflow-hidden rounded-full border-2 border-gray-200 dark:border-gray-500 bg-white dark:bg-ink shadow-sm sm:h-40 sm:w-40">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/profile.jpg"
+              <div className="h-32 w-32 shrink-0 rounded-full border-2 border-gray-200 dark:border-gray-500 bg-white dark:bg-ink shadow-sm sm:h-40 sm:w-40">
+                <AvatarSwap
+                  images={[
+                    { src: '/profile.jpg', position: 'center 15%' },
+                    { src: '/avatar-anime.jpg', position: 'center 42%' },
+                  ]}
                   alt="Ridzkyan Buti Pratama"
-                  className="h-full w-full object-cover object-top"
-                  loading="eager"
+                  className="h-full w-full rounded-full"
                 />
               </div>
               <div className="flex h-full flex-col justify-center gap-2.5 sm:gap-3">

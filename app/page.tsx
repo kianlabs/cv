@@ -425,16 +425,6 @@ export default function Home() {
                 </div>
                 <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[16px]">→</span>
               </a>
-              <a href="mailto:ridzkyan0504@gmail.com" className="flex items-center justify-between p-4 rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card hover:border-gray-300 dark:hover:border-white/20 transition-all group">
-                <div className="flex items-center gap-3">
-                  <svg className="w-5 h-5 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" /></svg>
-                  <div>
-                    <p className="text-[15px] font-medium text-gray-900 dark:text-white">Schedule a Call</p>
-                    <p className="text-[13px] text-gray-500 dark:text-gray-400">Let&apos;s discuss your project</p>
-                  </div>
-                </div>
-                <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[16px]">→</span>
-              </a>
             </div>
           </div>
         </section>

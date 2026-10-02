@@ -395,45 +395,45 @@ export default function Home() {
               </div>
             </div>
             <div className="space-y-2.5 w-full">
-              <a href="mailto:ridzkyan0504@gmail.com" className="flex items-center justify-between p-3 rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card hover:border-gray-300 dark:hover:border-white/20 transition-all group">
-                <div className="flex items-center gap-2.5">
-                  <svg className="w-4 h-4 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z" /></svg>
+              <a href="mailto:ridzkyan0504@gmail.com" className="flex items-center justify-between p-4 rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card hover:border-gray-300 dark:hover:border-white/20 transition-all group">
+                <div className="flex items-center gap-3">
+                  <svg className="w-5 h-5 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z" /></svg>
                   <div>
-                    <p className="text-[13px] font-medium text-gray-900 dark:text-white">Email</p>
-                    <p className="text-[12px] text-gray-500 dark:text-gray-400">ridzkyan0504@gmail.com</p>
+                    <p className="text-[15px] font-medium text-gray-900 dark:text-white">Email</p>
+                    <p className="text-[13px] text-gray-500 dark:text-gray-400">ridzkyan0504@gmail.com</p>
                   </div>
                 </div>
-                <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[14px]">→</span>
+                <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[16px]">→</span>
               </a>
-              <a href="https://github.com/kianlabs" className="flex items-center justify-between p-3 rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card hover:border-gray-300 dark:hover:border-white/20 transition-all group" target="_blank" rel="noopener noreferrer">
-                <div className="flex items-center gap-2.5">
-                  <svg className="w-4 h-4 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
+              <a href="https://github.com/kianlabs" className="flex items-center justify-between p-4 rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card hover:border-gray-300 dark:hover:border-white/20 transition-all group" target="_blank" rel="noopener noreferrer">
+                <div className="flex items-center gap-3">
+                  <svg className="w-5 h-5 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
                   <div>
-                    <p className="text-[13px] font-medium text-gray-900 dark:text-white">GitHub</p>
-                    <p className="text-[12px] text-gray-500 dark:text-gray-400">@kianlabs</p>
+                    <p className="text-[15px] font-medium text-gray-900 dark:text-white">GitHub</p>
+                    <p className="text-[13px] text-gray-500 dark:text-gray-400">@kianlabs</p>
                   </div>
                 </div>
-                <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[14px]">→</span>
+                <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[16px]">→</span>
               </a>
-              <a href="https://linkedin.com/in/ridzkyan-pratama-7911b441b" className="flex items-center justify-between p-3 rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card hover:border-gray-300 dark:hover:border-white/20 transition-all group" target="_blank" rel="noopener noreferrer">
-                <div className="flex items-center gap-2.5">
-                  <svg className="w-4 h-4 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg>
+              <a href="https://linkedin.com/in/ridzkyan-pratama-7911b441b" className="flex items-center justify-between p-4 rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card hover:border-gray-300 dark:hover:border-white/20 transition-all group" target="_blank" rel="noopener noreferrer">
+                <div className="flex items-center gap-3">
+                  <svg className="w-5 h-5 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg>
                   <div>
-                    <p className="text-[13px] font-medium text-gray-900 dark:text-white">LinkedIn</p>
-                    <p className="text-[12px] text-gray-500 dark:text-gray-400">Ridzkyan Pratama</p>
+                    <p className="text-[15px] font-medium text-gray-900 dark:text-white">LinkedIn</p>
+                    <p className="text-[13px] text-gray-500 dark:text-gray-400">Ridzkyan Pratama</p>
                   </div>
                 </div>
-                <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[14px]">→</span>
+                <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[16px]">→</span>
               </a>
-              <a href="mailto:ridzkyan0504@gmail.com" className="flex items-center justify-between p-3 rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card hover:border-gray-300 dark:hover:border-white/20 transition-all group">
-                <div className="flex items-center gap-2.5">
-                  <svg className="w-4 h-4 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" /></svg>
+              <a href="mailto:ridzkyan0504@gmail.com" className="flex items-center justify-between p-4 rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card hover:border-gray-300 dark:hover:border-white/20 transition-all group">
+                <div className="flex items-center gap-3">
+                  <svg className="w-5 h-5 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" /></svg>
                   <div>
-                    <p className="text-[13px] font-medium text-gray-900 dark:text-white">Schedule a Call</p>
-                    <p className="text-[12px] text-gray-500 dark:text-gray-400">Let&apos;s discuss your project</p>
+                    <p className="text-[15px] font-medium text-gray-900 dark:text-white">Schedule a Call</p>
+                    <p className="text-[13px] text-gray-500 dark:text-gray-400">Let&apos;s discuss your project</p>
                   </div>
                 </div>
-                <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[14px]">→</span>
+                <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[16px]">→</span>
               </a>
             </div>
           </div>

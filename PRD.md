@@ -66,7 +66,7 @@ Urutan & nama section mengikuti `renlenon.vercel.app`:
 - "Schedule a Call" → `mailto:ridzkyan0504@gmail.com`.
 
 ### 5.4. Tombol CV
-"View Resume" + "Download CV" (navbar + hero + chat) → `href="/cv-ridzkyan.pdf"`.
+Hanya **"View Resume"** (navbar + hero) → `href="/cv-ridzkyan.pdf"`. Tombol "Download CV" **dihapus** (cukup satu tombol). Chip chat: "Resume".
 
 ### 5.5. Chat widget — anti XSS
 - Input user **JANGAN** dirender via `innerHTML` / `dangerouslySetInnerHTML`. Pakai React state + plain text.

@@ -124,7 +124,7 @@ export default function ChatWidget() {
           </div>
 
           <div className="px-4 py-2 bg-white dark:bg-ink-card border-t border-gray-100 dark:border-white/[0.06] flex flex-wrap gap-1.5">
-            {['Projects', 'Download CV', 'Contact'].map((q) => (
+            {['Projects', 'Resume', 'Contact'].map((q) => (
               <button
                 key={q}
                 className="px-2.5 py-1 rounded-full border border-gray-200 dark:border-white/[0.1] bg-gray-50 dark:bg-white/[0.04] hover:bg-gray-100 dark:hover:bg-white/[0.08] text-gray-700 dark:text-gray-300 text-[11px] transition-colors"

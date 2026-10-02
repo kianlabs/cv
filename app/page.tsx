@@ -24,8 +24,8 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span className="text-[13px] leading-none">↓</span>
-              <span>Download CV</span>
+              <span>View Resume</span>
+              <span className="text-[13px] leading-none">›</span>
             </a>
             <ThemeToggle />
           </div>
@@ -103,15 +103,6 @@ export default function Home() {
                 >
                   <span>View Resume</span>
                   <span className="text-[14px] leading-none">›</span>
-                </a>
-                <a
-                  href="/cv-ridzkyan.pdf"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-[13px] font-medium hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span className="text-[14px] leading-none">↓</span>
-                  <span>Download CV</span>
                 </a>
               </div>
             </div>
@@ -381,12 +372,61 @@ export default function Home() {
               github.com/kianlabs ↗
             </a>
           </div>
-          <div className="border border-gray-100 dark:border-white/[0.08] rounded-xl p-6 bg-white dark:bg-ink-card flex flex-col items-center justify-center space-y-4 min-h-[160px]">
-            <div className="w-16 h-16 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black flex items-center justify-center font-bold text-xl">RP</div>
-            <div className="text-center space-y-1">
-              <h4 className="font-semibold text-gray-900 dark:text-white text-[14px]">@kianlabs</h4>
-              <p className="text-[12px] text-gray-500 dark:text-gray-400">View my GitHub profile for projects and contributions</p>
+
+          {/* Stat cards — live from github-readme-stats (auto-update) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://github-readme-stats.vercel.app/api?username=kianlabs&show_icons=true&hide_border=true&bg_color=141518&title_color=ffffff&text_color=9ca3af&icon_color=ffffff&include_all_commits=true&count_private=true"
+              alt="kianlabs GitHub stats"
+              className="hidden dark:block w-full rounded-xl border border-white/[0.08]"
+              loading="lazy"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://github-readme-stats.vercel.app/api?username=kianlabs&show_icons=true&hide_border=true&bg_color=ffffff&title_color=111827&text_color=6b7280&icon_color=111827&include_all_commits=true&count_private=true"
+              alt="kianlabs GitHub stats"
+              className="block dark:hidden w-full rounded-xl border border-gray-100"
+              loading="lazy"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://github-readme-stats.vercel.app/api/top-langs/?username=kianlabs&layout=compact&hide_border=true&bg_color=141518&title_color=ffffff&text_color=9ca3af&langs_count=6"
+              alt="kianlabs top languages"
+              className="hidden dark:block w-full rounded-xl border border-white/[0.08]"
+              loading="lazy"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://github-readme-stats.vercel.app/api/top-langs/?username=kianlabs&layout=compact&hide_border=true&bg_color=ffffff&title_color=111827&text_color=6b7280&langs_count=6"
+              alt="kianlabs top languages"
+              className="block dark:hidden w-full rounded-xl border border-gray-100"
+              loading="lazy"
+            />
+          </div>
+
+          {/* Contribution heatmap — real data from GitHub */}
+          <div className="border border-gray-100 dark:border-white/[0.08] rounded-xl p-4 bg-white dark:bg-ink-card">
+            <p className="text-[11px] font-mono text-gray-400 dark:text-gray-500 mb-3">CONTRIBUTIONS — LAST YEAR</p>
+            <div className="w-full overflow-x-auto">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://ghchart.rshah.org/ffffff/kianlabs"
+                alt="kianlabs contribution chart"
+                className="hidden dark:block w-[640px] max-w-none"
+                loading="lazy"
+              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://ghchart.rshah.org/111827/kianlabs"
+                alt="kianlabs contribution chart"
+                className="block dark:hidden w-[640px] max-w-none"
+                loading="lazy"
+              />
             </div>
+          </div>
+
+          <div className="flex justify-center">
             <a
               href="https://github.com/kianlabs"
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black text-[12px] font-medium hover:opacity-90 transition-opacity"

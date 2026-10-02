@@ -53,7 +53,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
       </head>
       <body
-        className={`${GeistSans.variable} ${jetbrainsMono.variable} font-sans antialiased bg-white text-gray-900 dark:bg-ink dark:text-white min-h-screen flex flex-col`}
+        className={`${GeistSans.variable} ${jetbrainsMono.variable} font-sans antialiased bg-white text-gray-900 dark:bg-ink dark:text-white min-h-screen flex flex-col overflow-x-clip`}
       >
         {children}
       </body>

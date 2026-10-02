@@ -19,7 +19,7 @@ const CELLS = 12; // 12x12 grid, same as renlenon
 export default function AvatarSwap({
   images,
   alt,
-  autoSwapMs = 12000,
+  autoSwapMs = 7000,
   className = '',
 }: {
   images: AvatarImage[];
@@ -44,12 +44,12 @@ export default function AvatarSwap({
     }
     busy.current = true;
     setCovered(true); // pixels flash on (random stagger via inline delay)
-    // Mask fully opaque at ~0.45s stagger + 0.2s fade = ~0.65s; swap after that.
-    window.setTimeout(() => setActive((i) => (i + 1) % images.length), 700);
-    window.setTimeout(() => setCovered(false), 950); // pixels flash off
+    // Mask fully covers at ~0.15s stagger + 0.1s fade ≈ 0.25s → swap right after.
+    window.setTimeout(() => setActive((i) => (i + 1) % images.length), 260);
+    window.setTimeout(() => setCovered(false), 300); // pixels flash off immediately
     window.setTimeout(() => {
       busy.current = false;
-    }, 1400);
+    }, 650);
   }, [images.length]);
 
   // Auto-cycle so it animates even without hover (and on touch devices).
@@ -90,14 +90,14 @@ export default function AvatarSwap({
         {Array.from({ length: CELLS * CELLS }).map((_, i) => (
           <span
             key={i}
-            className="absolute bg-white transition-opacity duration-200 ease-out"
+            className="absolute bg-white transition-opacity duration-100 ease-out"
             style={{
               width: `${100 / CELLS}%`,
               height: `${100 / CELLS}%`,
               left: `${(i % CELLS) * (100 / CELLS)}%`,
               top: `${Math.floor(i / CELLS) * (100 / CELLS)}%`,
               opacity: covered ? 1 : 0,
-              transitionDelay: covered ? `${(Math.random() * 0.45).toFixed(3)}s` : '0s',
+              transitionDelay: covered ? `${(Math.random() * 0.15).toFixed(3)}s` : '0s',
             }}
           />
         ))}

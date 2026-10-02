@@ -138,7 +138,7 @@ Body: `bg-white text-gray-900 dark:bg-ink dark:text-white`.
 
 ### Hero Avatar (`components/AvatarSwap.tsx`)
 - Bulat: `h-32 w-32 sm:h-40 sm:w-40 rounded-full border-2 border-gray-200 dark:border-gray-500`.
-- **Pixel-reveal swap**: grid 12×12 piksel putih menyala menutupi gambar → gambar berganti → piksel padam. Trigger hover/focus (desktop) atau tap (touch), plus auto-cycle tiap 12000ms. Timing lambat: piksel menutup penuh ~0,65s, gambar ditukar di 700ms, piksel padam di 950ms.
+- **Pixel-reveal swap**: grid 12×12 piksel putih menyala menutupi gambar → gambar berganti → piksel padam. Trigger hover/focus (desktop) atau tap (touch), plus auto-cycle tiap 7000ms. Timing: piksel menutup ~0,25s, gambar ditukar di 260ms, piksel padam di 300ms (putih hanya singkat).
 - Hormati `prefers-reduced-motion`: langsung ganti gambar tanpa animasi.
 - Dua gambar: `/avatar-anime.jpg` (center 42%) dan `/profile.jpg` (center 15%).
 

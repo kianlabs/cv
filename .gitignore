@@ -35,6 +35,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# generated RAG index (rebuilt by `npm run build:kb` / prebuild;
+# must match the embedding provider of the target environment)
+/content/index.json
+
 # editor
 .vscode/
 .idea/

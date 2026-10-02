@@ -1,6 +1,41 @@
 # PRD — Portfolio Website (repo: `cv`)
 
-## 0. REVISI v4 — Avatar Swap, Sertifikasi Asli & Pembersihan
+## 0. REVISI v6 — Deploy Vercel-only (cloud, tanpa server lokal)
+
+**Perubahan dari v5:** arsitektur RAG di-*generalize* agar bisa jalan **sepenuhnya di Vercel free tier** tanpa 9router lokal maupun VPS.
+
+**Yang berubah:**
+- **Embedding provider jadi abstraksi** (`lib/embed.ts`): `gemini` (produksi, server-side API) atau `local` (dev offline, transformers.js). Tidak ada kode yang berubah saat berpindah provider — hanya config.
+- **`content/index.json` jadi satu-satunya sumber kebenaran** untuk model embedding. `lib/rag.ts` membaca provider/model/dims **dari index**, bukan dari env terpisah → mustahil terjadi mismatch query↔chunk (dulu ini pernah bikin retrieval rusak diam-diam).
+- **Native binary tidak ikut bundle**: `@huggingface/transformers` di-import *lazy* dengan `webpackIgnore`, dan `next.config.js` memakai `outputFileTracingExcludes` untuk membuang `onnxruntime-node`/`sharp`/`@img`. Terukur: function `/api/chat` = **~0.8 MB** (limit Vercel 250 MB).
+- **Index di-generate saat build** (`prebuild` → `npm run build:kb`), tidak di-commit. Di Vercel, `EMBED_PROVIDER=gemini` membuat index memakai Gemini sehingga sinkron dengan runtime.
+- **LLM provider-agnostic** (`LLM_BASE_URL`/`LLM_API_KEY`/`LLM_MODEL`/`LLM_FALLBACKS`) — produksi pakai endpoint OpenAI-compatible Gemini, dev pakai 9router. `NINE_ROUTER_*` tetap dihormati sebagai fallback. Catatan: model id Gemini lama (`gemini-2.5-flash`) sudah ditolak untuk API key baru; dipakai `gemini-flash-latest` (alias yang selalu menunjuk versi terbaru) agar tidak cepat kedaluwarsa.
+- **Endpoint diagnostik** `GET /api/chat` melaporkan `ok/llmConfigured/retrievalConfigured/embedder/model` tanpa membocorkan key.
+- **Panduan deploy**: `DEPLOY.md`; template env: `.env.example`.
+
+**Scope handling dua lapis (anti-halusinasi):**
+- **Lapisan 1 — retrieval floor** (`INDEX.minScore`): query yang jelas di luar topik dilewatkan begitu saja tanpa memanggil LLM. Ambangnya **dihitung otomatis saat build** dari distribusi kemiripan antar-chunk korpus (mean + 1.5σ, dibatasi 0.35–0.6) dan disimpan di `content/index.json` — bukan angka ajaib. Ini penting: ambang `0.25` yang dulu di-tuning untuk MiniLM menjadi **tidak valid** setelah pindah ke Gemini (skala skornya berbeda), dan tanpa derivasi otomatis bug itu tidak terlihat. Lapisan ini sengaja **permisif** (lebih baik meloloskan daripada menolak pertanyaan sah).
+- **Lapisan 2 — system prompt** (`lib/persona.ts`): model diinstruksikan menolak apa pun yang di luar topik. Inilah penjaga utama untuk query borderline yang lolos lapisan 1.
+- **Diuji**: `scripts/test-rag.mts` menguji lapisan 1 (15/15); perilaku lapisan 2 diverifikasi end-to-end via `/api/chat`.
+
+**Biaya:** Vercel Hobby $0 + Gemini free tier (chat + embedding, tanpa kartu kredit).
+
+## 0a. REVISI v5 — RAG Chat Assistant (Retrieval-Augmented)
+
+**Perubahan dari v4:** chat assistant ("Kai") diubah dari **fakta hard-coded di system prompt** menjadi **RAG sungguhan** — retrieval atas knowledge base yang bisa diedit, dengan sumber yang ditampilkan ke pengunjung.
+
+**Arsitektur:**
+- **Knowledge base**: markdown di `content/kb/` (profile, projects, skills, experience, faq) — satu topik per `##` heading.
+- **Indexing (build-time)**: `npm run build:kb` (`scripts/build-kb.mts`) memotong KB per heading, meng-embed dengan provider aktif (`lib/embed.ts`), dan menulis `content/index.json` (di-generate, gitignored).
+- **Retrieval (request-time)**: `lib/rag.ts` meng-embed pertanyaan pengunjung (provider sama) lalu **hybrid search** — cosine (dense) + BM25 (lexical) — digabung dengan **Weighted Reciprocal Rank Fusion** (dense 1.0, lexical 0.5). Cosine dipakai sebagai ambang batas (≥ 0.25) supaya pertanyaan di luar topik tidak diproses.
+- **Grounding**: hanya chunk hasil retrieval yang dikirim ke LLM sebagai "RETRIEVED CONTEXT". Bila tidak ada yang lolos ambang, route **tidak memanggil LLM sama sekali** dan mengembalikan pesan out-of-scope.
+- **UI**: `components/ChatWidget.tsx` menampilkan badge **Sources** (Profile/Projects/Skills/Experience/FAQ) di bawah tiap jawaban — pengunjung melihat RAG bekerja.
+
+**Kenapa tanpa vector DB:** korpus kecil (~30 chunk) → scan in-memory eksak dan instan, tanpa dependensi/infra tambahan. Vector DB baru masuk akal di skala besar.
+
+**Config Next**: `serverComponentsExternalPackages: ['@huggingface/transformers']` + `outputFileTracingExcludes` untuk paket native (lihat v6).
+
+## 0b. REVISI v4 — Avatar Swap, Sertifikasi Asli & Pembersihan
 
 **Perubahan dari v3:**
 - **Hero avatar**: statis → **pixel-reveal auto-swap** (`components/AvatarSwap.tsx`) antara `avatar-anime.jpg` & `profile.jpg`.

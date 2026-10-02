@@ -5,7 +5,19 @@ import { useState, useEffect, useRef } from 'react';
 interface Message {
   text: string;
   isUser: boolean;
+  sources?: string[];
 }
+
+/** Human-readable labels for knowledge-base source ids. */
+const SOURCE_LABELS: Record<string, string> = {
+  '01-profile': 'Profile',
+  '02-projects': 'Projects',
+  '03-skills': 'Skills',
+  '04-experience': 'Experience',
+  '05-faq': 'FAQ',
+};
+
+const labelFor = (id: string) => SOURCE_LABELS[id] ?? id;
 
 const GREETING =
   "Hi! I'm Kai, Kyan's assistant. Ask me about his projects, skills, or how to get in touch 🙂";
@@ -30,7 +42,11 @@ export default function ChatWidget() {
   }, [messages.length]);
 
   useEffect(() => {
-    if (isOpen && inputRef.current) {
+    if (!isOpen || !inputRef.current) return;
+    // Auto-focus only on desktop. On mobile, focusing an input pops the soft
+    // keyboard and (with sub-16px text) makes the browser zoom into the field;
+    // let the user tap the input themselves instead.
+    if (window.matchMedia('(min-width: 640px)').matches) {
       inputRef.current.focus();
     }
   }, [isOpen]);
@@ -66,8 +82,12 @@ export default function ChatWidget() {
         res.ok && data && typeof data.reply === 'string'
           ? data.reply
           : "Sorry, I couldn't reach the assistant just now. Please try again, or email me at ridzkyan0504@gmail.com.";
+      const sources =
+        res.ok && data && Array.isArray(data.sources)
+          ? (data.sources as string[])
+          : undefined;
 
-      setMessages((prev) => [...prev, { text: reply, isUser: false }]);
+      setMessages((prev) => [...prev, { text: reply, isUser: false, sources }]);
     } catch {
       setMessages((prev) => [
         ...prev,
@@ -90,14 +110,10 @@ export default function ChatWidget() {
     void sendMessage(query);
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
       {isOpen && (
-        <div className="w-[90vw] max-w-[380px] bg-white dark:bg-ink-card border border-gray-100 dark:border-white/[0.08] rounded-2xl shadow-xl overflow-hidden flex flex-col transition-all">
+        <div className="w-[calc(100vw-2.5rem)] max-w-[380px] max-h-[calc(100dvh-2.5rem)] bg-white dark:bg-ink-card border border-gray-100 dark:border-white/[0.08] rounded-2xl shadow-xl overflow-hidden flex flex-col transition-all">
           <div className="p-4 bg-gray-900 dark:bg-ink text-white flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-white/10 text-white font-bold text-xs flex items-center justify-center border border-white/15">
@@ -120,7 +136,7 @@ export default function ChatWidget() {
             </button>
           </div>
 
-          <div className="p-4 h-64 overflow-y-auto space-y-3 text-[12px] bg-gray-50 dark:bg-white/[0.02]">
+          <div className="p-4 h-64 flex-1 min-h-0 overflow-y-auto space-y-3 text-[12px] bg-gray-50 dark:bg-white/[0.02]">
             {messages.map((msg, idx) => (
               <div key={idx} className={msg.isUser ? 'flex justify-end' : 'flex items-start gap-2'}>
                 {!msg.isUser && (
@@ -128,14 +144,31 @@ export default function ChatWidget() {
                     K
                   </div>
                 )}
-                <div
-                  className={`rounded-xl p-3 max-w-[85%] whitespace-pre-wrap ${
-                    msg.isUser
-                      ? 'bg-gray-900 dark:bg-white text-white dark:text-black rounded-tr-none'
-                      : 'bg-white dark:bg-ink-card border border-gray-200 dark:border-white/[0.08] text-gray-800 dark:text-gray-200 rounded-tl-none shadow-sm'
-                  }`}
-                >
-                  {msg.text}
+                <div className="flex flex-col gap-1.5 max-w-[85%] items-start">
+                  <div
+                    className={`rounded-xl p-3 whitespace-pre-wrap ${
+                      msg.isUser
+                        ? 'bg-gray-900 dark:bg-white text-white dark:text-black rounded-tr-none'
+                        : 'bg-white dark:bg-ink-card border border-gray-200 dark:border-white/[0.08] text-gray-800 dark:text-gray-200 rounded-tl-none shadow-sm'
+                    }`}
+                  >
+                    {msg.text}
+                  </div>
+                  {!msg.isUser && msg.sources && msg.sources.length > 0 && (
+                    <div className="flex flex-wrap items-center gap-1 pl-0.5">
+                      <span className="text-[9px] uppercase tracking-wide text-gray-400 dark:text-gray-500">
+                        Sources
+                      </span>
+                      {msg.sources.map((s) => (
+                        <span
+                          key={s}
+                          className="px-1.5 py-0.5 rounded-full bg-gray-100 dark:bg-white/[0.06] border border-gray-200 dark:border-white/[0.08] text-[9px] text-gray-500 dark:text-gray-400"
+                        >
+                          {labelFor(s)}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -170,7 +203,7 @@ export default function ChatWidget() {
           <form className="p-3 bg-white dark:bg-ink-card border-t border-gray-200 dark:border-white/[0.08] flex items-center gap-2" onSubmit={handleSubmit}>
             <input
               ref={inputRef}
-              className="flex-1 px-3 py-1.5 text-[12px] bg-gray-100 dark:bg-white/[0.05] rounded-lg border-0 focus:ring-1 focus:ring-gray-400 dark:focus:ring-white/30 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 outline-none"
+              className="flex-1 px-3 py-2 text-base sm:text-[12px] sm:py-1.5 bg-gray-100 dark:bg-white/[0.05] rounded-lg border-0 focus:ring-1 focus:ring-gray-400 dark:focus:ring-white/30 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 outline-none"
               placeholder={isLoading ? 'Thinking…' : 'Type a message...'}
               type="text"
               value={input}
@@ -181,7 +214,7 @@ export default function ChatWidget() {
             <button
               aria-label="Send"
               disabled={isLoading || !input.trim()}
-              className="w-8 h-8 rounded-lg bg-gray-900 dark:bg-white hover:opacity-90 text-white dark:text-black flex items-center justify-center transition-opacity flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-9 h-9 sm:w-8 sm:h-8 rounded-lg bg-gray-900 dark:bg-white hover:opacity-90 text-white dark:text-black flex items-center justify-center transition-opacity flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
               type="submit"
             >
               <span className="text-[16px]">→</span>
@@ -190,22 +223,15 @@ export default function ChatWidget() {
         </div>
       )}
 
-      <div className="flex items-center gap-2">
-        <button
-          aria-label="Back to top"
-          className="w-8 h-8 rounded-full border border-gray-200 dark:border-white/[0.12] bg-white dark:bg-ink-card shadow-sm flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-          onClick={scrollToTop}
-        >
-          <span className="text-xs">⌃</span>
-        </button>
-        <button
-          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black text-[11px] font-medium shadow-md hover:opacity-90 transition-opacity"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <span className="text-[13px]">💬</span>
-          <span>Chat with Kyan</span>
-        </button>
-      </div>
+      <button
+        className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black text-sm font-semibold shadow-lg hover:opacity-90 active:scale-95 transition-all"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label={isOpen ? 'Close chat' : 'Chat with Kyan'}
+        aria-expanded={isOpen}
+      >
+        <span className="text-[18px] leading-none">{isOpen ? '✕' : '💬'}</span>
+        <span>Chat with Kyan</span>
+      </button>
     </div>
   );
 }

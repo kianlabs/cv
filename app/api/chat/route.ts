@@ -1,27 +1,47 @@
 import { NextResponse } from 'next/server';
 import { rateLimit, clientIp } from '@/lib/rate-limit';
-import { buildSystemPrompt } from '@/lib/persona';
+import { buildSystemPrompt, OUT_OF_SCOPE_REPLY } from '@/lib/persona';
+import { retrieve, formatContext, sourcesOf, retrievalConfigured, embedderInfo } from '@/lib/rag';
 
-// Node runtime: this route talks to the local 9router server over HTTP and reads
+// Node runtime: this route talks to an OpenAI-compatible LLM endpoint and reads
 // a server-only API key from the environment. The key never reaches the browser.
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+// --- LLM endpoint (provider-agnostic, OpenAI-compatible) --------------------
+// Production: a cloud provider (e.g. Gemini's OpenAI-compatible endpoint).
+// Local dev: the 9router gateway. Both are configured purely via env vars, so
+// switching provider is a config change, not a code change.
+//
+//   LLM_BASE_URL   e.g. https://generativelanguage.googleapis.com/v1beta/openai
+//                       http://127.0.0.1:20128/v1           (local 9router)
+//   LLM_API_KEY    server-only secret
+//   LLM_MODEL      e.g. gemini-2.5-flash  /  kr/claude-haiku-4.5
+//   LLM_FALLBACKS  comma-separated fallback model ids (optional)
+//
+// NINE_ROUTER_* are still honoured as a fallback so existing local .env.local
+// files keep working unchanged.
 const BASE_URL = (
-  process.env.NINE_ROUTER_BASE_URL ?? 'http://localhost:20128/v1'
+  process.env.LLM_BASE_URL ??
+  process.env.NINE_ROUTER_BASE_URL ??
+  'http://localhost:20128/v1'
 ).replace(/\/$/, '');
 
-// 9router is a local OpenAI-compatible router. Prefer an explicit override, then
-// the key Hermes exports for this host, then a generic one.
 const API_KEY = (
+  process.env.LLM_API_KEY ??
   process.env.NINE_ROUTER_API_KEY ??
   process.env.HERMES_CUSTOM_LOCALHOST_20128_API_KEY ??
   ''
 ).trim();
 
-const PRIMARY_MODEL = process.env.NINE_ROUTER_MODEL ?? 'kr/claude-haiku-4.5';
-// If the primary model is momentarily unavailable, fall back in order.
-const FALLBACK_MODELS = ['kr/claude-sonnet-4.5', 'kr/auto'];
+const PRIMARY_MODEL =
+  process.env.LLM_MODEL ?? process.env.NINE_ROUTER_MODEL ?? 'kr/claude-haiku-4.5';
+
+const FALLBACK_MODELS = (process.env.LLM_FALLBACKS ?? 'kr/claude-sonnet-4.5,kr/auto')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean)
+  .filter((m) => m !== PRIMARY_MODEL);
 
 const REQUEST_TIMEOUT_MS = 45_000;
 const MAX_MESSAGES = 12; // cap conversation history sent upstream
@@ -55,8 +75,6 @@ function originAllowed(request: Request): boolean {
     return false;
   }
 }
-
-const SYSTEM_PROMPT = buildSystemPrompt();
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -95,6 +113,7 @@ function sanitizeReply(text: string): string {
 
 async function callModel(
   model: string,
+  systemPrompt: string,
   messages: ChatMessage[],
 ): Promise<string | null> {
   const controller = new AbortController();
@@ -111,7 +130,7 @@ async function callModel(
         stream: false,
         temperature: 0.6,
         max_tokens: 400,
-        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
+        messages: [{ role: 'system', content: systemPrompt }, ...messages],
       }),
       signal: controller.signal,
       cache: 'no-store',
@@ -142,7 +161,17 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          'Chat is not configured: no 9router API key found in the server environment.',
+          'Chat is not configured: no LLM API key found in the server environment.',
+      },
+      { status: 503 },
+    );
+  }
+
+  if (!retrievalConfigured()) {
+    return NextResponse.json(
+      {
+        error:
+          'Chat is not configured: the retrieval index needs an embedding API key (set GEMINI_API_KEY), or rebuild the index with EMBED_PROVIDER=local for offline use.',
       },
       { status: 503 },
     );
@@ -211,11 +240,39 @@ export async function POST(request: Request) {
     );
   }
 
+  // 4. Retrieval (RAG): embed the latest user question locally and pull the
+  //    most relevant knowledge-base chunks. The corpus is tiny and the index
+  //    is precomputed, so this is an exact in-memory cosine scan.
+  const lastUser = [...messages].reverse().find((m) => m.role === 'user');
+  let chunks: Awaited<ReturnType<typeof retrieve>> = [];
+  try {
+    chunks = await retrieve(lastUser?.content ?? '', 4);
+  } catch (err) {
+    console.error('[chat] retrieval failed, continuing without context:', err);
+  }
+
+  const systemPrompt = buildSystemPrompt(formatContext(chunks));
+  const sources = sourcesOf(chunks);
+
+  // No grounded context for the question -> skip the model entirely and reply
+  // with the out-of-scope message. Saves a call and keeps answers honest.
+  if (!chunks.length) {
+    return NextResponse.json(
+      { reply: OUT_OF_SCOPE_REPLY, model: 'none', sources: [] },
+      {
+        headers: {
+          'X-RateLimit-Limit': String(limit.limit),
+          'X-RateLimit-Remaining': String(limit.remaining),
+        },
+      },
+    );
+  }
+
   for (const model of [PRIMARY_MODEL, ...FALLBACK_MODELS]) {
-    const reply = await callModel(model, messages);
+    const reply = await callModel(model, systemPrompt, messages);
     if (reply) {
       return NextResponse.json(
-        { reply, model },
+        { reply, model, sources },
         {
           headers: {
             'X-RateLimit-Limit': String(limit.limit),
@@ -229,5 +286,22 @@ export async function POST(request: Request) {
   return NextResponse.json(
     { error: 'The assistant is unavailable right now. Please try again shortly.' },
     { status: 502 },
+  );
+}
+
+/**
+ * Health/diagnostic probe. Reports only whether the service is wired up — it
+ * never echoes keys or prompt content. Useful to verify a deployment.
+ */
+export async function GET() {
+  return NextResponse.json(
+    {
+      ok: !!API_KEY && retrievalConfigured(),
+      llmConfigured: !!API_KEY,
+      retrievalConfigured: retrievalConfigured(),
+      embedder: embedderInfo(),
+      model: PRIMARY_MODEL,
+    },
+    { headers: { 'Cache-Control': 'no-store' } },
   );
 }

@@ -87,7 +87,7 @@ export default function ChatWidget() {
               <div>
                 <div className="flex items-center gap-1.5">
                   <h5 className="text-[13px] font-semibold leading-none">Ridzkyan Buti Pratama</h5>
-                  <span className="w-2 h-2 rounded-full bg-gray-400"></span>
+                  <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
                 </div>
                 <p className="text-[11px] text-gray-400 mt-0.5">Online · Full-Stack Developer</p>
               </div>

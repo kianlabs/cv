@@ -1,4 +1,4 @@
-export interface Tech { name: string; color: string; path: string }
+interface Tech { name: string; color: string; path: string }
 
 export const TECHS: Tech[] = [
   {

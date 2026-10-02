@@ -27,7 +27,7 @@
 **Arsitektur:**
 - **Knowledge base**: markdown di `content/kb/` (profile, projects, skills, experience, faq) — satu topik per `##` heading.
 - **Indexing (build-time)**: `npm run build:kb` (`scripts/build-kb.mts`) memotong KB per heading, meng-embed dengan provider aktif (`lib/embed.ts`), dan menulis `content/index.json` (di-generate, gitignored).
-- **Retrieval (request-time)**: `lib/rag.ts` meng-embed pertanyaan pengunjung (provider sama) lalu **hybrid search** — cosine (dense) + BM25 (lexical) — digabung dengan **Weighted Reciprocal Rank Fusion** (dense 1.0, lexical 0.5). Cosine dipakai sebagai ambang batas (≥ 0.25) supaya pertanyaan di luar topik tidak diproses.
+- **Retrieval (request-time)**: `lib/rag.ts` meng-embed pertanyaan pengunjung (provider sama) lalu **hybrid search** — cosine (dense) + BM25 (lexical) — digabung dengan **Weighted Reciprocal Rank Fusion** (dense 1.0, lexical 0.5). Cosine dipakai sebagai ambang batas (nilai `minScore` yang dihitung otomatis saat build, lihat §0) supaya pertanyaan di luar topik tidak diproses.
 - **Grounding**: hanya chunk hasil retrieval yang dikirim ke LLM sebagai "RETRIEVED CONTEXT". Bila tidak ada yang lolos ambang, route **tidak memanggil LLM sama sekali** dan mengembalikan pesan out-of-scope.
 - **UI**: `components/ChatWidget.tsx` menampilkan badge **Sources** (Profile/Projects/Skills/Experience/FAQ) di bawah tiap jawaban — pengunjung melihat RAG bekerja.
 
@@ -84,7 +84,6 @@ Desain = berbasis `renlenon.vercel.app` (dark minimalist), dengan penyesuaian ko
 
 | File | Kegunaan |
 |---|---|
-| `stitch-export.html` | Acuan struktur & konten lama (light theme, bukan lagi acuan visual) |
 | `DESIGN.md` | Token desain — acuan styling (dark minimalist) |
 | `public/cv-ridzkyan.pdf` | File CV final (akses `/cv-ridzkyan.pdf`) |
 | `public/cert-dicoding.jpg`, `public/cert-bnsp.jpg` | Sertifikat asli (thumbnail + lightbox) |

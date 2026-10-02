@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-export interface AvatarImage {
+interface AvatarImage {
   src: string;
   /** CSS object-position for this image (e.g. 'center 20%'). */
   position?: string;

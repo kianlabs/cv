@@ -1,7 +1,7 @@
 /**
  * Retrieval for the portfolio chat assistant (RAG).
  *
- * The knowledge base is embedded OFFLINE at build time (scripts/build-kb.mjs)
+ * The knowledge base is embedded OFFLINE at build time (scripts/build-kb.mts)
  * into content/index.json. At request time we only embed the visitor's query
  * (locally, same model).
  *
@@ -18,7 +18,7 @@
 import indexData from '@/content/index.json';
 import { embedQuery, isConfigured, type EmbedderConfig } from '@/lib/embed';
 
-export interface Chunk {
+interface Chunk {
   id: string;
   source: string;
   text: string;
@@ -65,7 +65,7 @@ export function embedderInfo(): string {
 // --- Out-of-scope gate ------------------------------------------------------
 // Raw cosine is used directly: measured against this corpus it separates
 // in-scope from out-of-scope questions far better than mean-centered cosine,
-// z-scores or raw BM25 (see scripts/calibrate.mts).
+// z-scores or raw BM25.
 //
 // The floor is NOT a hand-tuned constant: build-kb.mts derives it from the
 // corpus itself (the distribution of how similar chunks are to each other) and

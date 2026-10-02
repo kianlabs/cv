@@ -41,7 +41,6 @@ colors:
   brand-typescript: '#3178C6'
   brand-javascript: '#F7DF1E'
   brand-tailwind: '#06B6D4'
-  brand-astro: '#BC52EE'
   brand-fastapi: '#009688'
   brand-postgresql: '#4169E1'
   brand-nodejs: '#5FA04E'

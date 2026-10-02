@@ -119,6 +119,7 @@ logic is required beyond setting the new values.
   Set it in the project env vars and redeploy.
 - **503 "no LLM API key"** — `LLM_API_KEY` is missing.
 - **Answers say "I don't have that information"** — the query fell below the
-  relevance floor (0.25). Either the topic is genuinely out of scope, or the KB
+  relevance floor stored in the index (`minScore`, derived at build time from
+  the corpus). Either the topic is genuinely out of scope, or the KB
   needs a chunk about it: add to `content/kb/*.md` and redeploy (the index
   rebuilds automatically).

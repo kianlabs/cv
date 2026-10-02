@@ -66,7 +66,11 @@ function originAllowed(request: Request): boolean {
     const parsed = new URL(origin);
     const host = request.headers.get('host');
     if (host && parsed.host === host) return true;
-    const allow = (process.env.NINE_ROUTER_ALLOWED_ORIGINS ?? '')
+    const allow = (
+      process.env.ALLOWED_ORIGINS ??
+      process.env.NINE_ROUTER_ALLOWED_ORIGINS ??
+      ''
+    )
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean);

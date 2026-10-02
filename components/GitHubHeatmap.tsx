@@ -197,7 +197,7 @@ export default function GitHubHeatmap({ username }: { username: string }) {
       <div className="flex items-center justify-end gap-1.5 mt-3">
         <span className="text-[11px] text-gray-400 dark:text-gray-500">Less</span>
         {CELL_CLASS.map((c, i) => (
-          <div key={i} className="w-[10px] h-[10px] rounded-[2px]" data-c={i}>
+          <div key={i} className="w-[10px] h-[10px] rounded-[2px]">
             <div className={`w-full h-full rounded-[2px] ${c}`} />
           </div>
         ))}

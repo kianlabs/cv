@@ -24,7 +24,7 @@ export interface EmbedderConfig {
   dims: number;
 }
 
-export type EmbedTask = 'RETRIEVAL_DOCUMENT' | 'RETRIEVAL_QUERY';
+type EmbedTask = 'RETRIEVAL_DOCUMENT' | 'RETRIEVAL_QUERY';
 
 // --- Gemini -----------------------------------------------------------------
 // Read lazily (not at module load) so a build script can load .env.local first.

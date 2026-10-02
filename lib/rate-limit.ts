@@ -39,7 +39,7 @@ function sweep(now: number, windowMs: number) {
   }
 }
 
-export interface RateLimitResult {
+interface RateLimitResult {
   ok: boolean;
   /** Requests still allowed in the current window (0 when blocked). */
   remaining: number;

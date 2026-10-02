@@ -46,8 +46,8 @@ export default function Home() {
               <div className="h-32 w-32 shrink-0 rounded-full border-2 border-gray-200 dark:border-gray-500 bg-white dark:bg-ink shadow-sm sm:h-40 sm:w-40">
                 <AvatarSwap
                   images={[
-                    { src: '/profile.jpg', position: 'center 15%' },
                     { src: '/avatar-anime.jpg', position: 'center 42%' },
+                    { src: '/profile.jpg', position: 'center 15%' },
                   ]}
                   alt="Ridzkyan Buti Pratama"
                   className="h-full w-full rounded-full pixel-avatar"

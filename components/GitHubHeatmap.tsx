@@ -19,6 +19,9 @@ const CELL_CLASS = [
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+// Tampilkan hanya dari 1 Mei tahun berjalan.
+const START_MONTH = 4; // 0-indexed: Mei
+
 export default function GitHubHeatmap({ username }: { username: string }) {
   const [days, setDays] = useState<Day[]>([]);
   const [total, setTotal] = useState<number | null>(null);
@@ -33,8 +36,15 @@ export default function GitHubHeatmap({ username }: { username: string }) {
       })
       .then((d) => {
         if (!alive) return;
-        setDays(Array.isArray(d.contributions) ? d.contributions : []);
-        setTotal(typeof d?.total?.lastYear === 'number' ? d.total.lastYear : null);
+        const all: Day[] = Array.isArray(d.contributions) ? d.contributions : [];
+        // Ambil hanya dari 1 Mei tahun berjalan (atau tahun terakhir yang tersedia).
+        const latestYear = all.length ? new Date(all[all.length - 1].date + 'T00:00:00').getFullYear() : new Date().getFullYear();
+        const filtered = all.filter((x) => {
+          const dt = new Date(x.date + 'T00:00:00');
+          return dt.getFullYear() === latestYear && dt.getMonth() >= START_MONTH;
+        });
+        setDays(filtered);
+        setTotal(filtered.reduce((s, x) => s + (x.count || 0), 0));
         setStatus('ok');
       })
       .catch(() => {

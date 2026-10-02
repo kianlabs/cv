@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface AvatarImage {
   src: string;
@@ -8,39 +8,67 @@ export interface AvatarImage {
   position?: string;
 }
 
+const CELLS = 12; // 12x12 grid, same as renlenon
+
 /**
- * Profile avatar that auto-swaps between images every `intervalMs` with a
- * short pixel-glitch transition. Respects prefers-reduced-motion.
+ * Pixelated image card, modelled on renlenon.vercel.app: a random grid of
+ * white pixels flashes over the image, the image swaps while it is covered,
+ * then the pixels flash away. Triggered by hover/focus (desktop) or tap
+ * (touch), and also auto-cycles on a timer. Pure CSS transitions, no GSAP.
  */
 export default function AvatarSwap({
   images,
   alt,
-  intervalMs = 7000,
+  autoSwapMs = 7000,
   className = '',
 }: {
   images: AvatarImage[];
   alt: string;
-  intervalMs?: number;
+  autoSwapMs?: number;
   className?: string;
 }) {
-  const [active, setActive] = useState(0);
-  const [glitching, setGlitching] = useState(false);
+  const [active, setActive] = useState(0); // which image is showing
+  const [covered, setCovered] = useState(false); // pixels visible
+  const [isTouch, setIsTouch] = useState(false);
+  const busy = useRef(false);
 
   useEffect(() => {
-    if (images.length < 2) return;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) return;
-    const id = setInterval(() => {
-      setGlitching(true);
-      // switch at the middle of the glitch burst, then clear the effect
-      window.setTimeout(() => setActive((i) => (i + 1) % images.length), 220);
-      window.setTimeout(() => setGlitching(false), 620);
-    }, intervalMs);
-    return () => clearInterval(id);
-  }, [images.length, intervalMs]);
+    setIsTouch('ontouchstart' in window || window.matchMedia('(pointer: coarse)').matches);
+  }, []);
+
+  const trigger = useCallback(() => {
+    if (busy.current || images.length < 2) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setActive((i) => (i + 1) % images.length);
+      return;
+    }
+    busy.current = true;
+    setCovered(true); // pixels flash on (random stagger via inline delay)
+    window.setTimeout(() => setActive((i) => (i + 1) % images.length), 240);
+    window.setTimeout(() => setCovered(false), 300); // pixels flash off
+    window.setTimeout(() => {
+      busy.current = false;
+    }, 760);
+  }, [images.length]);
+
+  // Auto-cycle so it animates even without hover (and on touch devices).
+  useEffect(() => {
+    if (images.length < 2 || autoSwapMs <= 0) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = window.setInterval(trigger, autoSwapMs);
+    return () => window.clearInterval(id);
+  }, [images.length, autoSwapMs, trigger]);
 
   return (
-    <div className={`relative overflow-hidden ${className} ${glitching ? 'avatar-glitch' : ''}`}>
+    <div
+      className={`relative overflow-hidden ${className}`}
+      onMouseEnter={isTouch ? undefined : trigger}
+      onFocus={isTouch ? undefined : trigger}
+      onClick={isTouch ? trigger : undefined}
+      role={isTouch ? 'button' : undefined}
+      tabIndex={0}
+      aria-label={alt}
+    >
       {images.map((img, i) => (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -55,6 +83,24 @@ export default function AvatarSwap({
           loading={i === 0 ? 'eager' : 'lazy'}
         />
       ))}
+
+      {/* Pixel overlay: random white squares that flash to mask the swap. */}
+      <div className="pointer-events-none absolute inset-0 z-[3]">
+        {Array.from({ length: CELLS * CELLS }).map((_, i) => (
+          <span
+            key={i}
+            className="absolute bg-white transition-opacity duration-100 ease-out"
+            style={{
+              width: `${100 / CELLS}%`,
+              height: `${100 / CELLS}%`,
+              left: `${(i % CELLS) * (100 / CELLS)}%`,
+              top: `${Math.floor(i / CELLS) * (100 / CELLS)}%`,
+              opacity: covered ? 1 : 0,
+              transitionDelay: covered ? `${(Math.random() * 0.28).toFixed(3)}s` : '0s',
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }

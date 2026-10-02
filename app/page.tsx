@@ -50,7 +50,7 @@ export default function Home() {
                     { src: '/avatar-anime.jpg', position: 'center 42%' },
                   ]}
                   alt="Ridzkyan Buti Pratama"
-                  className="h-full w-full rounded-full"
+                  className="h-full w-full rounded-full pixel-avatar"
                 />
               </div>
               <div className="flex h-full flex-col justify-center gap-2.5 sm:gap-3">

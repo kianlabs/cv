@@ -1,99 +1,110 @@
 # PRD — Portfolio Website (repo: `cv`)
 
+## 0. REVISI v2 — Replikasi Desain Referensi
+
+**Perubahan besar dari v1:** desain diganti menjadi **replikasi persis `renlenon.vercel.app`** (dark minimalist), dengan **dark default + toggle light/dark**. Ukuran font, gambar, spacing, dan struktur wajib **sama persis** dengan referensi. Konten, gambar, dan beberapa keterangan disesuaikan dengan data Ridzkyan.
+
+> Referensi: `https://renlenon.vercel.app` — snapshot DOM & CSS disimpan untuk acuan presisi.
+
+---
+
 ## 1. Ringkasan
 
-Bangun website portfolio + CV untuk **Ridzkyan Buti Pratama** (panggilan: Kyan) memakai **Next.js (App Router) + TypeScript + Tailwind CSS**.
-Init project Next.js di folder ini langsung. Folder ini nantinya menjadi repo GitHub `kianlabs/cv`.
+Website portfolio + CV untuk **Ridzkyan Buti Pratama** (panggilan: Kyan) memakai **Next.js (App Router) + TypeScript + Tailwind CSS**.
+Desain = replikasi persis `renlenon.vercel.app`. Folder ini = repo GitHub `kianlabs/cv`.
 **JANGAN** menyentuh repo/site lain (khususnya `kyandev.vercel.app`).
 
 ## 2. Tujuan
 
-- Satu halaman portfolio yang rapi: headline, experience, karya, proyek, teknologi, pendidikan, kontak.
-- Tombol **Download CV / View Resume** harus benar-benar mengunduh CV.
-- **Light theme only** — tidak ada dark mode.
+- Satu halaman portfolio yang identik secara visual dengan referensi (ukuran, spacing, warna, font, layout).
+- Tombol **Download CV / View Resume** benar-benar mengunduh CV.
+- **Dark theme default + toggle light/dark** (persis referensi; tombol toggle di navbar).
 
 ## 3. Material sumber (semua ada di folder ini)
 
 | File | Kegunaan |
 |---|---|
-| `stitch-export.html` | Acuan struktur & konten (hasil export Google Stitch, satu file HTML) |
-| `DESIGN.md` | Token warna "Obsidian & Mint" — pakai sebagai dasar styling |
-| `cv-ridzkyan.pdf` | File CV final → **pindahkan ke `public/`** supaya bisa diakses via `/cv-ridzkyan.pdf` |
+| `stitch-export.html` | Acuan struktur & konten lama (light theme, bukan lagi acuan visual) |
+| `DESIGN.md` | Token desain — **direvisi** ke dark minimalist (acuan styling) |
+| `cv-ridzkyan.pdf` | File CV final → `public/cv-ridzkyan.pdf` (akses `/cv-ridzkyan.pdf`) |
+| `screen.png` | Screenshot desain lama (referensi historis) |
 
-Screenshot target desain sudah dikonfirmasi owner (terlampir di chat).
+## 4. Struktur halaman (SAMA PERSIS dengan referensi)
 
-## 4. Struktur halaman (sections, sesuai `stitch-export.html`)
+Urutan & nama section mengikuti `renlenon.vercel.app`:
 
-1. **Header/nav** — logo "RP", nama + badge verified, link: Projects, Experience, Highlights, tombol **Download CV**.
-2. **Hero** — headline "Full-Stack Web Developer — Next.js · React · TypeScript", bio singkat, tombol **View Resume** + **Download CV**.
-3. **Experience** — "Freelance Web Developer — KyanDev (Self-employed)", periode **"[start date TBD] — Present"** (TETAP seperti itu, jangan diisi).
-4. **Featured Work** — kartu **UangKu** (Personal Finance App) dan **GaweTracker** (Job Application Tracker), masing-masing ada tombol "READ CASE STUDY".
-5. **Projects** — kartu **KRING!** (Point of Sale System), **NobarHub** (Movie Catalog & Discovery), **JamKosong** (Multi-niche Booking & Queue, label IN PROGRESS). Masing-masing ada "VISIT SITE".
-6. **Technologies** — chips: React, Next.js, TypeScript, JavaScript, Tailwind CSS, Astro, FastAPI, PostgreSQL, Node.js, Python, HTML/CSS, Git.
-7. **Certifications** — "Placeholder 01 — Certification" dan "Placeholder 02 — Technical Workshop" (**TETAP placeholder**, jangan diisi/dikarang).
-8. **Education** — Bachelor of Informatics Engineering, Universitas Duta Bangsa Surakarta, 2022–2026, GPA 3.69/4.00.
-9. **Outside the IDE** — teks santai + chips Technology/Business/AI.
-10. **GitHub Activity** — lihat requirement khusus di bawah (bukan heatmap).
-11. **Let's work together** — kartu kontak: Email, GitHub, LinkedIn, "Schedule a Call".
-12. **Footer** — quote *"Repetition until it becomes technique."*, "© 2026 Ridzkyan Buti Pratama · Built with Next.js".
-13. **Chat widget** — tombol floating "Chat with Ridzkyan" (kanan bawah), panel chat dengan quick-reply chips: Projects, Download CV, Contact.
+1. **Navbar** — sticky, logo inisial `RP`, link: Projects, Experience, Highlights, tombol **Download CV**, **toggle tema** (moon/sun).
+2. **Hero** — avatar bulat, nama + badge verified, headline peran, bio dengan inline tech badges, tombol **View Resume** + **Download CV**.
+3. **Experience** — layout 2-kolom (kiri: tanggal mono, kanan: role + deskripsi).
+4. **Featured Work** — grid 2 kolom, kartu gelap dengan dot-grid, badge status "Production Ready", tech tags.
+5. **Projects** — grid 3 kolom, kartu dengan area preview, judul, deskripsi, tech chips, badge "Coming Soon"/"In Progress".
+6. **Technologies** — grid pill badges (dot warna + label).
+7. **Certifications** — list vertikal (tanggal kiri, logo + judul kanan). Placeholder tetap placeholder.
+8. **Education** — layout timeline (tanggal kiri, gelar + GPA kanan).
+9. **Outside the IDE** — 2 kolom (teks + chips kiri, gambar kartu kanan).
+10. **GitHub Activity** — kartu profil GitHub statis (link ke github.com/kianlabs). **Bukan heatmap.**
+11. **Let's work together** — 2 kolom (deskripsi + status kiri, kartu kontak kanan).
+12. **Footer** — quote, copyright, lokasi.
+13. **Chat widget** — tombol floating kanan bawah "Chat with Kyan", panel chat + quick-reply chips.
 
 ## 5. Functional requirements (WAJIB)
 
-### 5.1. Light theme only
-Hapus total tombol theme toggle. Tidak ada class/logika dark mode.
+### 5.1. Dark + toggle
+- **Default dark** (`class="dark"` di `<html>`), sama seperti referensi.
+- **Toggle light/dark** di navbar (ikon moon/sun).
+- Preferensi disimpan (`localStorage`), hormati `prefers-color-scheme` saat pertama.
+- Script anti-FOUC di `<head>` (set class sebelum render).
 
-### 5.2. GitHub Activity — ganti heatmap palsu
-File export menggambar heatmap kontribusi memakai `Math.random()` — **HAPUS total**.
-Ganti dengan **kartu profil GitHub statis** yang link ke `https://github.com/kianlabs`.
-**JANGAN** mengarang angka kontribusi, streak, atau statistik apa pun.
+### 5.2. GitHub Activity — kartu profil statis
+- Kartu profil GitHub statis yang link ke `https://github.com/kianlabs`.
+- **JANGAN** mengarang angka kontribusi, streak, atau statistik.
 
-### 5.3. Bereskan semua link mati (`href="#"`, ada 10 di file export)
-Aturan: yang belum punya URL asli **JANGAN** dijadikan link mati.
-- "READ CASE STUDY" (UangKu, GaweTracker) → belum ada URL case study: render sebagai tombol **disabled** berlabel "Case Study — Coming Soon", atau hapus tombolnya. Pilih yang paling rapi.
-- "VISIT SITE" (KRING!, NobarHub, JamKosong) → belum ada yang live: render sebagai badge **"Coming Soon"** (disabled), bukan link.
-- "View credential" (sertifikasi placeholder) → hapus, karena sertifikasinya placeholder.
+### 5.3. Link mati dilarang
+- "READ CASE STUDY" (UangKu, GaweTracker) → tombol **disabled** "Case Study — Coming Soon".
+- "VISIT SITE" (KRING!, NobarHub, JamKosong) → badge **"Coming Soon"** (disabled), bukan link.
+- "View credential" (sertifikasi placeholder) → hapus.
 - "Schedule a Call" → `mailto:ridzkyan0504@gmail.com`.
 
 ### 5.4. Tombol CV
-"View Resume" dan "Download CV" (header + hero + chat quick-reply) → `href="/cv-ridzkyan.pdf"`.
+"View Resume" + "Download CV" (navbar + hero + chat) → `href="/cv-ridzkyan.pdf"`.
 
 ### 5.5. Chat widget — anti XSS
-Input user **JANGAN** dirender via `innerHTML` / `dangerouslySetInnerHTML`. Pakai React state + render sebagai plain text.
-Pertahankan: tombol floating, header, tombol close, greeting, quick-reply chips (pakai keyword-matching sederhana untuk `project`, `cv`/`resume`, `contact`/`email`, `experience`).
+- Input user **JANGAN** dirender via `innerHTML` / `dangerouslySetInnerHTML`. Pakai React state + plain text.
+- Pertahankan: tombol floating, header, close, greeting, quick-reply chips (keyword match: `project`, `cv`/`resume`, `contact`/`email`, `experience`).
 
 ### 5.6. Font & ikon
-Hapus `<link>` CDN Google Fonts dan Material Symbols dari file export.
-- Font: pakai `next/font` — **Geist** (body) + **JetBrains Mono** (mono/aksen).
-- Ikon: inline SVG (jangan CDN icon font).
+- **Ikuti referensi**: font **system sans** (bukan Geist) + **system mono** untuk label/tanggal. Lihat DESIGN.md §Typography.
+- Ikon: **inline SVG** (jangan CDN icon font). Referensi pakai Font Awesome — **jangan** tiru CDN-nya; ganti inline SVG.
 
-### 5.7. Data kontak (pakai persis, jangan diubah)
+### 5.7. Data kontak (pakai persis)
 - Email: `ridzkyan0504@gmail.com`
 - GitHub: `https://github.com/kianlabs`
 - LinkedIn: `https://linkedin.com/in/ridzkyan-pratama-7911b441b`
 
 ## 6. Non-functional requirements
 
-- Responsive, mobile-first.
+- Responsive, mobile-first (referensi: `max-w-3xl`, `px-4 sm:px-6`).
 - HTML semantik (`header`, `main`, `section`, `footer`).
-- SEO dasar: `<title>`, meta description, Open Graph dasar.
-- Aksesibilitas dasar: `label` pada input chat, `alt` pada gambar, `focus-visible` pada elemen interaktif.
+- SEO dasar: `<title>`, meta description, Open Graph.
+- Aksesibilitas: `label` pada input chat, `alt` pada gambar, `focus-visible`.
 - `npm run build` **harus lolos tanpa error**.
 
 ## 7. Batasan keras (JANGAN dilanggar)
 
 1. **JANGAN mengarang**: tanggal mulai KyanDev, nama/isi sertifikasi, URL live proyek, statistik kontribusi, link repo.
 2. Placeholder (`[start date TBD]`, `Placeholder 01/02`) **TETAP** placeholder.
-3. **JANGAN** `git push`, **JANGAN** deploy ke Vercel/Netlify — kerja lokal saja, owner yang push sendiri.
-4. Jangan menambahkan halaman/rute baru di luar satu halaman portfolio ini (kecuali yang memang ada di desain).
+3. **JANGAN** `git push`, **JANGAN** deploy — kecuali owner minta eksplisit.
+4. Jangan menambahkan halaman/rute baru di luar satu halaman portfolio ini.
+5. **JANGAN** menyalin aset berhak cipta (foto orang lain, logo brand pihak lain) — pakai placeholder/gambar sendiri.
 
 ## 8. Acceptance criteria
 
 - [ ] `npm run build` sukses.
-- [ ] Halaman tampil sesuai desain (cocokkan dengan screenshot): semua 13 section ada.
-- [ ] Tidak ada `href="#"` yang masih hidup sebagai link.
-- [ ] Tombol Download CV mengunduh `/cv-ridzkyan.pdf` (klik dan cek file terdownload).
-- [ ] Tidak ada theme toggle di halaman mana pun.
+- [ ] Tampilan identik dengan referensi: ukuran font, spacing, warna, layout.
+- [ ] Dark default + toggle tema berfungsi & tersimpan.
+- [ ] Semua 13 section ada.
+- [ ] Tidak ada `href="#"` hidup.
+- [ ] Download CV mengunduh `/cv-ridzkyan.pdf`.
 - [ ] Tidak ada heatmap kontribusi palsu.
-- [ ] Chat widget: ketik `<img src=x onerror=alert(1)>` → harus tampil sebagai teks polos, tidak dieksekusi.
-- [ ] Responsif: cek lebar 360px (mobile) dan 1280px (desktop), tidak ada overflow horizontal.
+- [ ] Chat widget: ketik `<img src=x onerror=alert(1)>` → tampil sebagai teks polos.
+- [ ] Responsif: 360px (mobile) & 1280px (desktop), tidak ada overflow horizontal.

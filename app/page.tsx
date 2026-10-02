@@ -1,147 +1,137 @@
 import ChatWidget from '@/components/ChatWidget';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function Home() {
   return (
     <>
-      {/* HEADER */}
-      <header className="w-full bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-zinc-100">
-        <div className="max-w-[700px] mx-auto px-5 sm:px-6 py-3 flex items-center justify-between">
+      {/* NAVBAR */}
+      <header className="sticky top-0 z-40 bg-white/70 dark:bg-ink/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800">
+        <nav className="max-w-3xl w-full mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-6">
-            <div className="w-7 h-7 rounded-full bg-zinc-900 text-white flex items-center justify-center font-bold text-[11px] tracking-wider">
+            <div className="w-7 h-7 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black flex items-center justify-center font-bold text-[11px] tracking-wider">
               RP
             </div>
-            <nav className="hidden sm:flex items-center gap-4 text-[12px] text-zinc-600">
-              <a href="#projects" className="hover:text-zinc-900 transition-colors">Projects</a>
-              <a href="#experience" className="hover:text-zinc-900 transition-colors">Experience</a>
-              <a href="#featured" className="hover:text-zinc-900 transition-colors">Highlights</a>
-            </nav>
+            <div className="hidden sm:flex items-center gap-4 text-[13px] text-gray-500 dark:text-gray-400">
+              <a href="#projects" className="hover:text-gray-900 dark:hover:text-white transition-colors">Projects</a>
+              <a href="#experience" className="hover:text-gray-900 dark:hover:text-white transition-colors">Experience</a>
+              <a href="#featured" className="hover:text-gray-900 dark:hover:text-white transition-colors">Highlights</a>
+            </div>
           </div>
-          <a 
-            href="/cv-ridzkyan.pdf" 
-            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-900 text-white text-[11px] font-medium hover:bg-zinc-800 transition-colors"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span>↓</span>
-            <span>Download CV</span>
-          </a>
-        </div>
+          <div className="flex items-center gap-2">
+            <a
+              href="/cv-ridzkyan.pdf"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black text-[12px] font-medium hover:opacity-90 transition-opacity"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="text-[13px] leading-none">↓</span>
+              <span>Download CV</span>
+            </a>
+            <ThemeToggle />
+          </div>
+        </nav>
       </header>
 
-      {/* MAIN CONTENT */}
-      <main className="max-w-[700px] mx-auto w-full px-5 sm:px-6 pt-4 pb-20 space-y-14">
-        
-        {/* HERO SECTION */}
-        <section className="space-y-5" id="about">
-          <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-full bg-zinc-900 text-white flex items-center justify-center font-bold text-sm tracking-wider shadow-sm">
-              RP
-            </div>
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5">
-                <h1 className="font-semibold text-zinc-900 text-base">Ridzkyan Buti Pratama</h1>
-                <svg className="w-4 h-4 text-blue-500 fill-current" viewBox="0 0 24 24">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
-                </svg>
+      {/* MAIN */}
+      <main className="mx-auto flex w-full max-w-3xl flex-col gap-14 sm:gap-16 px-4 sm:px-6 pb-10 sm:pb-16 pt-2">
+
+        {/* HERO */}
+        <section className="flex flex-col justify-center pt-6 pb-8 sm:pt-10 sm:pb-8" id="about">
+          <div className="space-y-6 sm:space-y-10">
+            <div className="flex items-center gap-4 sm:gap-6">
+              <div className="h-32 w-32 shrink-0 rounded-full border-2 border-gray-200 dark:border-gray-500 bg-white dark:bg-ink flex items-center justify-center shadow-sm sm:h-40 sm:w-40">
+                <span className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white tracking-wider">RP</span>
               </div>
-              <div className="flex items-center gap-2.5 text-zinc-500">
-                <a 
-                  href="https://github.com/kianlabs" 
-                  aria-label="GitHub" 
-                  className="hover:text-zinc-900 transition-colors"
+              <div className="flex h-full flex-col justify-center gap-2.5 sm:gap-3">
+                <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-2xl md:text-3xl">
+                  Ridzkyan Buti Pratama
+                  <svg viewBox="0 0 22 22" className="w-6 h-6 shrink-0 inline-block align-middle" role="img" aria-label="Verified">
+                    <title>Verified</title>
+                    <path fill="#1D9BF0" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.053-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.607-.274 1.264-.144 1.898.13.634.435 1.219.88 1.688.47.443 1.054.749 1.688.879.633.13 1.29.083 1.897-.14.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.607.224 1.264.272 1.897.14.634-.13 1.217-.436 1.687-.878.445-.47.75-1.055.88-1.688.13-.634.083-1.291-.14-1.897.586-.274 1.084-.705 1.438-1.246.354-.541.551-1.17.57-1.817Zm-11.343 3.9-3.5-3.5 1.238-1.238 2.262 2.262 5.315-5.315L15.5 8.35l-6.5 6.55Z" />
+                  </svg>
+                </h1>
+                <div className="flex items-start gap-3">
+                  <a href="https://github.com/kianlabs" target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 transition-all hover:-translate-y-0.5" title="GitHub" aria-label="GitHub">
+                    <svg className="w-5 h-5 fill-current text-gray-700 dark:text-gray-300 hover:text-[#181717] dark:hover:text-white transition-colors" viewBox="0 0 24 24">
+                      <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                    </svg>
+                  </a>
+                  <a href="https://linkedin.com/in/ridzkyan-pratama-7911b441b" target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 transition-all hover:-translate-y-0.5" title="LinkedIn" aria-label="LinkedIn">
+                    <svg className="w-5 h-5 fill-current text-gray-700 dark:text-gray-300 hover:text-[#0A66C2] transition-colors" viewBox="0 0 24 24">
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                  </a>
+                  <a href="mailto:ridzkyan0504@gmail.com" className="opacity-70 hover:opacity-100 transition-all hover:-translate-y-0.5" title="Email" aria-label="Email">
+                    <svg className="w-5 h-5 fill-current text-gray-700 dark:text-gray-300 hover:text-[#EA4335] transition-colors" viewBox="0 0 24 24">
+                      <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-5 sm:space-y-6">
+              <h2 className="max-w-full text-[1.7rem] font-normal tracking-tight leading-tight text-gray-900 dark:text-white sm:text-[2.05rem] md:text-[2.15rem]">
+                Full-Stack Web Developer{' '}
+                <span className="text-[0.95em] font-light text-gray-500 dark:text-gray-400">— Next.js · React · TypeScript</span>
+              </h2>
+              <p className="text-base font-light leading-7 text-gray-500 dark:text-gray-400 sm:text-lg sm:leading-8">
+                Fresh graduate in Informatics Engineering building web apps end-to-end. Freelance web developer via KyanDev, shipping production websites with{' '}
+                <span className="inline align-middle">
+                  <span className="bg-white dark:bg-ink ml-1 inline-flex items-center gap-1.5 rounded-md border border-dashed border-gray-300 dark:border-gray-700 px-2 py-1 text-xs text-gray-800 dark:text-gray-200 sm:px-2.5 sm:text-sm">
+                    <span className="w-2 h-2 rounded-full bg-black dark:bg-white"></span>Next.js
+                  </span>
+                  <span className="bg-white dark:bg-ink ml-1 inline-flex items-center gap-1.5 rounded-md border border-dashed border-gray-300 dark:border-gray-700 px-2 py-1 text-xs text-gray-800 dark:text-gray-200 sm:px-2.5 sm:text-sm">
+                    <span className="w-2 h-2 rounded-full bg-[#61dafb]"></span>React
+                  </span>
+                  <span className="bg-white dark:bg-ink ml-1 inline-flex items-center gap-1.5 rounded-md border border-dashed border-gray-300 dark:border-gray-700 px-2 py-1 text-xs text-gray-800 dark:text-gray-200 sm:px-2.5 sm:text-sm">
+                    <span className="w-2 h-2 rounded-full bg-[#3178c6]"></span>TypeScript
+                  </span>
+                  <span className="bg-white dark:bg-ink ml-1 inline-flex items-center gap-1.5 rounded-md border border-dashed border-gray-300 dark:border-gray-700 px-2 py-1 text-xs text-gray-800 dark:text-gray-200 sm:px-2.5 sm:text-sm">
+                    <span className="w-2 h-2 rounded-full bg-[#38bdf8]"></span>Tailwind CSS
+                  </span>
+                </span>{' '}
+                and modern tooling. I design, build, and ship responsive websites and web applications from architecture to deployment.
+              </p>
+
+              <div className="flex items-center gap-2.5 pt-1">
+                <a
+                  href="/cv-ridzkyan.pdf"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black text-[13px] font-medium hover:opacity-90 transition-opacity"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"></path>
-                  </svg>
+                  <span>View Resume</span>
+                  <span className="text-[14px] leading-none">›</span>
                 </a>
-                <a 
-                  href="https://linkedin.com/in/ridzkyan-pratama-7911b441b" 
-                  aria-label="LinkedIn" 
-                  className="hover:text-zinc-900 transition-colors"
+                <a
+                  href="/cv-ridzkyan.pdf"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-[13px] font-medium hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path>
-                  </svg>
-                </a>
-                <a 
-                  href="mailto:ridzkyan0504@gmail.com" 
-                  aria-label="Email" 
-                  className="hover:text-zinc-900 transition-colors"
-                >
-                  <span className="text-[15px]">✉</span>
+                  <span className="text-[14px] leading-none">↓</span>
+                  <span>Download CV</span>
                 </a>
               </div>
-            </div>
-          </div>
-
-          <div>
-            <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-900">
-              Full-Stack Web Developer <span className="font-normal text-zinc-400">—</span> Next.js · React · TypeScript
-            </h2>
-          </div>
-
-          <p className="text-[14px] text-zinc-600 leading-relaxed">
-            Fresh graduate in Informatics Engineering (<span className="font-medium text-zinc-900">Universitas Duta Bangsa Surakarta</span>, GPA 3.69) building web apps end-to-end. Freelance web developer via <span className="font-medium text-zinc-900">KyanDev</span> — I design, build, and ship production websites for clients with{' '}
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 mx-0.5 rounded text-[11px] font-mono font-medium bg-zinc-100 border border-zinc-200 text-zinc-800">
-              <span className="w-1.5 h-1.5 rounded-full bg-black"></span> Next.js
-            </span>
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 mx-0.5 rounded text-[11px] font-mono font-medium bg-zinc-100 border border-zinc-200 text-zinc-800">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span> React
-            </span>
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 mx-0.5 rounded text-[11px] font-mono font-medium bg-zinc-100 border border-zinc-200 text-zinc-800">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span> TypeScript
-            </span>
-            and{' '}
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 mx-0.5 rounded text-[11px] font-mono font-medium bg-zinc-100 border border-zinc-200 text-zinc-800">
-              <span className="w-1.5 h-1.5 rounded-full bg-sky-400"></span> Tailwind CSS
-            </span>.
-          </p>
-
-          <div className="pt-1">
-            <div className="flex items-center gap-2.5">
-              <a 
-                href="/cv-ridzkyan.pdf" 
-                className="inline-flex items-center gap-1 px-4 py-1.5 rounded-full bg-zinc-900 text-white text-[12px] font-medium hover:bg-zinc-800 transition-colors shadow-sm"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span>View Resume</span>
-                <span className="text-[13px] leading-none">›</span>
-              </a>
-              <a 
-                href="/cv-ridzkyan.pdf" 
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-zinc-200 bg-white hover:border-zinc-300 hover:bg-zinc-50 text-zinc-700 text-[12px] font-medium transition-colors shadow-sm"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="text-[15px]">↓</span>
-                <span>Download CV</span>
-              </a>
             </div>
           </div>
         </section>
 
-        {/* EXPERIENCE SECTION */}
-        <section className="space-y-4 pt-2" id="experience">
-          <div className="flex items-center justify-between pb-1">
-            <h3 className="font-semibold text-zinc-900 text-sm tracking-tight">Experience</h3>
-            <a href="#experience" className="text-[11px] text-zinc-400 hover:text-zinc-700 transition-colors flex items-center gap-0.5">
-              View Details ›
-            </a>
+        {/* EXPERIENCE */}
+        <section className="w-full space-y-5" id="experience">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Experience</h3>
           </div>
-          <div className="space-y-5 text-[13px]">
-            <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1 sm:gap-4 items-baseline">
-              <div className="text-[12px] text-zinc-400 font-mono">[start date TBD] — Present</div>
+          <div className="space-y-6 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-1 sm:gap-4 items-baseline">
+              <div className="font-mono text-[12px] text-gray-400 dark:text-gray-500">[start date TBD] — Present</div>
               <div className="space-y-1.5">
-                <h4 className="font-medium text-zinc-900">
-                  Freelance Web Developer — KyanDev <span className="font-normal text-zinc-500">(Self-employed)</span>
-                </h4>
-                <p className="text-zinc-500 text-[12px]">Freelance / Remote</p>
-                <ul className="text-zinc-600 text-[12px] space-y-1 pt-1 list-disc list-inside">
+                <h3 className="text-base font-semibold leading-tight text-gray-900 dark:text-white">
+                  Freelance Web Developer — KyanDev <span className="font-normal text-gray-500 dark:text-gray-400">(Self-employed)</span>
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Freelance / Remote</p>
+                <ul className="text-sm text-gray-500 dark:text-gray-400 space-y-1 pt-1 list-disc list-inside leading-relaxed">
                   <li>Building client websites end-to-end from architecture to deployment.</li>
                   <li>Stack: Next.js, React, TypeScript, Tailwind CSS.</li>
                 </ul>
@@ -150,15 +140,14 @@ export default function Home() {
           </div>
         </section>
 
-        {/* FEATURED WORK SECTION */}
-        <section className="space-y-4 pt-2" id="featured">
-          <div className="flex items-center justify-between pb-1">
-            <h3 className="font-semibold text-zinc-900 text-sm tracking-tight">Featured Work</h3>
+        {/* FEATURED WORK */}
+        <section className="w-full space-y-5" id="featured">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Featured Work</h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            
-            {/* UangKu Card */}
-            <div className="rounded-xl bg-[#121212] bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] text-zinc-300 p-6 flex flex-col justify-between border border-zinc-800 shadow-sm min-h-[220px]">
+            {/* UangKu */}
+            <div className="rounded-xl bg-[#121212] bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] text-zinc-300 p-6 flex flex-col justify-between border border-zinc-800 min-h-[220px]">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-mono tracking-widest uppercase text-zinc-500 font-semibold">PERSONAL BUILD</span>
@@ -176,9 +165,8 @@ export default function Home() {
                 <span className="px-2 py-0.5 rounded bg-zinc-800/50 text-zinc-300 border border-zinc-700">PostgreSQL</span>
               </div>
             </div>
-
-            {/* GaweTracker Card */}
-            <div className="rounded-xl bg-[#121212] bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] text-zinc-300 p-6 flex flex-col justify-between border border-zinc-800 shadow-sm min-h-[220px]">
+            {/* GaweTracker */}
+            <div className="rounded-xl bg-[#121212] bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] text-zinc-300 p-6 flex flex-col justify-between border border-zinc-800 min-h-[220px]">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-mono tracking-widest uppercase text-zinc-500 font-semibold">PERSONAL BUILD</span>
@@ -196,222 +184,185 @@ export default function Home() {
                 <span className="px-2 py-0.5 rounded bg-zinc-800/50 text-zinc-300 border border-zinc-700">Tailwind</span>
               </div>
             </div>
-
           </div>
         </section>
 
-        {/* PROJECTS SECTION */}
-        <section className="space-y-4 pt-2" id="projects">
-          <div className="flex items-center justify-between pb-1">
-            <h3 className="font-semibold text-zinc-900 text-sm tracking-tight">Projects</h3>
+        {/* PROJECTS */}
+        <section className="w-full space-y-5" id="projects">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Projects</h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-            
             {/* KRING! */}
-            <div className="rounded-xl border border-zinc-200/90 bg-white overflow-hidden flex flex-col justify-between shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-zinc-300 transition-colors">
+            <div className="rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card overflow-hidden flex flex-col justify-between hover:border-gray-300 dark:hover:border-white/20 transition-colors">
               <div>
-                <div className="bg-zinc-50 p-4 border-b border-zinc-100 flex flex-col justify-center min-h-[75px]">
-                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">SME & POS</span>
-                  <p className="text-[11px] font-medium text-zinc-800">Point of Sale System.</p>
+                <div className="bg-gray-50 dark:bg-white/[0.03] p-4 border-b border-gray-100 dark:border-white/[0.06] flex flex-col justify-center min-h-[75px]">
+                  <span className="text-[10px] font-mono text-gray-400 dark:text-gray-500 uppercase tracking-wider">SME & POS</span>
+                  <p className="text-[11px] font-medium text-gray-800 dark:text-gray-200">Point of Sale System.</p>
                 </div>
                 <div className="p-4 space-y-1.5">
-                  <h4 className="text-[13px] font-semibold text-zinc-900">KRING!</h4>
-                  <p className="text-[11px] text-zinc-600 leading-relaxed pt-1">
-                    Modern POS system for SMEs, TypeScript + Tailwind
-                  </p>
+                  <h4 className="text-[13px] font-semibold text-gray-900 dark:text-white">KRING!</h4>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed pt-1">Modern POS system for SMEs, TypeScript + Tailwind</p>
                 </div>
               </div>
               <div className="p-4 pt-2 flex items-center justify-between">
                 <div className="flex flex-wrap gap-1 text-[9px] font-mono">
-                  <span className="px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-600">React</span>
-                  <span className="px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-600">TS</span>
+                  <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-600 dark:text-gray-400">React</span>
+                  <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-600 dark:text-gray-400">TS</span>
                 </div>
-                <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-zinc-100 text-zinc-500 border border-zinc-200">Coming Soon</span>
+                <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-white/[0.08]">Coming Soon</span>
               </div>
             </div>
-
             {/* NobarHub */}
-            <div className="rounded-xl border border-zinc-200/90 bg-white overflow-hidden flex flex-col justify-between shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-zinc-300 transition-colors">
+            <div className="rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card overflow-hidden flex flex-col justify-between hover:border-gray-300 dark:hover:border-white/20 transition-colors">
               <div>
-                <div className="bg-zinc-50 p-4 border-b border-zinc-100 flex flex-col justify-center min-h-[75px]">
-                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">CATALOG</span>
-                  <p className="text-[11px] font-medium text-zinc-800">Movie discovery platform.</p>
+                <div className="bg-gray-50 dark:bg-white/[0.03] p-4 border-b border-gray-100 dark:border-white/[0.06] flex flex-col justify-center min-h-[75px]">
+                  <span className="text-[10px] font-mono text-gray-400 dark:text-gray-500 uppercase tracking-wider">CATALOG</span>
+                  <p className="text-[11px] font-medium text-gray-800 dark:text-gray-200">Movie discovery platform.</p>
                 </div>
                 <div className="p-4 space-y-1.5">
-                  <h4 className="text-[13px] font-semibold text-zinc-900">NobarHub</h4>
-                  <p className="text-[11px] text-zinc-600 leading-relaxed pt-1">
-                    Search and explore movies with TMDb API integration
-                  </p>
+                  <h4 className="text-[13px] font-semibold text-gray-900 dark:text-white">NobarHub</h4>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed pt-1">Search and explore movies with TMDb API integration</p>
                 </div>
               </div>
               <div className="p-4 pt-2 flex items-center justify-between">
                 <div className="flex flex-wrap gap-1 text-[9px] font-mono">
-                  <span className="px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-600">Astro</span>
-                  <span className="px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-600">JS</span>
+                  <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-600 dark:text-gray-400">Astro</span>
+                  <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-600 dark:text-gray-400">JS</span>
                 </div>
-                <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-zinc-100 text-zinc-500 border border-zinc-200">Coming Soon</span>
+                <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-white/[0.08]">Coming Soon</span>
               </div>
             </div>
-
             {/* JamKosong */}
-            <div className="rounded-xl border border-zinc-200/90 bg-white overflow-hidden flex flex-col justify-between shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-zinc-300 transition-colors">
+            <div className="rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card overflow-hidden flex flex-col justify-between hover:border-gray-300 dark:hover:border-white/20 transition-colors">
               <div>
-                <div className="bg-zinc-50 p-4 border-b border-zinc-100 flex flex-col justify-center min-h-[75px] relative">
-                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">BOOKING</span>
-                  <p className="text-[11px] font-medium text-zinc-800">Room scheduling app.</p>
-                  <span className="absolute top-2 right-2 text-[9px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">IN PROGRESS</span>
+                <div className="bg-gray-50 dark:bg-white/[0.03] p-4 border-b border-gray-100 dark:border-white/[0.06] flex flex-col justify-center min-h-[75px] relative">
+                  <span className="text-[10px] font-mono text-gray-400 dark:text-gray-500 uppercase tracking-wider">BOOKING</span>
+                  <p className="text-[11px] font-medium text-gray-800 dark:text-gray-200">Room scheduling app.</p>
+                  <span className="absolute top-2 right-2 text-[9px] font-mono px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20">IN PROGRESS</span>
                 </div>
                 <div className="p-4 space-y-1.5">
-                  <h4 className="text-[13px] font-semibold text-zinc-900">JamKosong</h4>
-                  <p className="text-[11px] text-zinc-600 leading-relaxed pt-1">
-                    Meeting room booking with real-time availability
-                  </p>
+                  <h4 className="text-[13px] font-semibold text-gray-900 dark:text-white">JamKosong</h4>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed pt-1">Meeting room booking with real-time availability</p>
                 </div>
               </div>
               <div className="p-4 pt-2 flex items-center justify-between">
                 <div className="flex flex-wrap gap-1 text-[9px] font-mono">
-                  <span className="px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-600">Next.js</span>
+                  <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-600 dark:text-gray-400">Next.js</span>
                 </div>
-                <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-zinc-100 text-zinc-500 border border-zinc-200">Coming Soon</span>
+                <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-white/[0.08]">Coming Soon</span>
               </div>
             </div>
-
           </div>
           <div className="flex justify-center pt-2">
-            <a 
-              href="#projects" 
-              className="inline-flex items-center gap-1 px-4 py-1.5 rounded-full bg-zinc-900 text-white text-[11px] font-medium hover:bg-zinc-800 transition-colors shadow-sm"
+            <a
+              href="https://github.com/kianlabs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-gray-200 dark:border-white/[0.12] text-gray-700 dark:text-gray-300 text-[12px] font-medium hover:border-gray-300 dark:hover:border-white/25 transition-colors"
             >
               <span>Explore All Projects</span>
-              <span className="text-[12px] leading-none">›</span>
+              <span className="text-[13px] leading-none">›</span>
             </a>
           </div>
         </section>
 
-        {/* TECHNOLOGIES SECTION */}
-        <section className="space-y-4 pt-2" id="stack">
-          <div className="flex items-center justify-between pb-1">
-            <h3 className="font-semibold text-zinc-900 text-sm tracking-tight">Technologies</h3>
-            <a href="#stack" className="text-[11px] text-zinc-400 hover:text-zinc-700 transition-colors flex items-center gap-0.5">
-              View All ›
-            </a>
+        {/* TECHNOLOGIES */}
+        <section className="w-full space-y-5" id="stack">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Technologies</h3>
           </div>
-          <div className="flex flex-wrap gap-2 text-[12px]">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 bg-white text-zinc-800 hover:border-zinc-300 transition-colors">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span> React
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 bg-white text-zinc-800 hover:border-zinc-300 transition-colors">
-              <span className="w-1.5 h-1.5 rounded-full bg-black"></span> Next.js
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 bg-white text-zinc-800 hover:border-zinc-300 transition-colors">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span> TypeScript
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 bg-white text-zinc-800 hover:border-zinc-300 transition-colors">
-              <span className="w-1.5 h-1.5 rounded-full bg-yellow-400"></span> JavaScript
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 bg-white text-zinc-800 hover:border-zinc-300 transition-colors">
-              <span className="w-1.5 h-1.5 rounded-full bg-sky-400"></span> Tailwind CSS
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 bg-white text-zinc-800 hover:border-zinc-300 transition-colors">
-              <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span> Astro
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 bg-white text-zinc-800 hover:border-zinc-300 transition-colors">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> FastAPI
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 bg-white text-zinc-800 hover:border-zinc-300 transition-colors">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-700"></span> PostgreSQL
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 bg-white text-zinc-800 hover:border-zinc-300 transition-colors">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-600"></span> Node.js
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 bg-white text-zinc-800 hover:border-zinc-300 transition-colors">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Python
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 bg-white text-zinc-800 hover:border-zinc-300 transition-colors">
-              <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span> HTML/CSS
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200 bg-white text-zinc-800 hover:border-zinc-300 transition-colors">
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Git
-            </span>
+          <div className="flex flex-wrap gap-2 text-[13px]">
+            {[
+              ['React', 'bg-[#61dafb]'],
+              ['Next.js', 'bg-black dark:bg-white'],
+              ['TypeScript', 'bg-[#3178c6]'],
+              ['JavaScript', 'bg-yellow-400'],
+              ['Tailwind CSS', 'bg-[#38bdf8]'],
+              ['Astro', 'bg-purple-500'],
+              ['FastAPI', 'bg-emerald-500'],
+              ['PostgreSQL', 'bg-blue-700'],
+              ['Node.js', 'bg-green-600'],
+              ['Python', 'bg-amber-500'],
+              ['HTML/CSS', 'bg-orange-500'],
+              ['Git', 'bg-rose-500'],
+            ].map(([label, dot]) => (
+              <span
+                key={label}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-gray-800 dark:text-gray-300 hover:border-gray-300 dark:hover:border-white/20 transition-colors"
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${dot}`}></span>
+                {label}
+              </span>
+            ))}
           </div>
         </section>
 
-        {/* CERTIFICATIONS SECTION */}
-        <section className="space-y-4 pt-2">
-          <div className="flex items-center justify-between pb-1">
-            <h3 className="font-semibold text-zinc-900 text-sm tracking-tight">Certifications</h3>
-            <a href="#contact" className="text-[11px] text-zinc-400 hover:text-zinc-700 transition-colors flex items-center gap-0.5">
-              View All ›
-            </a>
+        {/* CERTIFICATIONS */}
+        <section className="w-full space-y-5">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Certifications</h3>
           </div>
-          <div className="space-y-5 text-[13px]">
-            <div>
-              <span className="text-[10px] font-mono tracking-widest uppercase text-zinc-400">PROFESSIONAL CREDENTIAL</span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-2 sm:gap-4 items-center">
-              <div className="text-[12px] text-zinc-400 font-mono">[Date TBD]</div>
+          <div className="space-y-5 text-sm">
+            <span className="text-[10px] font-mono tracking-widest uppercase text-gray-400 dark:text-gray-500">PROFESSIONAL CREDENTIAL</span>
+            <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-2 sm:gap-4 items-center">
+              <div className="font-mono text-[12px] text-gray-400 dark:text-gray-500">[Date TBD]</div>
               <div className="flex items-center gap-3">
-                <div className="w-12 h-9 rounded border border-dashed border-zinc-300 bg-zinc-50 flex items-center justify-center text-[9px] font-mono text-zinc-400">
-                  LOGO
-                </div>
+                <div className="w-12 h-9 rounded border border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-white/[0.03] flex items-center justify-center text-[9px] font-mono text-gray-400 dark:text-gray-500">LOGO</div>
                 <div>
-                  <h4 className="font-medium text-zinc-900 text-[13px]">Placeholder 01 — Certification</h4>
-                  <p className="text-[11px] text-zinc-400">[PLACEHOLDER — to be filled by owner]</p>
+                  <h4 className="font-medium text-gray-900 dark:text-white text-[13px]">Placeholder 01 — Certification</h4>
+                  <p className="text-[11px] text-gray-400 dark:text-gray-500">[PLACEHOLDER — to be filled by owner]</p>
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-2 sm:gap-4 items-center">
-              <div className="text-[12px] text-zinc-400 font-mono">[Date TBD]</div>
+            <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-2 sm:gap-4 items-center">
+              <div className="font-mono text-[12px] text-gray-400 dark:text-gray-500">[Date TBD]</div>
               <div className="flex items-center gap-3">
-                <div className="w-12 h-9 rounded border border-dashed border-zinc-300 bg-zinc-50 flex items-center justify-center text-[9px] font-mono text-zinc-400">
-                  LOGO
-                </div>
+                <div className="w-12 h-9 rounded border border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-white/[0.03] flex items-center justify-center text-[9px] font-mono text-gray-400 dark:text-gray-500">LOGO</div>
                 <div>
-                  <h4 className="font-medium text-zinc-900 text-[13px]">Placeholder 02 — Technical Workshop</h4>
-                  <p className="text-[11px] text-zinc-400">[PLACEHOLDER — to be filled by owner]</p>
+                  <h4 className="font-medium text-gray-900 dark:text-white text-[13px]">Placeholder 02 — Technical Workshop</h4>
+                  <p className="text-[11px] text-gray-400 dark:text-gray-500">[PLACEHOLDER — to be filled by owner]</p>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* EDUCATION SECTION */}
-        <section className="space-y-4 pt-2">
-          <div className="flex items-center justify-between pb-1">
-            <h3 className="font-semibold text-zinc-900 text-sm tracking-tight">Education</h3>
+        {/* EDUCATION */}
+        <section className="w-full space-y-5">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Education</h3>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1 sm:gap-4 items-baseline text-[13px]">
-            <div className="text-[12px] text-zinc-400 font-mono">2022 – 2026</div>
+          <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-1 sm:gap-4 items-baseline text-sm">
+            <div className="font-mono text-[12px] text-gray-400 dark:text-gray-500">2022 – 2026</div>
             <div className="space-y-0.5">
               <div className="flex flex-wrap items-center gap-2">
-                <h4 className="font-medium text-zinc-900">Bachelor of Informatics Engineering</h4>
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-50 text-emerald-700 border border-emerald-200">
-                  3.69 / 4.00
-                </span>
+                <h4 className="font-semibold text-gray-900 dark:text-white text-base">Bachelor of Informatics Engineering</h4>
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20">3.69 / 4.00</span>
               </div>
-              <p className="text-zinc-500 text-[12px]">Universitas Duta Bangsa Surakarta</p>
+              <p className="text-gray-500 dark:text-gray-400 text-[12px]">Universitas Duta Bangsa Surakarta</p>
             </div>
           </div>
         </section>
 
-        {/* OUTSIDE THE IDE SECTION */}
-        <section className="space-y-4 pt-2">
-          <div className="flex items-center justify-between pb-1">
-            <h3 className="font-semibold text-zinc-900 text-sm tracking-tight">Outside the IDE</h3>
+        {/* OUTSIDE THE IDE */}
+        <section className="w-full space-y-5">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Outside the IDE</h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_130px] gap-6 items-center">
             <div className="space-y-3">
-              <p className="text-[13px] text-zinc-600 leading-relaxed">
-                When I'm not shipping code, I'm exploring new tech, running my small fashion affiliate business, or experimenting with AI tools and workflows. I recharge by learning — then bring it back into my builds.
+              <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+                When I&apos;m not shipping code, I&apos;m exploring new tech, running my small fashion affiliate business, or experimenting with AI tools and workflows. I recharge by learning — then bring it back into my builds.
               </p>
               <div className="flex flex-wrap gap-1.5 pt-1">
-                <span className="px-2.5 py-0.5 rounded-full border border-zinc-200 text-zinc-600 text-[11px]">Technology</span>
-                <span className="px-2.5 py-0.5 rounded-full border border-zinc-200 text-zinc-600 text-[11px]">Business</span>
-                <span className="px-2.5 py-0.5 rounded-full border border-zinc-200 text-zinc-600 text-[11px]">AI</span>
+                {['Technology', 'Business', 'AI'].map((t) => (
+                  <span key={t} className="px-2.5 py-0.5 rounded-full border border-gray-200 dark:border-white/[0.12] text-gray-600 dark:text-gray-400 text-[11px]">{t}</span>
+                ))}
               </div>
             </div>
             <div className="hidden sm:flex justify-end">
-              <div className="w-28 h-28 bg-white p-2 rounded-xl shadow-md border border-zinc-200 -rotate-3 hover:rotate-0 transition-transform">
+              <div className="w-28 h-28 bg-white dark:bg-ink-card p-2 rounded-xl shadow-md border border-gray-200 dark:border-white/[0.08] -rotate-3 hover:rotate-0 transition-transform">
                 <div className="w-full h-full rounded-lg bg-gradient-to-tr from-sky-400 via-sky-300 to-indigo-200 flex flex-col justify-end p-2 relative overflow-hidden">
                   <div className="w-6 h-6 rounded-full bg-yellow-200/90 absolute top-2 right-2"></div>
                   <div className="w-10 h-10 rounded bg-white/30 backdrop-blur-sm mx-auto mb-1"></div>
@@ -422,116 +373,89 @@ export default function Home() {
           </div>
         </section>
 
-        {/* GITHUB ACTIVITY SECTION */}
-        <section className="space-y-4 pt-2">
-          <div className="flex items-center justify-between pb-1">
-            <h3 className="font-semibold text-zinc-900 text-sm tracking-tight">GitHub Activity</h3>
-            <a 
-              href="https://github.com/kianlabs" 
-              className="text-[11px] text-zinc-400 hover:text-zinc-700 transition-colors flex items-center gap-0.5 font-mono"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+        {/* GITHUB ACTIVITY */}
+        <section className="w-full space-y-5">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">GitHub Activity</h3>
+            <a href="https://github.com/kianlabs" className="text-[11px] text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors font-mono" target="_blank" rel="noopener noreferrer">
               github.com/kianlabs ↗
             </a>
           </div>
-          <div className="border border-zinc-200 rounded-xl p-6 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.03)] flex flex-col items-center justify-center space-y-4 min-h-[160px]">
-            <div className="w-16 h-16 rounded-full bg-zinc-900 text-white flex items-center justify-center font-bold text-xl">
-              RP
-            </div>
+          <div className="border border-gray-100 dark:border-white/[0.08] rounded-xl p-6 bg-white dark:bg-ink-card flex flex-col items-center justify-center space-y-4 min-h-[160px]">
+            <div className="w-16 h-16 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black flex items-center justify-center font-bold text-xl">RP</div>
             <div className="text-center space-y-1">
-              <h4 className="font-semibold text-zinc-900 text-[14px]">@kianlabs</h4>
-              <p className="text-[12px] text-zinc-600">View my GitHub profile for projects and contributions</p>
+              <h4 className="font-semibold text-gray-900 dark:text-white text-[14px]">@kianlabs</h4>
+              <p className="text-[12px] text-gray-500 dark:text-gray-400">View my GitHub profile for projects and contributions</p>
             </div>
-            <a 
+            <a
               href="https://github.com/kianlabs"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-zinc-900 text-white text-[12px] font-medium hover:bg-zinc-800 transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black text-[12px] font-medium hover:opacity-90 transition-opacity"
               target="_blank"
               rel="noopener noreferrer"
             >
               <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"></path>
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
               </svg>
               <span>View GitHub Profile</span>
             </a>
           </div>
         </section>
 
-        {/* LET'S WORK TOGETHER SECTION */}
-        <section className="space-y-4 pt-4" id="contact">
-          <div className="pb-1">
-            <h3 className="font-semibold text-zinc-900 text-lg tracking-tight">Let's work together.</h3>
+        {/* LET'S WORK TOGETHER */}
+        <section className="w-full space-y-5" id="contact">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">Let&apos;s work together.</h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_260px] gap-6 items-start">
             <div className="space-y-3">
-              <p className="text-[13px] text-zinc-600 leading-relaxed">
+              <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
                 Available for freelance web development and full-stack projects, from new builds to existing websites. I also help build robust APIs, performant architectures, and responsive user interfaces.
               </p>
-              <div className="flex items-center gap-2 pt-2 text-[12px] text-zinc-500">
+              <div className="flex items-center gap-2 pt-2 text-[12px] text-gray-500 dark:text-gray-400">
                 <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                 <span>Typical response time: under 24 hours</span>
               </div>
             </div>
             <div className="space-y-2.5 w-full">
-              <a 
-                href="mailto:ridzkyan0504@gmail.com"
-                className="flex items-center justify-between p-3 rounded-xl border border-zinc-200 bg-white hover:border-zinc-300 hover:bg-zinc-50 transition-all group"
-              >
+              <a href="mailto:ridzkyan0504@gmail.com" className="flex items-center justify-between p-3 rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card hover:border-gray-300 dark:hover:border-white/20 transition-all group">
                 <div className="flex items-center gap-2.5">
-                  <span className="text-[18px]">✉</span>
+                  <svg className="w-4 h-4 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z" /></svg>
                   <div>
-                    <p className="text-[11px] font-medium text-zinc-900">Email</p>
-                    <p className="text-[10px] text-zinc-500">ridzkyan0504@gmail.com</p>
+                    <p className="text-[11px] font-medium text-gray-900 dark:text-white">Email</p>
+                    <p className="text-[10px] text-gray-500 dark:text-gray-400">ridzkyan0504@gmail.com</p>
                   </div>
                 </div>
-                <span className="text-zinc-400 group-hover:text-zinc-600 text-[14px]">→</span>
+                <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[14px]">→</span>
               </a>
-              <a 
-                href="https://github.com/kianlabs"
-                className="flex items-center justify-between p-3 rounded-xl border border-zinc-200 bg-white hover:border-zinc-300 hover:bg-zinc-50 transition-all group"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="https://github.com/kianlabs" className="flex items-center justify-between p-3 rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card hover:border-gray-300 dark:hover:border-white/20 transition-all group" target="_blank" rel="noopener noreferrer">
                 <div className="flex items-center gap-2.5">
-                  <svg className="w-4 h-4 fill-current text-zinc-600" viewBox="0 0 24 24">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"></path>
-                  </svg>
+                  <svg className="w-4 h-4 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
                   <div>
-                    <p className="text-[11px] font-medium text-zinc-900">GitHub</p>
-                    <p className="text-[10px] text-zinc-500">@kianlabs</p>
+                    <p className="text-[11px] font-medium text-gray-900 dark:text-white">GitHub</p>
+                    <p className="text-[10px] text-gray-500 dark:text-gray-400">@kianlabs</p>
                   </div>
                 </div>
-                <span className="text-zinc-400 group-hover:text-zinc-600 text-[14px]">→</span>
+                <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[14px]">→</span>
               </a>
-              <a 
-                href="https://linkedin.com/in/ridzkyan-pratama-7911b441b"
-                className="flex items-center justify-between p-3 rounded-xl border border-zinc-200 bg-white hover:border-zinc-300 hover:bg-zinc-50 transition-all group"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="https://linkedin.com/in/ridzkyan-pratama-7911b441b" className="flex items-center justify-between p-3 rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card hover:border-gray-300 dark:hover:border-white/20 transition-all group" target="_blank" rel="noopener noreferrer">
                 <div className="flex items-center gap-2.5">
-                  <svg className="w-4 h-4 fill-current text-zinc-600" viewBox="0 0 24 24">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path>
-                  </svg>
+                  <svg className="w-4 h-4 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg>
                   <div>
-                    <p className="text-[11px] font-medium text-zinc-900">LinkedIn</p>
-                    <p className="text-[10px] text-zinc-500">Ridzkyan Pratama</p>
+                    <p className="text-[11px] font-medium text-gray-900 dark:text-white">LinkedIn</p>
+                    <p className="text-[10px] text-gray-500 dark:text-gray-400">Ridzkyan Pratama</p>
                   </div>
                 </div>
-                <span className="text-zinc-400 group-hover:text-zinc-600 text-[14px]">→</span>
+                <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[14px]">→</span>
               </a>
-              <a 
-                href="mailto:ridzkyan0504@gmail.com"
-                className="flex items-center justify-between p-3 rounded-xl border border-zinc-200 bg-white hover:border-zinc-300 hover:bg-zinc-50 transition-all group"
-              >
+              <a href="mailto:ridzkyan0504@gmail.com" className="flex items-center justify-between p-3 rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card hover:border-gray-300 dark:hover:border-white/20 transition-all group">
                 <div className="flex items-center gap-2.5">
-                  <span className="text-[18px]">📅</span>
+                  <svg className="w-4 h-4 fill-current text-gray-600 dark:text-gray-400" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" /></svg>
                   <div>
-                    <p className="text-[11px] font-medium text-zinc-900">Schedule a Call</p>
-                    <p className="text-[10px] text-zinc-500">Let's discuss your project</p>
+                    <p className="text-[11px] font-medium text-gray-900 dark:text-white">Schedule a Call</p>
+                    <p className="text-[10px] text-gray-500 dark:text-gray-400">Let&apos;s discuss your project</p>
                   </div>
                 </div>
-                <span className="text-zinc-400 group-hover:text-zinc-600 text-[14px]">→</span>
+                <span className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 text-[14px]">→</span>
               </a>
             </div>
           </div>
@@ -540,13 +464,13 @@ export default function Home() {
       </main>
 
       {/* FOOTER */}
-      <footer className="w-full border-t border-zinc-100 bg-white py-8 mt-12">
-        <div className="max-w-[700px] mx-auto px-5 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-400">
+      <footer className="w-full border-t border-gray-100 dark:border-gray-800 py-8 mt-12">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-gray-400 dark:text-gray-500">
           <div className="space-y-0.5 text-center sm:text-left">
-            <p className="italic text-zinc-500">"Repetition until it becomes technique."</p>
+            <p className="italic text-gray-500 dark:text-gray-400">&quot;Repetition until it becomes technique.&quot;</p>
             <p>© 2026 Ridzkyan Buti Pratama · Built with Next.js</p>
           </div>
-          <div className="text-zinc-400 font-mono text-[10px]">Surakarta, ID</div>
+          <div className="font-mono text-[10px]">Surakarta, ID</div>
         </div>
       </footer>
 

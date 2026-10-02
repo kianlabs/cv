@@ -81,7 +81,7 @@ export default function Home() {
                 <span className="text-[0.95em] font-light text-gray-500 dark:text-gray-400">— Laravel · React · Next.js</span>
               </h2>
               <p className="text-base font-light leading-7 text-gray-500 dark:text-gray-400 sm:text-lg sm:leading-8">
-                Fresh graduate in Informatics Engineering building web apps end-to-end. Freelance web developer via KyanDev, shipping production websites with{' '}
+                Fresh graduate in Informatics Engineering building web apps end-to-end with an AI-assisted workflow. Freelance web developer via KyanDev, shipping production websites with{' '}
                 <span className="inline align-middle">
                   {HERO_TECHS.map(({ name, color, path }) => (
                     <span key={name} className="bg-white dark:bg-ink ml-1 inline-flex items-center gap-1.5 rounded-md border border-dashed border-gray-300 dark:border-gray-700 px-2 py-1 text-xs text-gray-800 dark:text-gray-200 sm:px-2.5 sm:text-sm">
@@ -261,18 +261,33 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <h3 className="text-base sm:text-[17px] font-semibold text-gray-900 dark:text-white leading-tight">Technologies</h3>
           </div>
-          <div className="flex flex-wrap gap-2 text-[13px]">
-            {TECHS.map(({ name, color, path }) => (
-              <span
-                key={name}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-gray-800 dark:text-gray-300 hover:border-gray-300 dark:hover:border-white/20 transition-colors"
-              >
-                <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill={color} aria-hidden="true">
-                  <path d={path} />
-                </svg>
-                {name}
-              </span>
-            ))}
+          <div className="space-y-4">
+            <div className="flex flex-wrap gap-2 text-[13px]">
+              {TECHS.map(({ name, color, path }) => (
+                <span
+                  key={name}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-gray-800 dark:text-gray-300 hover:border-gray-300 dark:hover:border-white/20 transition-colors"
+                >
+                  <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill={color} aria-hidden="true">
+                    <path d={path} />
+                  </svg>
+                  {name}
+                </span>
+              ))}
+            </div>
+            <div className="space-y-2.5">
+              <span className="block text-[10px] font-mono tracking-widest uppercase text-gray-400 dark:text-gray-500">AI Engineering</span>
+              <div className="flex flex-wrap gap-2 text-[13px]">
+                {['LLM API Integration', 'RAG', 'MCP', 'Prompt Engineering', 'AI Agents'].map((name) => (
+                  <span
+                    key={name}
+                    className="inline-flex items-center px-3 py-1.5 rounded-full border border-gray-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-gray-800 dark:text-gray-300 hover:border-gray-300 dark:hover:border-white/20 transition-colors"
+                  >
+                    {name}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 

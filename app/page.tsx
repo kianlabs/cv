@@ -41,8 +41,14 @@ export default function Home() {
         <section className="flex flex-col justify-center pt-6 pb-8 sm:pt-10 sm:pb-8" id="about">
           <div className="space-y-6 sm:space-y-10">
             <div className="flex items-center gap-4 sm:gap-6">
-              <div className="h-32 w-32 shrink-0 rounded-full border-2 border-gray-200 dark:border-gray-500 bg-white dark:bg-ink flex items-center justify-center shadow-sm sm:h-40 sm:w-40">
-                <span className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white tracking-wider">RP</span>
+              <div className="h-32 w-32 shrink-0 overflow-hidden rounded-full border-2 border-gray-200 dark:border-gray-500 bg-white dark:bg-ink shadow-sm sm:h-40 sm:w-40">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/profile.jpg"
+                  alt="Ridzkyan Buti Pratama"
+                  className="h-full w-full object-cover object-top"
+                  loading="eager"
+                />
               </div>
               <div className="flex h-full flex-col justify-center gap-2.5 sm:gap-3">
                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-2xl md:text-3xl">
@@ -326,12 +332,19 @@ export default function Home() {
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-2 sm:gap-4 items-center">
-              <div className="font-mono text-[13px] text-gray-400 dark:text-gray-500">[Date TBD]</div>
+              <div className="font-mono text-[13px] text-gray-400 dark:text-gray-500">Jun 2026</div>
               <div className="flex items-center gap-3">
-                <div className="w-12 h-9 rounded border border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-white/[0.03] flex items-center justify-center text-[9px] font-mono text-gray-400 dark:text-gray-500">LOGO</div>
+                <div className="w-12 h-9 shrink-0 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-white/[0.03] flex items-center justify-center overflow-hidden">
+                  <svg viewBox="0 0 48 32" className="w-9 h-6" role="img" aria-label="BNSP">
+                    <path d="M24 3l3.5 6.5L35 11l-5 5.2 1.2 7.3L24 20l-7.2 3.5L18 16.2 13 11l7.5-1.5z" fill="#c8102e" />
+                    <text x="24" y="30" textAnchor="middle" fontFamily="Arial, sans-serif" fontSize="7" fontWeight="700" fill="#1f2937">BNSP</text>
+                  </svg>
+                </div>
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white text-[15px]">Placeholder 02 — Technical Workshop</h4>
-                  <p className="text-[12px] text-gray-400 dark:text-gray-500">[PLACEHOLDER — to be filled by owner]</p>
+                  <h4 className="font-medium text-gray-900 dark:text-white text-[15px]">Junior Web Programmer — BNSP</h4>
+                  <p className="text-[12px] text-gray-400 dark:text-gray-500">
+                    LSP Telematika Profesional Indonesia · Reg TIK.002 000424 2026
+                  </p>
                 </div>
               </div>
             </div>

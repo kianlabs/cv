@@ -316,7 +316,7 @@ export default function Home() {
             <div className="space-y-0.5">
               <div className="flex flex-wrap items-center gap-2">
                 <h4 className="font-semibold text-gray-900 dark:text-white text-base">Bachelor of Informatics Engineering</h4>
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20">3.69 / 4.00</span>
+                <span className="text-[12px] font-mono text-gray-500 dark:text-gray-400">3.69 / 4.00</span>
               </div>
               <p className="text-gray-500 dark:text-gray-400 text-[12px]">Universitas Duta Bangsa Surakarta</p>
             </div>

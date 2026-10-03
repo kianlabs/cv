@@ -217,3 +217,83 @@ export function configFromEnv(): EmbedderConfig {
     dims: Number(process.env.CLOUDFLARE_EMBED_DIMS ?? 1024) || 1024,
   };
 }
+
+// --- Cross-encoder reranking (Cloudflare Workers AI) ------------------------
+//
+// A cross-encoder reads the query and a passage TOGETHER and scores their
+// relevance directly — strictly more accurate than comparing two independently
+// embedded vectors, which is why it is worth a second network call. It is
+// OPTIONAL: retrieval must keep working (and stay offline-capable) when it is
+// not configured, so every path here degrades to the fused ranking rather than
+// throwing.
+
+/** Default reranker model (multilingual, so it fits the bilingual corpus). */
+const DEFAULT_RERANK_MODEL = '@cf/baai/bge-reranker-base';
+
+/**
+ * Cross-encoder model to use, or '' when reranking is disabled/unavailable.
+ * Enabled by default whenever Cloudflare credentials exist; set
+ * RERANK_ENABLED=0 (or "false") to turn it off without removing the keys.
+ */
+export function rerankModel(): string {
+  const flag = (process.env.RERANK_ENABLED ?? '').trim().toLowerCase();
+  if (flag === '0' || flag === 'false' || flag === 'off' || flag === 'no') {
+    return '';
+  }
+  const { account, token } = cloudflareCreds();
+  if (!account || !token) return '';
+  return (process.env.RERANK_MODEL ?? '').trim() || DEFAULT_RERANK_MODEL;
+}
+
+/**
+ * Score each candidate passage against the query with a cross-encoder.
+ * Returns one score per input passage, in input order. Throws on failure so the
+ * caller can decide how to fall back (see lib/rag.ts).
+ */
+export async function rerankTexts(
+  query: string,
+  passages: string[],
+  model: string,
+): Promise<number[]> {
+  if (!passages.length) return [];
+  const { account, token } = cloudflareCreds();
+  // Single attempt, no retry: reranking is a best-effort refinement whose
+  // fallback (the fused order) is perfectly good, so paying retry backoff on a
+  // transient error would only add latency to the request.
+  const res = await fetch(
+    `https://api.cloudflare.com/client/v4/accounts/${account}/ai/run/${model}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        query,
+        contexts: passages.map((text) => ({ text })),
+      }),
+      cache: 'no-store',
+    },
+  );
+  if (!res.ok) {
+    const detail = await res.text().catch(() => '');
+    throw new Error(
+      `Cloudflare rerank HTTP ${res.status}: ${detail.slice(0, 200)}`,
+    );
+  }
+  const data = (await res.json()) as {
+    result?: { response?: { id?: number; score?: number }[] };
+    success?: boolean;
+  };
+
+  // The API returns { id, score } objects where `id` is the index into the
+  // contexts we sent, and does not guarantee order — reindex explicitly.
+  const out = new Array<number>(passages.length).fill(0);
+  const items = data.result?.response ?? [];
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    const idx = typeof item.id === 'number' ? item.id : i;
+    if (idx >= 0 && idx < out.length) out[idx] = item.score ?? 0;
+  }
+  return out;
+}

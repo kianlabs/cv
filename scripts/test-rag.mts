@@ -38,7 +38,7 @@ const IN_SCOPE = [
 // Clearly out-of-scope: no plausible link to the corpus, must retrieve nothing.
 const OUT_OF_SCOPE = [
   'what is the capital of France?',
-  'write me a poem about cats',
+  'write me a poem about dragons',
   'explain quantum entanglement',
   'how do I bake sourdough bread?',
   'who won the world cup in 2022?',

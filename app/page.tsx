@@ -4,6 +4,8 @@ import GitHubHeatmap from '@/components/GitHubHeatmap';
 import { TECHS, HERO_TECHS } from '@/components/techs';
 import CertThumb from '@/components/CertThumb';
 import AvatarSwap from '@/components/AvatarSwap';
+import CardDeck from '@/components/CardDeck';
+import BackToTop from '@/components/BackToTop';
 
 export default function Home() {
   return (
@@ -11,9 +13,7 @@ export default function Home() {
       {/* NAVBAR */}
       <header data-nav className="sticky top-0 z-40 bg-white/70 dark:bg-ink/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800">
         <nav className="max-w-3xl w-full mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
-          <span className="shrink-0 font-bold text-[15px] sm:text-[17px] tracking-wider text-gray-900 dark:text-white">
-            RBP
-          </span>
+          <BackToTop>RBP</BackToTop>
           <div className="flex items-center gap-3 sm:gap-5">
             <div className="flex items-center gap-3 sm:gap-4 text-[13px] sm:text-[15px] text-gray-500 dark:text-gray-400 whitespace-nowrap">
               <a href="#projects" className="hover:text-gray-900 dark:hover:text-white transition-colors">Projects</a>
@@ -353,26 +353,30 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <h3 data-reveal className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Outside the IDE</h3>
           </div>
-          <div data-reveal-group className="grid grid-cols-1 sm:grid-cols-[1fr_130px] gap-6 items-center">
-            <div className="space-y-3">
-              <p className="text-[15px] text-gray-500 dark:text-gray-400 leading-relaxed">
-                When I&apos;m not shipping code, I&apos;m exploring new tech, running my small fashion affiliate business, or experimenting with AI tools and workflows. I recharge by learning — then bring it back into my builds.
+          <div data-reveal-group className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_300px] lg:gap-12">
+            <div className="space-y-4">
+              <p className="max-w-2xl text-[15px] text-gray-500 dark:text-gray-400 leading-relaxed">
+                When I&apos;m not shipping code, I&apos;m out chasing new places, riding at night, or hanging out with my cats — while helping run my parents&apos; clothing business. I recharge by learning, then bring it back into my builds.
               </p>
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                {['Technology', 'Business', 'AI'].map((t) => (
-                  <span key={t} className="px-2.5 py-0.5 rounded-full border border-gray-200 dark:border-white/[0.12] text-gray-600 dark:text-gray-400 text-[12px]">{t}</span>
+              <div className="flex flex-wrap gap-2">
+                {['Travel', 'Cats', 'Riding', 'Setup'].map((t) => (
+                  <span
+                    key={t}
+                    className="inline-flex items-center rounded-full border border-gray-200 dark:border-white/[0.12] bg-white dark:bg-ink-card px-3 py-1 text-xs text-gray-600 dark:text-gray-400"
+                  >
+                    {t}
+                  </span>
                 ))}
               </div>
             </div>
-            <div className="hidden sm:flex justify-end">
-              <div className="w-28 h-28 bg-white dark:bg-ink-card p-2 rounded-xl shadow-md border border-gray-200 dark:border-white/[0.08] -rotate-3 hover:rotate-0 transition-transform">
-                <div className="w-full h-full rounded-lg bg-gradient-to-tr from-sky-400 via-sky-300 to-indigo-200 flex flex-col justify-end p-2 relative overflow-hidden">
-                  <div className="w-6 h-6 rounded-full bg-yellow-200/90 absolute top-2 right-2"></div>
-                  <div className="w-10 h-10 rounded bg-white/30 backdrop-blur-sm mx-auto mb-1"></div>
-                  <span className="text-[8px] font-mono text-zinc-700 text-center">Surakarta</span>
-                </div>
-              </div>
-            </div>
+            <CardDeck
+              photos={[
+                { src: '/outside-travel-1.jpg', alt: 'Standing on a balcony overlooking a mountain village', label: 'Somewhere new' },
+                { src: '/outside-cat-1.jpg', alt: 'Bengal cat walking toward the camera on a patio', label: 'Coming over' },
+                { src: '/outside-ride-1.jpg', alt: 'Black Vespa Sprint parked on a tiled patio', label: 'The Vespa' },
+                { src: '/outside-work-1.jpg', alt: 'Purple-lit desk setup with monitor, laptop, and mechanical keyboard', label: 'Home base' },
+              ]}
+            />
           </div>
         </section>
 

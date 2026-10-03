@@ -279,10 +279,14 @@ export async function POST(request: Request) {
 
   // 4. Retrieval (RAG): embed the latest user question and pull the most
   //    relevant knowledge-base chunks (exact in-memory scan over a tiny corpus).
-  const lastUser = [...messages].reverse().find((m) => m.role === 'user');
+  //    Prior turns are passed so a follow-up like "berapa lama pengerjaannya?"
+  //    still resolves against whatever was being discussed.
+  const lastUserIdx = messages.map((m) => m.role).lastIndexOf('user');
+  const lastUser = lastUserIdx >= 0 ? messages[lastUserIdx] : undefined;
+  const priorTurns = lastUserIdx > 0 ? messages.slice(0, lastUserIdx) : [];
   let chunks: Awaited<ReturnType<typeof retrieve>> = [];
   try {
-    chunks = await retrieve(lastUser?.content ?? '', 4);
+    chunks = await retrieve(lastUser?.content ?? '', 4, priorTurns);
   } catch (err) {
     console.error('[chat] retrieval failed, continuing without context:', err);
   }

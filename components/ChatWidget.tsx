@@ -236,7 +236,10 @@ export default function ChatWidget() {
         aria-expanded={isOpen}
       >
         <span className="text-[18px] leading-none">{isOpen ? '✕' : '💬'}</span>
-        <span>{isOpen ? 'Close' : 'Chat with Kyan AI Assistant'}</span>
+        <span className="sm:hidden">{isOpen ? 'Close' : 'Chat with Kai'}</span>
+        <span className="hidden sm:inline">
+          {isOpen ? 'Close' : 'Chat with Kyan AI Assistant'}
+        </span>
       </button>
     </div>
   );

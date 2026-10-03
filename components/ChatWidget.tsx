@@ -51,8 +51,10 @@ export default function ChatWidget() {
     }
   }, [isOpen]);
 
+  // Keep the transcript pinned to the newest message. `block: 'nearest'` scrolls
+  // only the transcript, not the page, so opening the chat never jumps the site.
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }, [messages, isLoading]);
 
   const sendMessage = async (text: string) => {
@@ -113,8 +115,11 @@ export default function ChatWidget() {
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
       {isOpen && (
-        <div className="w-[calc(100vw-2.5rem)] max-w-[380px] max-h-[calc(100dvh-2.5rem)] bg-white dark:bg-ink-card border border-gray-100 dark:border-white/[0.08] rounded-2xl shadow-xl overflow-hidden flex flex-col transition-all">
-          <div className="p-4 bg-gray-900 dark:bg-ink text-white flex items-center justify-between">
+        // max-h (not a fixed h) keeps the panel inside the viewport on every
+        // screen size, so a long transcript scrolls inside the transcript
+        // instead of overflowing up over the header.
+        <div className="w-[calc(100vw-2.5rem)] max-w-[380px] max-h-[calc(100dvh-2.5rem)] bg-white dark:bg-ink-card border border-gray-100 dark:border-white/[0.08] rounded-2xl shadow-xl overflow-hidden flex flex-col">
+          <div className="shrink-0 p-4 bg-gray-900 dark:bg-ink text-white flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-white/10 text-white font-bold text-xs flex items-center justify-center border border-white/15">
                 K
@@ -136,7 +141,8 @@ export default function ChatWidget() {
             </button>
           </div>
 
-          <div className="p-4 h-64 flex-1 min-h-0 overflow-y-auto space-y-3 text-[12px] bg-gray-50 dark:bg-white/[0.02]">
+          {/* Transcript: grows with content up to max-h, then scrolls. */}
+          <div className="p-4 flex-1 min-h-[6rem] max-h-64 overflow-y-auto overscroll-contain space-y-3 text-[12px] bg-gray-50 dark:bg-white/[0.02]">
             {messages.map((msg, idx) => (
               <div key={idx} className={msg.isUser ? 'flex justify-end' : 'flex items-start gap-2'}>
                 {!msg.isUser && (
@@ -146,7 +152,7 @@ export default function ChatWidget() {
                 )}
                 <div className="flex flex-col gap-1.5 max-w-[85%] items-start">
                   <div
-                    className={`rounded-xl p-3 whitespace-pre-wrap ${
+                    className={`rounded-xl p-3 whitespace-pre-wrap break-words ${
                       msg.isUser
                         ? 'bg-gray-900 dark:bg-white text-white dark:text-black rounded-tr-none'
                         : 'bg-white dark:bg-ink-card border border-gray-200 dark:border-white/[0.08] text-gray-800 dark:text-gray-200 rounded-tl-none shadow-sm'
@@ -187,7 +193,7 @@ export default function ChatWidget() {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="px-4 py-2 bg-white dark:bg-ink-card border-t border-gray-100 dark:border-white/[0.06] flex flex-wrap gap-1.5">
+          <div className="shrink-0 px-4 py-2 bg-white dark:bg-ink-card border-t border-gray-100 dark:border-white/[0.06] flex flex-wrap gap-1.5">
             {QUICK_REPLIES.map((q) => (
               <button
                 key={q}
@@ -200,7 +206,7 @@ export default function ChatWidget() {
             ))}
           </div>
 
-          <form className="p-3 bg-white dark:bg-ink-card border-t border-gray-200 dark:border-white/[0.08] flex items-center gap-2" onSubmit={handleSubmit}>
+          <form className="shrink-0 p-3 bg-white dark:bg-ink-card border-t border-gray-200 dark:border-white/[0.08] flex items-center gap-2" onSubmit={handleSubmit}>
             <input
               ref={inputRef}
               className="flex-1 px-3 py-2 text-base sm:text-[12px] sm:py-1.5 bg-gray-100 dark:bg-white/[0.05] rounded-lg border-0 focus:ring-1 focus:ring-gray-400 dark:focus:ring-white/30 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 outline-none"
@@ -224,13 +230,13 @@ export default function ChatWidget() {
       )}
 
       <button
-        className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black text-sm font-semibold shadow-lg hover:opacity-90 active:scale-95 transition-all"
+        className="inline-flex items-center gap-2 px-4 sm:px-5 py-3 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black text-[13px] sm:text-sm font-semibold shadow-lg hover:opacity-90 active:scale-95 transition-all whitespace-nowrap"
         onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? 'Close chat' : 'Chat with Kyan'}
+        aria-label={isOpen ? 'Close chat' : 'Chat with Kyan AI Assistant'}
         aria-expanded={isOpen}
       >
         <span className="text-[18px] leading-none">{isOpen ? '✕' : '💬'}</span>
-        <span>Chat with Kyan</span>
+        <span>{isOpen ? 'Close' : 'Chat with Kyan AI Assistant'}</span>
       </button>
     </div>
   );

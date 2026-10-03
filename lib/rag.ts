@@ -33,7 +33,7 @@ interface IndexRecord {
 }
 
 const INDEX = indexData as {
-  provider: 'gemini' | 'local';
+  provider: 'gemini' | 'cloudflare' | 'local';
   model: string;
   dims: number;
   count: number;

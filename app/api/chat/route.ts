@@ -9,35 +9,73 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 // --- LLM endpoint (provider-agnostic, OpenAI-compatible) --------------------
-// Production: a cloud provider (e.g. Gemini's OpenAI-compatible endpoint).
+// Production: Cloudflare Workers AI (OpenAI-compatible), so a single provider
+// and a single token serve BOTH chat and embeddings.
 // Local dev: the 9router gateway. Both are configured purely via env vars, so
 // switching provider is a config change, not a code change.
 //
-//   LLM_BASE_URL   e.g. https://generativelanguage.googleapis.com/v1beta/openai
+//   LLM_BASE_URL   e.g. https://api.cloudflare.com/client/v4/accounts/<id>/ai/v1
 //                       http://127.0.0.1:20128/v1           (local 9router)
 //   LLM_API_KEY    server-only secret
-//   LLM_MODEL      e.g. gemini-2.5-flash  /  kr/claude-haiku-4.5
+//   LLM_MODEL      e.g. @cf/meta/llama-3.3-70b-instruct-fp8-fast
 //   LLM_FALLBACKS  comma-separated fallback model ids (optional)
 //
-// NINE_ROUTER_* are still honoured as a fallback so existing local .env.local
-// files keep working unchanged.
+// CLOUDFLARE_* and NINE_ROUTER_* are honoured as fallbacks so one token can
+// serve both chat and embeddings without duplicating the secret.
 const BASE_URL = (
-  process.env.LLM_BASE_URL ??
-  process.env.NINE_ROUTER_BASE_URL ??
+  process.env.LLM_BASE_URL ||
+  process.env.NINE_ROUTER_BASE_URL ||
   'http://localhost:20128/v1'
 ).replace(/\/$/, '');
 
-const API_KEY = (
-  process.env.LLM_API_KEY ??
-  process.env.NINE_ROUTER_API_KEY ??
-  process.env.HERMES_CUSTOM_LOCALHOST_20128_API_KEY ??
-  ''
-).trim();
+/**
+ * Pick the matching credential for the configured endpoint. Deriving it from
+ * the URL (rather than a flat fallback chain) means a Cloudflare token can never
+ * be sent to the 9router, or vice versa — a mismatch that would otherwise fail
+ * with a confusing 401.
+ */
+function defaultKeyFor(baseUrl: string): string {
+  if (baseUrl.includes('api.cloudflare.com')) {
+    return process.env.CLOUDFLARE_API_TOKEN ?? '';
+  }
+  if (
+    baseUrl.includes('localhost') ||
+    baseUrl.includes('127.0.0.1') ||
+    baseUrl.includes('trycloudflare.com')
+  ) {
+    return (
+      process.env.NINE_ROUTER_API_KEY ??
+      process.env.HERMES_CUSTOM_LOCALHOST_20128_API_KEY ??
+      ''
+    );
+  }
+  return '';
+}
+
+const API_KEY = (process.env.LLM_API_KEY || defaultKeyFor(BASE_URL)).trim();
+
+/** Sensible default model for the configured endpoint. */
+function defaultModelFor(baseUrl: string): string {
+  if (baseUrl.includes('api.cloudflare.com')) {
+    return '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
+  }
+  return 'kr/claude-haiku-4.5';
+}
+
+/** Sensible default fallback chain for the configured endpoint. */
+function defaultFallbacksFor(baseUrl: string): string {
+  if (baseUrl.includes('api.cloudflare.com')) {
+    return '@cf/qwen/qwen2.5-coder-32b-instruct';
+  }
+  return 'kr/claude-sonnet-4.5,kr/auto';
+}
 
 const PRIMARY_MODEL =
-  process.env.LLM_MODEL ?? process.env.NINE_ROUTER_MODEL ?? 'kr/claude-haiku-4.5';
+  process.env.LLM_MODEL || defaultModelFor(BASE_URL);
 
-const FALLBACK_MODELS = (process.env.LLM_FALLBACKS ?? 'kr/claude-sonnet-4.5,kr/auto')
+const FALLBACK_MODELS = (
+  process.env.LLM_FALLBACKS || defaultFallbacksFor(BASE_URL)
+)
   .split(',')
   .map((s) => s.trim())
   .filter(Boolean)
@@ -175,7 +213,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          'Chat is not configured: the retrieval index needs an embedding API key (set GEMINI_API_KEY), or rebuild the index with EMBED_PROVIDER=local for offline use.',
+          'Chat is not configured: the retrieval index needs its embedding credentials (e.g. CLOUDFLARE_ACCOUNT_ID + CLOUDFLARE_API_TOKEN, or GEMINI_API_KEY), or rebuild the index with EMBED_PROVIDER=local for offline use.',
       },
       { status: 503 },
     );

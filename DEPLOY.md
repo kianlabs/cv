@@ -1,27 +1,28 @@
 # Deploy — Vercel only (no local server, no VPS)
 
 This portfolio can run **entirely on Vercel's free (Hobby) tier**. There is no
-local 9router, no separate backend host, and no always-on VPS. The only external
-services are two free Google Gemini endpoints (chat + embeddings).
+local 9router, no separate backend host, and no always-on VPS. External services
+are Cloudflare Workers AI (embeddings) and any OpenAI-compatible chat endpoint
+(Gemini free tier by default).
 
 ## Why it fits on Vercel
 
 | Concern | How it is handled |
 | --- | --- |
-| Native ML binary (onnxruntime, 548 MB) | **Not used in production.** Embeddings are computed by the Gemini API server-side. The local transformers.js path is dev-only and excluded from the bundle (`outputFileTracingExcludes`). |
+| Native ML binary (onnxruntime, 548 MB) | **Not used in production.** Embeddings are computed by the Cloudflare API server-side. The local transformers.js path is dev-only and excluded from the bundle (`outputFileTracingExcludes`). |
 | Serverless function size (250 MB limit) | The `/api/chat` function traces to **~0.8 MB** (see "Verify" below). |
 | API keys leaking to the browser | All keys are server-only env vars read inside the route; nothing is prefixed `NEXT_PUBLIC_`. |
 | Cold starts | No native model to load; the function is tiny, so cold starts are fast. |
-| Cost | Vercel Hobby $0 + Gemini free tier (no credit card). |
+| Cost | Vercel Hobby $0 + Cloudflare Workers AI free tier + Gemini free tier (no credit card). |
 
 ## What runs where
 
 ```
 Browser ──POST /api/chat──▶ Vercel Serverless Function (Node)
                                    │
-                                   ├─▶ Gemini embeddings   (embed the query)
+                                   ├─▶ Cloudflare bge-m3   (embed the query)
                                    ├─▶ content/index.json  (in-memory hybrid search)
-                                   └─▶ Gemini chat         (grounded answer)
+                                   └─▶ chat endpoint       (grounded answer)
 ```
 
 - **Knowledge base**: `content/kb/*.md` (your CV, projects, skills, FAQ).
@@ -31,34 +32,69 @@ Browser ──POST /api/chat──▶ Vercel Serverless Function (Node)
 
 ## One-time setup
 
-1. **Get a Gemini API key** at <https://aistudio.google.com/apikey> (free, no
-   credit card). One key serves both chat and embeddings.
+### Choose your chat backend
 
-2. **Push the repo** to GitHub (or GitLab/Bitbucket).
+The chat model is any OpenAI-compatible endpoint. Two practical options:
 
-3. **Import the project on Vercel** → it auto-detects Next.js. Leave the build
+**Option A — Cloudflare Workers AI (recommended for production).** One provider,
+one token, works while your PC is off.
+
+1. Get a Cloudflare API token at
+   <https://dash.cloudflare.com/profile/api-tokens> → Create Token → Custom
+   token → permission `Account → Workers AI → Read`. Note your **Account ID**
+   (Workers & Pages → Overview, right-hand column).
+2. Chat env:
+   ```
+   LLM_BASE_URL=https://api.cloudflare.com/client/v4/accounts/<ACCOUNT_ID>/ai/v1
+   LLM_MODEL=@cf/meta/llama-3.3-70b-instruct-fp8-fast
+   LLM_FALLBACKS=@cf/qwen/qwen2.5-coder-32b-instruct
+   ```
+   Leave `LLM_API_KEY` empty — the route auto-selects `CLOUDFLARE_API_TOKEN`.
+   Free tier: 10,000 Neurons/day (~130 chat replies).
+
+**Option B — 9router via Cloudflare Tunnel.** Uses your local models, but the
+deployed site only works while your PC and the tunnel are running.
+
+1. Install `cloudflared` (e.g. `pacman -S cloudflared`).
+2. Start the tunnel: `scripts/tunnel-9router.sh` — it prints a
+   `https://<name>.trycloudflare.com` URL.
+3. Chat env:
+   ```
+   LLM_BASE_URL=https://<name>.trycloudflare.com/v1
+   LLM_MODEL=kr/claude-haiku-4.5
+   LLM_FALLBACKS=kr/claude-sonnet-4.5,kr/auto
+   ```
+   Leave `LLM_API_KEY` empty — the route auto-selects `NINE_ROUTER_API_KEY`.
+   ⚠️ The quick-tunnel URL **changes on every restart**: update `LLM_BASE_URL`
+   and redeploy when it does.
+
+### Deploy
+
+1. **Push the repo** to GitHub (or GitLab/Bitbucket).
+
+2. **Import the project on Vercel** → it auto-detects Next.js. Leave the build
    command as `npm run build` — the `prebuild` hook runs `build:kb` first.
 
-4. **Add environment variables** (Project → Settings → Environment Variables),
+3. **Add environment variables** (Project → Settings → Environment Variables),
    for the *Production* (and *Preview*) environments:
 
    | Name | Value |
    | --- | --- |
-   | `EMBED_PROVIDER` | `gemini` |
-   | `GEMINI_API_KEY` | your key |
-   | `GEMINI_EMBED_MODEL` | `gemini-embedding-001` |
-   | `GEMINI_EMBED_DIMS` | `768` |
-   | `LLM_BASE_URL` | `https://generativelanguage.googleapis.com/v1beta/openai` |
-   | `LLM_API_KEY` | your key (same key is fine) |
-   | `LLM_MODEL` | `gemini-flash-latest` |
-   | `LLM_FALLBACKS` | `gemini-3.8-flash,gemini-3.5-flash` |
+   | `EMBED_PROVIDER` | `cloudflare` |
+   | `CLOUDFLARE_ACCOUNT_ID` | your account id |
+   | `CLOUDFLARE_API_TOKEN` | your Workers AI token |
+   | `CLOUDFLARE_EMBED_MODEL` | `@cf/baai/bge-m3` |
+   | `CLOUDFLARE_EMBED_DIMS` | `1024` |
+   | `LLM_BASE_URL` | per Option A or B above |
+   | `LLM_MODEL` | per Option A or B above |
+   | `LLM_FALLBACKS` | per Option A or B above |
 
-   > `EMBED_PROVIDER=gemini` matters: it tells the build to index the KB with
-   > Gemini so the index matches the runtime embedder. If it is missing, the
-   > build indexes locally and the deployed function will (correctly) refuse to
-   > serve retrieval until rebuilt.
+   > `EMBED_PROVIDER` matters: it tells the build which API to index the KB with,
+   > so the index matches the runtime embedder. If it is missing, the build
+   > indexes with the default provider and the deployed function will
+   > (correctly) refuse to serve retrieval until rebuilt.
 
-5. **Deploy.** The build runs `build:kb` (Gemini embeddings over ~30 chunks,
+4. **Deploy.** The build runs `build:kb` (Cloudflare embeddings over ~30 chunks,
    one batched call) then `next build`.
 
 ## Verify the deployment
@@ -80,7 +116,10 @@ total = sum(os.path.getsize(os.path.normpath(os.path.join(base, f)))
 print(f'{total/1e6:.1f} MB traced')   # expect ~0.8 MB
 PY
 
-# 2. Chat endpoint (replace with your domain):
+# 2. Health probe — reports the active embedder without leaking keys:
+curl -s https://YOUR-APP.vercel.app/api/chat
+
+# 3. Chat endpoint (replace with your domain):
 curl -s https://YOUR-APP.vercel.app/api/chat \
   -H 'content-type: application/json' \
   -d '{"messages":[{"role":"user","content":"what projects has he built?"}]}' | head -c 400
@@ -88,8 +127,8 @@ curl -s https://YOUR-APP.vercel.app/api/chat \
 
 ## Local development (unchanged)
 
-Local dev keeps using the offline embedding provider and the local 9router, so
-no cloud key is needed and nothing is uploaded:
+Local dev can use the offline embedding provider and the local 9router, so no
+cloud key is needed and nothing is uploaded:
 
 ```bash
 # .env.local (already configured):
@@ -102,7 +141,8 @@ npm run dev
 Switching providers is a **config change only** — no code edits:
 
 ```bash
-EMBED_PROVIDER=gemini npm run build:kb   # re-index with Gemini
+EMBED_PROVIDER=cloudflare npm run build:kb   # re-index with Cloudflare bge-m3
+EMBED_PROVIDER=gemini     npm run build:kb   # re-index with Gemini
 ```
 
 ## Rotating / changing the LLM
@@ -114,12 +154,14 @@ logic is required beyond setting the new values.
 
 ## Troubleshooting
 
-- **503 "retrieval index needs an embedding API key"** — the deployed index was
-  built with the Gemini provider but `GEMINI_API_KEY` is missing at runtime.
-  Set it in the project env vars and redeploy.
+- **503 "retrieval index needs its embedding credentials"** — the deployed index
+  was built with the Cloudflare provider but `CLOUDFLARE_ACCOUNT_ID` /
+  `CLOUDFLARE_API_TOKEN` are missing at runtime. Set them and redeploy.
 - **503 "no LLM API key"** — `LLM_API_KEY` is missing.
+- **Replies look truncated or off-topic** — the chat model hit its quota and the
+  route fell through to a fallback model. Check the primary `LLM_MODEL`'s quota.
 - **Answers say "I don't have that information"** — the query fell below the
   relevance floor stored in the index (`minScore`, derived at build time from
-  the corpus). Either the topic is genuinely out of scope, or the KB
-  needs a chunk about it: add to `content/kb/*.md` and redeploy (the index
-  rebuilds automatically).
+  on/off-topic calibration probes). Either the topic is genuinely out of scope,
+  or the KB needs a chunk about it: add to `content/kb/*.md` and redeploy (the
+  index rebuilds automatically).

@@ -28,6 +28,26 @@ const OUT_FILE = join(process.cwd(), 'content', 'index.json');
 const MAX_CHARS = 700; // a chunk longer than this gets split further
 const OVERLAP = 120; // chars of overlap when a section must be split
 
+// Calibration probes for the out-of-scope floor. Kept generic (not Kyan-specific)
+// so they work for any portfolio corpus.
+const ON_TOPIC_PROBES = [
+  'who is this person',
+  'what is their background',
+  'what projects have they built',
+  'what skills do they have',
+  'how can I get in touch',
+  'siapa dia ini',
+  'apa saja keahliannya',
+];
+const OFF_TOPIC_PROBES = [
+  'how do I cook pasta',
+  'what is the weather tomorrow',
+  'who won the world cup',
+  'recommend a stock to buy',
+  'how do I fix a car engine',
+  'write a poem about the sea',
+];
+
 /**
  * Split one document into heading-aware chunks.
  */
@@ -117,32 +137,42 @@ async function main() {
   }
 
   // --- Derive the out-of-scope floor from the corpus itself -----------------
-  // A query is only "on-topic" if it is at least as similar to some chunk as
-  // two unrelated chunks are to each other. We measure that background level
-  // here (mean + 1 std of pairwise chunk similarity) and store it in the index,
-  // so the gate recalibrates automatically when the provider/model changes.
-  // This deliberately replaces a hand-tuned constant (the old 0.25 was tuned
-  // for MiniLM and became meaningless under Gemini's different score scale).
+  // The floor must separate "question about this person" from "unrelated
+  // question", but chunk-to-chunk similarity CANNOT measure that: every chunk
+  // is about the same person, so their mutual similarity sits high (~0.54 here)
+  // and a mean+k*std formula lands ABOVE the score of real questions, silently
+  // rejecting them.
+  //
+  // Instead we measure both classes directly with generic probes and place the
+  // floor in the gap between them. This recalibrates automatically when the
+  // provider/model changes, instead of relying on a hand-tuned constant that
+  // was only ever valid for one model's score scale.
   const norm = (v: number[]) => Math.sqrt(v.reduce((s, x) => s + x * x, 0));
   const cos = (a: number[], b: number[]) => {
     let s = 0;
     for (let i = 0; i < a.length; i++) s += a[i] * b[i];
     return s / (norm(a) * norm(b) || 1);
   };
-  const pair: number[] = [];
-  for (let i = 0; i < records.length; i++)
-    for (let j = i + 1; j < records.length; j++)
-      pair.push(cos(records[i].vector, records[j].vector));
-  const mean = pair.reduce((s, x) => s + x, 0) / (pair.length || 1);
-  const std = Math.sqrt(
-    pair.reduce((s, x) => s + (x - mean) ** 2, 0) / (pair.length || 1),
-  );
-  // Conservative floor: deliberately permissive so legitimate questions are
-  // never dropped. The system prompt is the real guardrail for anything that
-  // slips through.
-  const minScore = Math.round(Math.min(0.6, Math.max(0.35, mean + 1.5 * std)) * 1000) / 1000;
+  const topScore = (qv: number[]) =>
+    Math.max(...records.map((r) => cos(qv, r.vector)));
+
+  const onEmbs = await embedTexts(ON_TOPIC_PROBES, 'RETRIEVAL_QUERY', cfg);
+  const offEmbs = await embedTexts(OFF_TOPIC_PROBES, 'RETRIEVAL_QUERY', cfg);
+  const onScores = onEmbs.map(topScore);
+  const offScores = offEmbs.map(topScore);
+  const minOn = Math.min(...onScores);
+  const maxOff = Math.max(...offScores);
+
+  // The boundary between the two probe classes is our estimate of the floor.
+  // Taking the MIDPOINT is robust in both regimes: when the classes separate it
+  // centres the floor in the gap (maximum headroom both ways), and when they
+  // overlap slightly (noisy probes) it still splits the difference instead of
+  // being dragged to the high side by a single outlier probe.
+  const raw = (minOn + maxOff) / 2;
+  const minScore = Math.round(Math.min(0.6, Math.max(0.3, raw)) * 1000) / 1000;
   console.log(
-    `[kb] chunk-similarity mean=${mean.toFixed(3)} std=${std.toFixed(3)} -> minScore=${minScore}`,
+    `[kb] floor calibration: on-topic min=${minOn.toFixed(3)} off-topic max=${maxOff.toFixed(3)}` +
+      ` -> minScore=${minScore}`,
   );
 
   const payload = {

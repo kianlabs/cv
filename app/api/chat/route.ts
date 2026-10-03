@@ -51,6 +51,23 @@ function defaultKeyFor(baseUrl: string): string {
 
 const API_KEY = (process.env.LLM_API_KEY || defaultKeyFor(BASE_URL)).trim();
 
+/**
+ * Optional Cloudflare Access service token. When the LLM endpoint sits behind
+ * an Access application (e.g. a named tunnel), requests must present these two
+ * headers or Cloudflare rejects them at the edge with a 403 before they ever
+ * reach the gateway. Both are server-only secrets.
+ */
+const CF_ACCESS_CLIENT_ID = process.env.CF_ACCESS_CLIENT_ID ?? '';
+const CF_ACCESS_CLIENT_SECRET = process.env.CF_ACCESS_CLIENT_SECRET ?? '';
+
+function accessHeaders(): Record<string, string> {
+  if (!CF_ACCESS_CLIENT_ID || !CF_ACCESS_CLIENT_SECRET) return {};
+  return {
+    'CF-Access-Client-Id': CF_ACCESS_CLIENT_ID,
+    'CF-Access-Client-Secret': CF_ACCESS_CLIENT_SECRET,
+  };
+}
+
 /** Sensible default model for the configured endpoint. */
 function defaultModelFor(baseUrl: string): string {
   if (baseUrl.includes('api.cloudflare.com')) {
@@ -163,6 +180,7 @@ async function callModel(
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${API_KEY}`,
+        ...accessHeaders(),
       },
       body: JSON.stringify({
         model,

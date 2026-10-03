@@ -68,6 +68,8 @@ the tunnel are running.
    LLM_BASE_URL=https://llm.kianlabs.my.id/v1
    LLM_MODEL=ag/gemini-3.8-flash
    LLM_FALLBACKS=kr/claude-haiku-4.5,ag/gemini-3.7-flash
+   CF_ACCESS_CLIENT_ID=<service token client id>        # ends in .access
+   CF_ACCESS_CLIENT_SECRET=<service token client secret>
    ```
    Leave `LLM_API_KEY` empty — the route auto-selects `NINE_ROUTER_API_KEY`.
    The hostname is permanent, so this never needs updating.
@@ -79,6 +81,18 @@ the tunnel are running.
    ```
    Config lives in `~/.cloudflared/config.yml`; the unit in
    `~/.config/systemd/user/cloudflared-9router.service`.
+4. **Cloudflare Access (recommended).** The hostname is public, so it is fronted
+   by an Access application that rejects any request without a service token —
+   bot scans never reach the gateway. The app allows only `non_identity`
+   service-token traffic. To recreate it:
+   ```bash
+   # Zero Trust must be enabled once in the dashboard first.
+   # App: Zero Trust → Access → Applications → Self-hosted, domain
+   #      llm.kianlabs.my.id, policy "Service token only" (decision: non_identity)
+   # Token: Zero Trust → Access → Service Auth → Service Tokens
+   ```
+   Put the token's client id/secret in `CF_ACCESS_CLIENT_ID` /
+   `CF_ACCESS_CLIENT_SECRET`. Without them the edge returns 403.
 
 ### Deploy
 

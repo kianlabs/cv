@@ -24,8 +24,9 @@ PUBLIC_HOSTNAME="${TUNNEL_HOSTNAME:-llm.kianlabs.my.id}"
 SERVICE="cloudflared-9router.service"
 PORT="${NINE_ROUTER_PORT:-20128}"
 
-# Load the 9router key from .env.local when running from the repo, so the
-# reachability check below can actually authenticate.
+# Load credentials from .env.local when running from the repo, so the
+# reachability check below can actually authenticate (the 9router key, plus the
+# Cloudflare Access service token when the hostname is behind Access).
 if [ -z "${NINE_ROUTER_API_KEY:-}" ]; then
   for envfile in "$(dirname "$0")/../.env.local" "$HOME/Projects/stitchweb-portfolio-kyan/.env.local"; do
     if [ -f "$envfile" ]; then
@@ -36,6 +37,27 @@ if [ -z "${NINE_ROUTER_API_KEY:-}" ]; then
       fi
     fi
   done
+fi
+
+if [ -z "${CF_ACCESS_CLIENT_ID:-}" ]; then
+  for envfile in "$(dirname "$0")/../.env.local" "$HOME/Projects/stitchweb-portfolio-kyan/.env.local"; do
+    if [ -f "$envfile" ]; then
+      cid=$(sed -n 's/^CF_ACCESS_CLIENT_ID=//p' "$envfile" | head -1 | tr -d '"')
+      sec=$(sed -n 's/^CF_ACCESS_CLIENT_SECRET=//p' "$envfile" | head -1 | tr -d '"')
+      if [ -n "$cid" ] && [ -n "$sec" ]; then
+        export CF_ACCESS_CLIENT_ID="$cid" CF_ACCESS_CLIENT_SECRET="$sec"
+        break
+      fi
+    fi
+  done
+fi
+
+# Headers for the reachability probe: Access service token (when configured)
+# plus the 9router bearer key.
+probe_headers=(-H "Authorization: Bearer ${NINE_ROUTER_API_KEY:-x}")
+if [ -n "${CF_ACCESS_CLIENT_ID:-}" ] && [ -n "${CF_ACCESS_CLIENT_SECRET:-}" ]; then
+  probe_headers+=(-H "CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}")
+  probe_headers+=(-H "CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}")
 fi
 
 case "${1:-status}" in
@@ -63,8 +85,8 @@ case "${1:-status}" in
     echo
     systemctl --user --no-pager status "$SERVICE" 2>&1 | head -6 || true
     echo
-    if curl -sf -o /dev/null -m 20 "https://${PUBLIC_HOSTNAME}/v1/models" \
-         -H "Authorization: Bearer ${NINE_ROUTER_API_KEY:-x}"; then
+    if curl -sf -o /dev/null -m 20 "${probe_headers[@]}" \
+         "https://${PUBLIC_HOSTNAME}/v1/models"; then
       echo "reachable   : yes"
     else
       echo "reachable   : no (service running? PC online?)"

@@ -12,10 +12,10 @@ export default function Home() {
       <header data-nav className="sticky top-0 z-40 bg-white/70 dark:bg-ink/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800">
         <nav className="max-w-3xl w-full mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-4 sm:gap-6">
-            <div className="w-7 h-7 shrink-0 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black flex items-center justify-center font-bold text-[11px] tracking-wider">
-              RP
-            </div>
-            <div className="flex items-center gap-3 sm:gap-4 text-[11px] sm:text-[13px] text-gray-500 dark:text-gray-400 whitespace-nowrap">
+            <span className="shrink-0 font-bold text-[15px] sm:text-[17px] tracking-wider text-gray-900 dark:text-white">
+              RBP
+            </span>
+            <div className="flex items-center gap-3 sm:gap-4 text-[13px] sm:text-[15px] text-gray-500 dark:text-gray-400 whitespace-nowrap">
               <a href="#projects" className="hover:text-gray-900 dark:hover:text-white transition-colors">Projects</a>
               <a href="#experience" className="hover:text-gray-900 dark:hover:text-white transition-colors">Experience</a>
               <a href="#featured" className="hover:text-gray-900 dark:hover:text-white transition-colors">Highlights</a>

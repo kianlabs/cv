@@ -25,7 +25,7 @@ The chat is a real RAG pipeline, not a hard-coded prompt:
 
 `content/index.json` is the single source of truth for the embedding config:
 query and chunk vectors are always produced in the same space. Switching
-provider (Gemini ↔ local) is a config change, no code change.
+provider (Cloudflare ↔ Gemini) is a config change, no code change.
 
 ## Getting started
 
@@ -41,10 +41,11 @@ npm run dev                  # http://localhost:3000
 `.env.example` documents every variable. In short:
 
 - **LLM** (`LLM_BASE_URL` / `LLM_MODEL` / `LLM_API_KEY`) — any OpenAI-compatible
-  endpoint. Production uses Google Gemini's OpenAI-compatible API.
+  endpoint. Production points at the 9router gateway through a Cloudflare tunnel
+  (see `DEPLOY.md`), or Cloudflare Workers AI.
 - **Embeddings** — the provider is decided by `content/index.json`. The matching
-  key must be present at runtime: `GEMINI_API_KEY` for the `gemini` provider, or
-  nothing for the `local` provider (downloads a model at build time).
+  key must be present at runtime: `CLOUDFLARE_ACCOUNT_ID` + `CLOUDFLARE_API_TOKEN`
+  for the `cloudflare` provider, or `GEMINI_API_KEY` for `gemini`.
 
 Secrets live only in `.env.local` (gitignored). Never commit real keys.
 
@@ -56,7 +57,6 @@ Secrets live only in `.env.local` (gitignored). Never commit real keys.
 | `npm run build` | Production build (runs `build:kb` first via `prebuild`) |
 | `npm run build:kb` | Rebuild `content/index.json` |
 | `npm run test:rag` | Retrieval test suite |
-| `npm run bench:embed` | Embedding latency benchmark |
 | `npm run lint` | ESLint |
 
 ## Deploy

@@ -7,20 +7,16 @@
  * Making the index the single source of truth removes that failure mode.
  *
  * Providers:
- *   - "gemini": Google Gemini text embeddings, called server-side. No download
- *     for the visitor, no native binaries in the serverless bundle.
  *   - "cloudflare": Cloudflare Workers AI (@cf/baai/bge-m3), called server-side.
- *     Multilingual (100+ languages) and faster than Gemini from the edge.
- *   - "local":  a transformers.js model (Xenova/all-MiniLM-L6-v2). Loaded lazily
- *     with webpackIgnore so it is never traced into the serverless bundle; used
- *     for offline/local development only.
+ *     Multilingual (100+ languages), fast from the edge.
+ *   - "gemini": Google Gemini text embeddings, called server-side.
  *
  * All vectors are L2-normalised before returning, so cosine similarity is just
  * a dot product (see lib/rag.ts).
  */
 
 export interface EmbedderConfig {
-  provider: 'gemini' | 'cloudflare' | 'local';
+  provider: 'gemini' | 'cloudflare';
   model: string;
   dims: number;
 }
@@ -162,43 +158,10 @@ async function cloudflareEmbed(
   return out;
 }
 
-// --- Local implementation ---------------------------------------------------
-
-type LocalPipe = (
-  text: string,
-  opts: { pooling: 'mean'; normalize: boolean },
-) => Promise<{ data: Float32Array | number[] }>;
-
-let localPipe: Promise<LocalPipe> | null = null;
-
-function getLocalPipe(model: string): Promise<LocalPipe> {
-  if (!localPipe) {
-    localPipe = (async () => {
-      // webpackIgnore keeps this out of the serverless bundle: it is a native
-      // runtime import, only ever executed when the index says provider=local.
-      const modName = '@huggingface/transformers';
-      const { pipeline } = await import(/* webpackIgnore: true */ modName);
-      return (await pipeline('feature-extraction', model)) as unknown as LocalPipe;
-    })();
-  }
-  return localPipe;
-}
-
-async function localEmbed(texts: string[], model: string): Promise<number[][]> {
-  const pipe = await getLocalPipe(model);
-  const out: number[][] = [];
-  for (const text of texts) {
-    const res = await pipe(text, { pooling: 'mean', normalize: true });
-    out.push(Array.from(res.data));
-  }
-  return out;
-}
-
 // --- Public API -------------------------------------------------------------
 
 /** Whether the given config can actually run (e.g. has its API key). */
 export function isConfigured(cfg: EmbedderConfig): boolean {
-  if (cfg.provider === 'local') return true;
   if (cfg.provider === 'cloudflare') {
     const { account, token } = cloudflareCreds();
     return !!account && !!token;
@@ -218,11 +181,9 @@ export async function embedTexts(
 ): Promise<number[][]> {
   if (!texts.length) return [];
   const raw =
-    cfg.provider === 'local'
-      ? await localEmbed(texts, cfg.model)
-      : cfg.provider === 'cloudflare'
-        ? await cloudflareEmbed(texts, cfg.model)
-        : await geminiEmbed(texts, task, cfg.model, cfg.dims);
+    cfg.provider === 'cloudflare'
+      ? await cloudflareEmbed(texts, cfg.model)
+      : await geminiEmbed(texts, task, cfg.model, cfg.dims);
   return raw.map(l2normalize);
 }
 
@@ -237,24 +198,22 @@ export async function embedQuery(
 
 /** Read the embedder config from the environment (used by the build script). */
 export function configFromEnv(): EmbedderConfig {
-  const provider = (process.env.EMBED_PROVIDER ?? 'gemini').toLowerCase();
-  if (provider === 'local') {
+  const provider = (process.env.EMBED_PROVIDER ?? 'cloudflare').toLowerCase();
+  if (provider === 'gemini') {
     return {
-      provider: 'local',
-      model: process.env.LOCAL_EMBED_MODEL ?? 'Xenova/all-MiniLM-L6-v2',
-      dims: 384,
+      provider: 'gemini',
+      model: process.env.GEMINI_EMBED_MODEL ?? 'gemini-embedding-001',
+      dims: Number(process.env.GEMINI_EMBED_DIMS ?? 768) || 768,
     };
   }
-  if (provider === 'cloudflare') {
-    return {
-      provider: 'cloudflare',
-      model: process.env.CLOUDFLARE_EMBED_MODEL ?? '@cf/baai/bge-m3',
-      dims: Number(process.env.CLOUDFLARE_EMBED_DIMS ?? 1024) || 1024,
-    };
+  if (provider !== 'cloudflare') {
+    throw new Error(
+      `Unknown EMBED_PROVIDER "${provider}" (expected "cloudflare" or "gemini")`,
+    );
   }
   return {
-    provider: 'gemini',
-    model: process.env.GEMINI_EMBED_MODEL ?? 'gemini-embedding-001',
-    dims: Number(process.env.GEMINI_EMBED_DIMS ?? 768) || 768,
+    provider: 'cloudflare',
+    model: process.env.CLOUDFLARE_EMBED_MODEL ?? '@cf/baai/bge-m3',
+    dims: Number(process.env.CLOUDFLARE_EMBED_DIMS ?? 1024) || 1024,
   };
 }

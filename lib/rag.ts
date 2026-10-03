@@ -1,19 +1,11 @@
 /**
  * Retrieval for the portfolio chat assistant (RAG).
  *
- * The knowledge base is embedded OFFLINE at build time (scripts/build-kb.mts)
- * into content/index.json. At request time we only embed the visitor's query
- * (locally, same model).
- *
- * Retrieval is HYBRID: it fuses
- *   1. dense  — cosine similarity between the query and chunk embeddings, and
- *   2. sparse — a BM25 lexical score over the chunk text,
- * using Reciprocal Rank Fusion (RRF). Pure vector search misses exact keyword
- * matches ("projects", "GPA", a project name); pure keyword search misses
- * paraphrases. Fusing both gives noticeably better top-k on a small corpus.
- *
- * No vector database is needed: the corpus is tiny, so an exact in-memory scan
- * is instant. Everything here is SERVER-ONLY (imported by the API route only).
+ * The knowledge base is embedded at build time (scripts/build-kb.mts) into
+ * content/index.json; at request time we only embed the visitor's query with
+ * the same model. Retrieval is hybrid — dense cosine fused with BM25 lexical
+ * via Reciprocal Rank Fusion. No vector database: the corpus is tiny, so an
+ * exact in-memory scan is instant. SERVER-ONLY (imported by the API route).
  */
 import indexData from '@/content/index.json';
 import { embedQuery, isConfigured, type EmbedderConfig } from '@/lib/embed';
@@ -33,7 +25,7 @@ interface IndexRecord {
 }
 
 const INDEX = indexData as {
-  provider: 'gemini' | 'cloudflare' | 'local';
+  provider: 'gemini' | 'cloudflare';
   model: string;
   dims: number;
   count: number;
@@ -41,11 +33,10 @@ const INDEX = indexData as {
   records: IndexRecord[];
 };
 
-// The index is the SINGLE SOURCE OF TRUTH for how queries must be embedded.
-// There is deliberately no separate runtime model env var: if the index and the
-// runtime disagreed, query vectors would live in a different space from chunk
-// vectors and retrieval would be silently meaningless. Deriving the config from
-// the index makes that failure mode impossible by construction.
+// The index is the single source of truth for how queries must be embedded.
+// There is deliberately no separate runtime model env var: a mismatch would put
+// query and chunk vectors in different spaces, making retrieval silently
+// meaningless.
 const EMBEDDER: EmbedderConfig = {
   provider: INDEX.provider,
   model: INDEX.model,
@@ -63,19 +54,11 @@ export function embedderInfo(): string {
 }
 
 // --- Out-of-scope gate ------------------------------------------------------
-// Raw cosine is used directly: measured against this corpus it separates
-// in-scope from out-of-scope questions far better than mean-centered cosine,
-// z-scores or raw BM25.
-//
-// The floor is NOT a hand-tuned constant: build-kb.mts derives it from the
-// corpus itself (the distribution of how similar chunks are to each other) and
-// stores it in the index, so switching embedding provider/model recalibrates
-// automatically instead of silently breaking the gate.
-//
-// The gate is deliberately CONSERVATIVE (biased to let queries through). Its
-// job is only to skip the LLM for obviously unrelated input; the system prompt
-// is the real guardrail and reliably declines off-topic questions. A too-strict
-// gate would reject legitimate questions, which is a far worse failure.
+// The floor is derived at build time from on/off-topic calibration probes and
+// stored in the index, so switching provider/model recalibrates automatically
+// instead of silently breaking the gate. Deliberately conservative: it only
+// skips the LLM for obviously unrelated input, and the system prompt is the
+// real guardrail. Rejecting a legitimate question is the worse failure.
 const MIN_SCORE = INDEX.minScore ?? 0.5;
 const RRF_K = 60; // standard RRF constant
 // Dense (semantic) ranking is trusted more than lexical: paraphrased questions
@@ -136,9 +119,6 @@ function bm25Scores(queryTokens: string[]): number[] {
   }
   return scores;
 }
-
-// --- Embedding --------------------------------------------------------------
-// Provided by lib/embed.ts (Gemini in production, local transformers.js in dev).
 
 // --- Similarity -------------------------------------------------------------
 

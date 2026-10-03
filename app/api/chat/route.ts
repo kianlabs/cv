@@ -3,25 +3,13 @@ import { rateLimit, clientIp } from '@/lib/rate-limit';
 import { buildSystemPrompt, OUT_OF_SCOPE_REPLY } from '@/lib/persona';
 import { retrieve, formatContext, sourcesOf, retrievalConfigured, embedderInfo } from '@/lib/rag';
 
-// Node runtime: this route talks to an OpenAI-compatible LLM endpoint and reads
-// a server-only API key from the environment. The key never reaches the browser.
+// Node runtime: reads a server-only API key that never reaches the browser.
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 // --- LLM endpoint (provider-agnostic, OpenAI-compatible) --------------------
-// Production: Cloudflare Workers AI (OpenAI-compatible), so a single provider
-// and a single token serve BOTH chat and embeddings.
-// Local dev: the 9router gateway. Both are configured purely via env vars, so
-// switching provider is a config change, not a code change.
-//
-//   LLM_BASE_URL   e.g. https://api.cloudflare.com/client/v4/accounts/<id>/ai/v1
-//                       http://127.0.0.1:20128/v1           (local 9router)
-//   LLM_API_KEY    server-only secret
-//   LLM_MODEL      e.g. @cf/meta/llama-3.3-70b-instruct-fp8-fast
-//   LLM_FALLBACKS  comma-separated fallback model ids (optional)
-//
-// CLOUDFLARE_* and NINE_ROUTER_* are honoured as fallbacks so one token can
-// serve both chat and embeddings without duplicating the secret.
+// Configured purely via env vars (LLM_BASE_URL / LLM_API_KEY / LLM_MODEL /
+// LLM_FALLBACKS), so switching provider is a config change, not a code change.
 const BASE_URL = (
   process.env.LLM_BASE_URL ||
   process.env.NINE_ROUTER_BASE_URL ||
@@ -29,14 +17,9 @@ const BASE_URL = (
 ).replace(/\/$/, '');
 
 /**
- * Pick the matching credential for the configured endpoint. Deriving it from
- * the URL (rather than a flat fallback chain) means a Cloudflare token can never
- * be sent to the 9router, or vice versa — a mismatch that would otherwise fail
- * with a confusing 401.
- *
- * Cloudflare's own endpoint is the only one that wants CLOUDFLARE_API_TOKEN;
- * everything else (localhost, a quick tunnel, or a named tunnel like
- * llm.kianlabs.my.id) is the 9router gateway.
+ * Pick the credential matching the configured endpoint. Deriving it from the
+ * URL (not a flat fallback chain) means a Cloudflare token can never be sent to
+ * the 9router, or vice versa — a mismatch that would fail with a confusing 401.
  */
 function defaultKeyFor(baseUrl: string): string {
   if (baseUrl.includes('api.cloudflare.com')) {
@@ -53,9 +36,8 @@ const API_KEY = (process.env.LLM_API_KEY || defaultKeyFor(BASE_URL)).trim();
 
 /**
  * Optional Cloudflare Access service token. When the LLM endpoint sits behind
- * an Access application (e.g. a named tunnel), requests must present these two
- * headers or Cloudflare rejects them at the edge with a 403 before they ever
- * reach the gateway. Both are server-only secrets.
+ * an Access application, requests must present these headers or Cloudflare
+ * rejects them at the edge with a 403. Both are server-only secrets.
  */
 const CF_ACCESS_CLIENT_ID = process.env.CF_ACCESS_CLIENT_ID ?? '';
 const CF_ACCESS_CLIENT_SECRET = process.env.CF_ACCESS_CLIENT_SECRET ?? '';
@@ -100,16 +82,14 @@ const MAX_MESSAGES = 12; // cap conversation history sent upstream
 const MAX_CONTENT_CHARS = 2_000; // per-message cap
 const MAX_BODY_BYTES = 24_000; // reject oversized request bodies early
 
-// --- Abuse protection -------------------------------------------------------
-// Per-IP sliding window. Defaults: 12 requests / 60s. Tune with env vars.
+// Per-IP sliding window (defaults: 12 requests / 60s).
 const RATE_LIMIT_MAX = Number(process.env.NINE_ROUTER_RATE_LIMIT_MAX ?? 12) || 12;
 const RATE_LIMIT_WINDOW_MS =
   (Number(process.env.NINE_ROUTER_RATE_LIMIT_WINDOW_SEC ?? 60) || 60) * 1000;
 
 /**
- * Only allow browser requests that come from this same site (or an explicitly
- * allowed origin). Non-browser callers (no Origin header) are left to the rate
- * limiter. This stops other websites from embedding/abusing the endpoint.
+ * Only allow browser requests from this same site (or an allow-listed origin).
+ * Non-browser callers (no Origin header) are left to the rate limiter.
  */
 function originAllowed(request: Request): boolean {
   const origin = request.headers.get('origin');
@@ -228,7 +208,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          'Chat is not configured: the retrieval index needs its embedding credentials (e.g. CLOUDFLARE_ACCOUNT_ID + CLOUDFLARE_API_TOKEN, or GEMINI_API_KEY), or rebuild the index with EMBED_PROVIDER=local for offline use.',
+          'Chat is not configured: the retrieval index needs its embedding credentials (CLOUDFLARE_ACCOUNT_ID + CLOUDFLARE_API_TOKEN, or GEMINI_API_KEY).',
       },
       { status: 503 },
     );
@@ -297,9 +277,8 @@ export async function POST(request: Request) {
     );
   }
 
-  // 4. Retrieval (RAG): embed the latest user question locally and pull the
-  //    most relevant knowledge-base chunks. The corpus is tiny and the index
-  //    is precomputed, so this is an exact in-memory cosine scan.
+  // 4. Retrieval (RAG): embed the latest user question and pull the most
+  //    relevant knowledge-base chunks (exact in-memory scan over a tiny corpus).
   const lastUser = [...messages].reverse().find((m) => m.role === 'user');
   let chunks: Awaited<ReturnType<typeof retrieve>> = [];
   try {
@@ -311,8 +290,7 @@ export async function POST(request: Request) {
   const systemPrompt = buildSystemPrompt(formatContext(chunks));
   const sources = sourcesOf(chunks);
 
-  // No grounded context for the question -> skip the model entirely and reply
-  // with the out-of-scope message. Saves a call and keeps answers honest.
+  // No grounded context -> skip the model and reply with the out-of-scope text.
   if (!chunks.length) {
     return NextResponse.json(
       { reply: OUT_OF_SCOPE_REPLY, model: 'none', sources: [] },
@@ -347,8 +325,7 @@ export async function POST(request: Request) {
 }
 
 /**
- * Health/diagnostic probe. Reports only whether the service is wired up — it
- * never echoes keys or prompt content. Useful to verify a deployment.
+ * Health probe: reports only whether the service is wired up, never any secret.
  */
 export async function GET() {
   return NextResponse.json(

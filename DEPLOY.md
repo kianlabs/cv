@@ -9,7 +9,7 @@ are Cloudflare Workers AI (embeddings) and any OpenAI-compatible chat endpoint
 
 | Concern | How it is handled |
 | --- | --- |
-| Native ML binary (onnxruntime, 548 MB) | **Not used in production.** Embeddings are computed by the Cloudflare API server-side. The local transformers.js path is dev-only and excluded from the bundle (`outputFileTracingExcludes`). |
+| Native ML binary (onnxruntime, 548 MB) | **Not installed at all.** Embeddings are computed by the Cloudflare API server-side; there is no local model dependency. |
 | Serverless function size (250 MB limit) | The `/api/chat` function traces to **~0.8 MB** (see "Verify" below). |
 | API keys leaking to the browser | All keys are server-only env vars read inside the route; nothing is prefixed `NEXT_PUBLIC_`. |
 | Cold starts | No native model to load; the function is tiny, so cold starts are fast. |
@@ -151,16 +151,16 @@ curl -s https://YOUR-APP.vercel.app/api/chat \
   -d '{"messages":[{"role":"user","content":"what projects has he built?"}]}' | head -c 400
 ```
 
-## Local development (unchanged)
+## Local development
 
-Local dev can use the offline embedding provider and the local 9router, so no
-cloud key is needed and nothing is uploaded:
+Local dev uses the same Cloudflare embeddings and the local 9router, so the
+index matches production exactly:
 
 ```bash
 # .env.local (already configured):
-#   EMBED_PROVIDER=local
-#   NINE_ROUTER_BASE_URL=http://127.0.0.1:20128/v1
-npm run build:kb   # indexes with Xenova/all-MiniLM-L6-v2 (offline)
+#   EMBED_PROVIDER=cloudflare
+#   LLM_BASE_URL=http://127.0.0.1:20128/v1
+npm run build:kb
 npm run dev
 ```
 

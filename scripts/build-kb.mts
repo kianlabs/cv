@@ -2,20 +2,13 @@
  * Build-time indexer for the RAG knowledge base.
  *
  * Reads every markdown file in content/kb, splits it into heading-aware chunks,
- * embeds each chunk with the SAME provider the app uses at request time
- * (lib/embed.ts) and writes content/index.json.
+ * embeds each chunk with the same provider the app uses at request time
+ * (lib/embed.ts) and writes content/index.json. Run with: npm run build:kb
  *
- * Run with:  npm run build:kb
- *
- * IMPORTANT: the index must be built with the same embedding model the runtime
- * uses, otherwise query vectors and chunk vectors live in different spaces and
- * retrieval silently breaks. lib/rag.ts asserts this at load time.
- *
- * Chunking strategy: split on markdown headings (##, ###) so each chunk covers
- * a single topic. Mixed-topic chunks produce "averaged" embeddings that match
- * everything weakly; single-topic chunks match their subject strongly. The
- * document title (H1) is prefixed to every chunk so keyword matching keeps the
- * top-level topic ("Projects", "Skills", ...).
+ * Chunking splits on markdown headings so each chunk covers one topic: a
+ * mixed-topic chunk embeds to an average that matches everything weakly, while
+ * a single-topic chunk matches its subject strongly. The document H1 is
+ * prefixed to every chunk so keyword matching keeps the top-level topic.
  */
 import './load-env.mts';
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
@@ -28,8 +21,8 @@ const OUT_FILE = join(process.cwd(), 'content', 'index.json');
 const MAX_CHARS = 700; // a chunk longer than this gets split further
 const OVERLAP = 120; // chars of overlap when a section must be split
 
-// Calibration probes for the out-of-scope floor. Kept generic (not Kyan-specific)
-// so they work for any portfolio corpus.
+// Calibration probes for the out-of-scope floor; kept generic so they work for
+// any portfolio corpus.
 const ON_TOPIC_PROBES = [
   'who is this person',
   'what is their background',
@@ -137,16 +130,11 @@ async function main() {
   }
 
   // --- Derive the out-of-scope floor from the corpus itself -----------------
-  // The floor must separate "question about this person" from "unrelated
-  // question", but chunk-to-chunk similarity CANNOT measure that: every chunk
-  // is about the same person, so their mutual similarity sits high (~0.54 here)
-  // and a mean+k*std formula lands ABOVE the score of real questions, silently
-  // rejecting them.
-  //
-  // Instead we measure both classes directly with generic probes and place the
-  // floor in the gap between them. This recalibrates automatically when the
-  // provider/model changes, instead of relying on a hand-tuned constant that
-  // was only ever valid for one model's score scale.
+  // Chunk-to-chunk similarity cannot separate "question about this person" from
+  // "unrelated question" (every chunk is about the same person, so mutual
+  // similarity sits high and a mean+k*std floor lands above real questions).
+  // Instead we score both classes with generic probes and put the floor in the
+  // gap between them, so it recalibrates when the provider/model changes.
   const norm = (v: number[]) => Math.sqrt(v.reduce((s, x) => s + x * x, 0));
   const cos = (a: number[], b: number[]) => {
     let s = 0;
@@ -163,11 +151,9 @@ async function main() {
   const minOn = Math.min(...onScores);
   const maxOff = Math.max(...offScores);
 
-  // The boundary between the two probe classes is our estimate of the floor.
-  // Taking the MIDPOINT is robust in both regimes: when the classes separate it
-  // centres the floor in the gap (maximum headroom both ways), and when they
-  // overlap slightly (noisy probes) it still splits the difference instead of
-  // being dragged to the high side by a single outlier probe.
+  // Midpoint of the two probe classes: centres the floor in the gap when they
+  // separate, and still splits the difference (rather than being dragged high
+  // by an outlier) when noisy probes overlap slightly.
   const raw = (minOn + maxOff) / 2;
   const minScore = Math.round(Math.min(0.6, Math.max(0.3, raw)) * 1000) / 1000;
   console.log(

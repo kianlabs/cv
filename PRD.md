@@ -1,5 +1,19 @@
 # PRD — Portfolio Website (repo: `cv`)
 
+## 0. REVISI v7 — Rampingkan kode & kunci stack (Cloudflare + 9router)
+
+**Perubahan dari v6:** kode dibersihkan dari sisa jalur provider yang tak terpakai dan seluruh dokumentasi diselaraskan dengan stack final.
+
+**Yang berubah:**
+- **Provider embedding `local` dihapus** (`lib/embed.ts`). Jalur transformers.js/onnxruntime (548 MB) tidak pernah dipakai karena produksi memakai Cloudflare bge-m3; `EMBED_PROVIDER` kini hanya menerima `cloudflare` atau `gemini`, dan nilai tak dikenal langsung gagal saat build (bukan diam-diam jatuh ke default).
+- **Dependensi `@huggingface/transformers` dibuang** (beserta `onnxruntime-node`/`onnxruntime-web`/`protobufjs` yang transitif) — `node_modules` turun drastis dan `next.config.js` tidak lagi perlu `serverComponentsExternalPackages`/`outputFileTracingExcludes` untuk paket native.
+- **Script `bench:embed` dihapus** (`scripts/bench-embed.mts`).
+- **Dokumentasi diselaraskan**: README/DEPLOY/.env.example tidak lagi menyebut produksi memakai Gemini atau provider `local`; embedding produksi = Cloudflare Workers AI `@cf/baai/bge-m3` (1024-dim).
+- **Formula kalibrasi floor diperbaiki di komentar**: kode memakai **midpoint** antara probe on-topic & off-topic (bukan `mean + 1.5σ` seperti tertulis di v6); ambang dikunci ke rentang 0.3–0.6.
+- **Kompleksitas komentar dipangkas** agar kode terbaca, tanpa menghilangkan alasan desain yang penting (kalibrasi floor, single-source-of-truth index, gate dua lapis).
+
+**Stack final:** Next.js 14 (App Router) · Vercel Hobby · Cloudflare Workers AI (embedding) · 9router `ag/gemini-3.8-flash` via Cloudflare Named Tunnel `llm.kianlabs.my.id` + Cloudflare Access Service Token.
+
 ## 0. REVISI v6 — Deploy Vercel-only (cloud, tanpa server lokal)
 
 **Perubahan dari v5:** arsitektur RAG di-*generalize* agar bisa jalan **sepenuhnya di Vercel free tier** tanpa 9router lokal maupun VPS.

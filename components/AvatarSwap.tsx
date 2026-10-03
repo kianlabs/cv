@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface AvatarImage {
   src: string;
@@ -8,33 +8,41 @@ interface AvatarImage {
   position?: string;
 }
 
-const CELLS = 12; // 12x12 grid, same as renlenon
+// 12x12 grid, same as the reference implementation.
+const GRID = 12;
+const PIXELS = GRID * GRID;
+const CELL_PCT = 100 / GRID;
 
-// --- Timing (ms) — tuned so the image swap happens while fully masked ---
-const COVER_MS = 150; // pixel fade-in duration
-const COVER_STAGGER = 110; // max random delay while covering
-const HOLD_MS = 90; // fully covered hold before the swap
-const REVEAL_MS = 260; // pixel fade-out duration
-const REVEAL_STAGGER = 70; // max random delay while revealing
-const IMG_FADE_MS = 320; // image crossfade duration
-
-const SWAP_AT = COVER_MS + COVER_STAGGER + HOLD_MS; // ~350ms — image swaps here
-const DONE_AT = SWAP_AT + REVEAL_MS + REVEAL_STAGGER + 60; // ~740ms — idle again
-const EASE = 'cubic-bezier(0.4, 0, 0.2, 1)';
+// One "pass" = every pixel toggling once, in random order, over this window.
+// Kept a little shorter than the swap so the card is fully covered first.
+const PASS_MS = 400;
+const SWAP_AT = PASS_MS; // image swaps here, while fully masked
+const CYCLE_MS = PASS_MS * 2; // cover pass + reveal pass
 
 /**
- * Pixelated image card, modelled on renlenon.vercel.app: a random grid of
- * white pixels flashes over the image, the image crossfades while it is
- * covered, then the pixels flash away. Triggered by hover/focus (desktop) or
- * tap (touch), and also auto-cycles on a timer. Pure CSS transitions.
+ * Random per-pixel delays. Capped below the pass length so every pixel has
+ * finished before the image swaps (no half-covered frame).
+ */
+function makeDelays(): number[] {
+  return Array.from({ length: PIXELS }, () => Math.random() * PASS_MS * 0.9);
+}
+
+// Deterministic all-zero delays: the server and the first client render must
+// agree, so the random order cannot be generated during render. It is set on
+// mount, before the first animation can run.
+const NO_DELAYS: number[] = Array.from({ length: PIXELS }, () => 0);
+
+/**
+ * Pixelated avatar swap, modelled on renlenon.vercel.app.
  *
- * Smoothness notes:
- * - Per-cell random delays are computed ONCE (useMemo) — never in render — so
- *   the stagger is stable and no jitter is introduced on re-render.
- * - Images crossfade (opacity transition) so even a partial mask never shows a
- *   hard cut.
- * - The overlay is promoted to its own compositor layer (translateZ) and the
- *   images hint `will-change: opacity` for GPU-composited, tear-free fades.
+ * A grid of white pixels pops in — one at a time, in random order, with no
+ * fade (the reference tweens `display` with a 0ms duration) — the image swaps
+ * while the card is fully masked, then the pixels pop out the same way. The
+ * crisp instant toggles are what make it read as a pixel dissolve rather than
+ * a blurry fade.
+ *
+ * Triggered by hover/focus (desktop), tap (touch) and an auto-cycle timer.
+ * Pure CSS transitions — no animation library.
  */
 export default function AvatarSwap({
   images,
@@ -47,41 +55,54 @@ export default function AvatarSwap({
   autoSwapMs?: number;
   className?: string;
 }) {
-  const [active, setActive] = useState(0); // which image is showing
-  const [covered, setCovered] = useState(false); // pixels visible
+  const [active, setActive] = useState(0);
+  const [masked, setMasked] = useState(false);
+  const [delays, setDelays] = useState<number[]>(NO_DELAYS);
   const [isTouch, setIsTouch] = useState(false);
-  const busy = useRef(false);
 
-  // Stable per-cell stagger, computed once — avoids re-randomising on render.
-  const cellDelays = useMemo(
-    () =>
-      Array.from({ length: CELLS * CELLS }, () => ({
-        in: Math.random() * COVER_STAGGER,
-        out: Math.random() * REVEAL_STAGGER,
-      })),
-    [],
-  );
+  const busy = useRef(false);
+  const swapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const endTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setIsTouch(
-      'ontouchstart' in window ||
-        window.matchMedia('(pointer: coarse)').matches,
+      'ontouchstart' in window || window.matchMedia('(pointer: coarse)').matches,
     );
   }, []);
 
+  useEffect(
+    () => () => {
+      if (swapTimer.current) clearTimeout(swapTimer.current);
+      if (endTimer.current) clearTimeout(endTimer.current);
+    },
+    [],
+  );
+
   const trigger = useCallback(() => {
+    // Ignore re-triggers mid-animation so a cycle always plays out in full.
     if (busy.current || images.length < 2) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setActive((i) => (i + 1) % images.length);
       return;
     }
+
     busy.current = true;
-    setCovered(true); // pixels fade in (random stagger via stable delays)
-    window.setTimeout(() => setActive((i) => (i + 1) % images.length), SWAP_AT);
-    window.setTimeout(() => setCovered(false), SWAP_AT + 20); // pixels fade out
-    window.setTimeout(() => {
+
+    // Cover pass: fresh random order, pixels pop on.
+    setDelays(makeDelays());
+    setMasked(true);
+
+    swapTimer.current = setTimeout(() => {
+      // Swap while fully covered, then start the reveal pass with a new
+      // random order so the two passes do not mirror each other.
+      setActive((i) => (i + 1) % images.length);
+      setDelays(makeDelays());
+      setMasked(false);
+    }, SWAP_AT);
+
+    endTimer.current = setTimeout(() => {
       busy.current = false;
-    }, DONE_AT);
+    }, CYCLE_MS);
   }, [images.length]);
 
   // Auto-cycle so it animates even without hover (and on touch devices).
@@ -116,7 +137,6 @@ export default function AvatarSwap({
           style={{
             objectPosition: img.position ?? 'center top',
             opacity: i === active ? 1 : 0,
-            transition: `opacity ${IMG_FADE_MS}ms ${EASE}`,
             willChange: 'opacity',
             transform: 'translateZ(0)',
             backfaceVisibility: 'hidden',
@@ -125,25 +145,22 @@ export default function AvatarSwap({
         />
       ))}
 
-      {/* Pixel overlay: random white squares that flash to mask the swap. */}
+      {/* Pixel mask: each cell toggles instantly after its own random delay. */}
       <div
         className="pointer-events-none absolute inset-0 z-[3]"
         style={{ transform: 'translateZ(0)' }}
       >
-        {Array.from({ length: CELLS * CELLS }).map((_, i) => (
+        {Array.from({ length: PIXELS }).map((_, i) => (
           <span
             key={i}
             className="absolute bg-white"
             style={{
-              width: `${100 / CELLS}%`,
-              height: `${100 / CELLS}%`,
-              left: `${(i % CELLS) * (100 / CELLS)}%`,
-              top: `${Math.floor(i / CELLS) * (100 / CELLS)}%`,
-              opacity: covered ? 1 : 0,
-              transition: `opacity ${covered ? COVER_MS : REVEAL_MS}ms ${EASE}`,
-              transitionDelay: covered
-                ? `${cellDelays[i].in.toFixed(0)}ms`
-                : `${cellDelays[i].out.toFixed(0)}ms`,
+              width: `${CELL_PCT}%`,
+              height: `${CELL_PCT}%`,
+              left: `${(i % GRID) * CELL_PCT}%`,
+              top: `${Math.floor(i / GRID) * CELL_PCT}%`,
+              opacity: masked ? 1 : 0,
+              transition: `opacity 1ms linear ${delays[i].toFixed(0)}ms`,
             }}
           />
         ))}

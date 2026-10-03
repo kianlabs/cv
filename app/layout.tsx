@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { JetBrains_Mono } from "next/font/google";
+import MotionProvider from "@/components/MotionProvider";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -41,6 +42,10 @@ export const metadata: Metadata = {
 
 const themeInit = `(function(){try{var s=localStorage.getItem('theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches;var dark=s?s==='dark':m;document.documentElement.classList.toggle('dark',dark);}catch(e){document.documentElement.classList.add('dark');}})();`;
 
+// Hide GSAP-animated blocks before paint, and guarantee they reappear even if
+// the motion script never runs (bundler error, blocked chunk, old browser).
+const motionInit = `(function(){var r=document.documentElement;r.classList.add('gsap-init');window.setTimeout(function(){r.classList.remove('gsap-init');},2500);})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -50,11 +55,13 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
+        <script dangerouslySetInnerHTML={{ __html: motionInit }} />
       </head>
       <body
         className={`${GeistSans.variable} ${jetbrainsMono.variable} font-sans antialiased bg-white text-gray-900 dark:bg-ink dark:text-white min-h-screen flex flex-col overflow-x-clip`}
       >
         {children}
+        <MotionProvider />
       </body>
     </html>
   );

@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <>
       {/* NAVBAR */}
-      <header className="sticky top-0 z-40 bg-white/70 dark:bg-ink/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800">
+      <header data-nav className="sticky top-0 z-40 bg-white/70 dark:bg-ink/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800">
         <nav className="max-w-3xl w-full mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-4 sm:gap-6">
             <div className="w-7 h-7 shrink-0 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black flex items-center justify-center font-bold text-[11px] tracking-wider">
@@ -42,8 +42,8 @@ export default function Home() {
         {/* HERO */}
         <section className="flex flex-col justify-center pt-6 pb-8 sm:pt-10 sm:pb-8" id="about">
           <div className="space-y-6 sm:space-y-10">
-            <div className="flex items-center gap-4 sm:gap-6">
-              <div className="h-32 w-32 shrink-0 rounded-full border-2 border-gray-200 dark:border-gray-500 bg-white dark:bg-ink shadow-sm sm:h-40 sm:w-40">
+            <div data-hero className="flex items-center gap-4 sm:gap-6">
+              <div data-avatar className="h-32 w-32 shrink-0 rounded-full border-2 border-gray-200 dark:border-gray-500 bg-white dark:bg-ink shadow-sm sm:h-40 sm:w-40">
                 <AvatarSwap
                   images={[
                     { src: '/avatar-anime.jpg', position: 'center 42%' },
@@ -85,11 +85,11 @@ export default function Home() {
             </div>
 
             <div className="space-y-5 sm:space-y-6">
-              <h2 className="max-w-full text-[1.7rem] font-normal tracking-tight leading-tight text-gray-900 dark:text-white sm:text-[2.05rem] md:text-[2.15rem]">
+              <h2 data-hero className="max-w-full text-[1.7rem] font-normal tracking-tight leading-tight text-gray-900 dark:text-white sm:text-[2.05rem] md:text-[2.15rem]">
                 Full-Stack Web Developer{' '}
                 <span className="text-[0.95em] font-light text-gray-500 dark:text-gray-400">— Laravel · React · Next.js</span>
               </h2>
-              <p className="text-base font-light leading-7 text-gray-500 dark:text-gray-400 sm:text-lg sm:leading-8">
+              <p data-hero className="text-base font-light leading-7 text-gray-500 dark:text-gray-400 sm:text-lg sm:leading-8">
                 Fresh graduate in Informatics Engineering building web apps end-to-end with an AI-assisted workflow. Freelance web developer via KyanDev, shipping production websites with{' '}
                 <span className="inline align-middle">
                   {HERO_TECHS.map(({ name, color, path }) => (
@@ -101,7 +101,7 @@ export default function Home() {
                 and modern tooling. I design, build, and ship responsive websites and web applications from architecture to deployment.
               </p>
 
-              <div className="flex items-center gap-2.5 pt-1">
+              <div data-hero className="flex items-center gap-2.5 pt-1">
                 <a
                   href="/cv-ridzkyan.pdf"
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black text-[13px] font-medium hover:opacity-90 transition-opacity"
@@ -119,9 +119,9 @@ export default function Home() {
         {/* EXPERIENCE */}
         <section className="w-full space-y-5" id="experience">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Experience</h3>
+            <h3 data-reveal className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Experience</h3>
           </div>
-          <div className="space-y-6 text-sm">
+          <div data-reveal-group className="space-y-6 text-sm">
             <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-1 sm:gap-4 items-baseline">
               <div className="font-mono text-[13px] text-gray-400 dark:text-gray-500">Mar 2025 — Present</div>
               <div className="space-y-1.5">
@@ -141,9 +141,9 @@ export default function Home() {
         {/* FEATURED WORK */}
         <section className="w-full space-y-5" id="featured">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Featured Work</h3>
+            <h3 data-reveal className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Featured Work</h3>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div data-reveal-group className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* UangKu */}
             <div className="rounded-xl bg-[#121212] bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] text-zinc-300 p-6 flex flex-col justify-between border border-zinc-800 min-h-[220px]">
               <div className="space-y-2">
@@ -188,9 +188,9 @@ export default function Home() {
         {/* PROJECTS */}
         <section className="w-full space-y-5" id="projects">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Projects</h3>
+            <h3 data-reveal className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Projects</h3>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <div data-reveal-group className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
             {/* KRING! */}
             <div className="rounded-xl border border-gray-100 dark:border-white/[0.08] bg-white dark:bg-ink-card overflow-hidden flex flex-col justify-between hover:border-gray-300 dark:hover:border-white/20 transition-colors">
               <div>
@@ -251,7 +251,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="flex justify-center pt-2">
+          <div data-reveal className="flex justify-center pt-2">
             <a
               href="https://github.com/kianlabs"
               target="_blank"
@@ -267,10 +267,10 @@ export default function Home() {
         {/* TECHNOLOGIES */}
         <section className="w-full space-y-5" id="stack">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Technologies</h3>
+            <h3 data-reveal className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Technologies</h3>
           </div>
           <div className="space-y-4">
-            <div className="flex flex-wrap gap-2 text-[15px]">
+            <div data-reveal-group className="flex flex-wrap gap-2 text-[15px]">
               {TECHS.map(({ name, color, path }) => (
                 <span
                   key={name}
@@ -284,8 +284,8 @@ export default function Home() {
               ))}
             </div>
             <div className="space-y-2.5">
-              <span className="block text-[11px] font-mono tracking-widest uppercase text-gray-400 dark:text-gray-500">AI Engineering</span>
-              <div className="flex flex-wrap gap-2 text-[15px]">
+              <span data-reveal className="block text-[11px] font-mono tracking-widest uppercase text-gray-400 dark:text-gray-500">AI Engineering</span>
+              <div data-reveal-group className="flex flex-wrap gap-2 text-[15px]">
                 {['LLM API Integration', 'RAG', 'MCP', 'Prompt Engineering', 'AI Agents'].map((name) => (
                   <span
                     key={name}
@@ -302,9 +302,9 @@ export default function Home() {
         {/* CERTIFICATIONS */}
         <section className="w-full space-y-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Certifications</h3>
+            <h3 data-reveal className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Certifications</h3>
           </div>
-          <div className="space-y-5 text-sm">
+          <div data-reveal-group className="space-y-5 text-sm">
             <span className="text-[11px] font-mono tracking-widest uppercase text-gray-400 dark:text-gray-500">PROFESSIONAL CREDENTIAL</span>
             <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-2 sm:gap-4 items-center">
               <div className="font-mono text-[13px] text-gray-400 dark:text-gray-500">Sep 2026</div>
@@ -345,9 +345,9 @@ export default function Home() {
         {/* EDUCATION */}
         <section className="w-full space-y-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Education</h3>
+            <h3 data-reveal className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Education</h3>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-1 sm:gap-4 items-baseline text-sm">
+          <div data-reveal-group className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-1 sm:gap-4 items-baseline text-sm">
             <div className="font-mono text-[13px] text-gray-400 dark:text-gray-500">2022 – 2026</div>
             <div className="space-y-0.5">
               <div className="flex flex-wrap items-center gap-2">
@@ -362,9 +362,9 @@ export default function Home() {
         {/* OUTSIDE THE IDE */}
         <section className="w-full space-y-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Outside the IDE</h3>
+            <h3 data-reveal className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">Outside the IDE</h3>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-[1fr_130px] gap-6 items-center">
+          <div data-reveal-group className="grid grid-cols-1 sm:grid-cols-[1fr_130px] gap-6 items-center">
             <div className="space-y-3">
               <p className="text-[15px] text-gray-500 dark:text-gray-400 leading-relaxed">
                 When I&apos;m not shipping code, I&apos;m exploring new tech, running my small fashion affiliate business, or experimenting with AI tools and workflows. I recharge by learning — then bring it back into my builds.
@@ -390,22 +390,24 @@ export default function Home() {
         {/* GITHUB ACTIVITY */}
         <section className="w-full space-y-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">GitHub Activity</h3>
+            <h3 data-reveal className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white leading-tight">GitHub Activity</h3>
             <a href="https://github.com/kianlabs" className="text-[12px] text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors font-mono" target="_blank" rel="noopener noreferrer">
               github.com/kianlabs ↗
             </a>
           </div>
 
           {/* Contribution heatmap — native, GitHub-green, live from public API */}
-          <GitHubHeatmap username="kianlabs" />
+          <div data-reveal>
+            <GitHubHeatmap username="kianlabs" />
+          </div>
         </section>
 
         {/* LET'S WORK TOGETHER */}
         <section className="w-full space-y-5" id="contact">
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white tracking-tight">Let&apos;s work together.</h3>
+            <h3 data-reveal className="text-xl font-semibold text-gray-900 dark:text-white tracking-tight">Let&apos;s work together.</h3>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-[1fr_260px] gap-6 items-start">
+          <div data-reveal-group className="grid grid-cols-1 sm:grid-cols-[1fr_260px] gap-6 items-start">
             <div className="space-y-3">
               <p className="text-[15px] text-gray-500 dark:text-gray-400 leading-relaxed">
                 Available for freelance web development and full-stack projects, from new builds to existing websites. I also help build robust APIs, performant architectures, and responsive user interfaces.
@@ -453,7 +455,7 @@ export default function Home() {
       </main>
 
       {/* FOOTER */}
-      <footer className="w-full border-t border-gray-100 dark:border-gray-800 py-8 mt-12">
+      <footer data-reveal className="w-full border-t border-gray-100 dark:border-gray-800 py-8 mt-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[12px] text-gray-400 dark:text-gray-500">
           <div className="space-y-0.5 text-center sm:text-left">
             <p className="italic text-gray-500 dark:text-gray-400">&quot;Repetition until it becomes technique.&quot;</p>

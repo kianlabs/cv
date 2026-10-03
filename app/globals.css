@@ -30,3 +30,18 @@ input:focus-visible {
 #about .pixel-avatar {
   cursor: pointer;
 }
+
+/*
+ * Pre-paint hide for GSAP-managed elements. The inline script in the layout
+ * adds `.gsap-init` to <html> synchronously, so animated blocks never flash in
+ * their final position before the timeline starts. MotionProvider removes the
+ * class once GSAP has taken over, and a failsafe timer removes it regardless,
+ * so content can never stay hidden if the script fails.
+ */
+.gsap-init [data-nav],
+.gsap-init [data-hero],
+.gsap-init [data-avatar],
+.gsap-init [data-reveal],
+.gsap-init [data-reveal-group] > * {
+  opacity: 0;
+}

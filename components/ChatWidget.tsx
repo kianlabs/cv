@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import gsap from 'gsap';
 
 interface Message {
   text: string;
@@ -29,11 +30,70 @@ const MAX_HISTORY = 10;
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  // The panel stays mounted while it animates out, then unmounts.
+  const [mounted, setMounted] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const panelTween = useRef<gsap.core.Tween | null>(null);
+
+  // useLayoutEffect runs before paint so the entrance animation starts from a
+  // hidden state with no flash; fall back to useEffect during SSR.
+  const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
+  // --- open / close animation -------------------------------------------
+  useIsoLayoutEffect(() => {
+    const panel = panelRef.current;
+    if (!panel || !mounted) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.set(panel, { clearProps: 'all' });
+      return;
+    }
+
+    panelTween.current?.kill();
+
+    if (isOpen) {
+      // Pop up from the trigger button: rise, grow, settle.
+      panelTween.current = gsap.fromTo(
+        panel,
+        { opacity: 0, y: 24, scale: 0.9 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.34,
+          ease: 'back.out(1.5)',
+          transformOrigin: 'bottom right',
+          onStart: () => gsap.set(panel, { willChange: 'transform, opacity' }),
+          onComplete: () => gsap.set(panel, { clearProps: 'willChange' }),
+        },
+      );
+    } else {
+      // Shrink back down into the button, then unmount.
+      panelTween.current = gsap.to(panel, {
+        opacity: 0,
+        y: 18,
+        scale: 0.92,
+        duration: 0.2,
+        ease: 'power2.in',
+        transformOrigin: 'bottom right',
+        onComplete: () => setMounted(false),
+      });
+    }
+  }, [isOpen, mounted]);
+
+  const toggleOpen = () => {
+    if (isOpen) {
+      setIsOpen(false);
+    } else {
+      setMounted(true);
+      setIsOpen(true);
+    }
+  };
 
   useEffect(() => {
     if (messages.length === 0) {
@@ -114,11 +174,14 @@ export default function ChatWidget() {
 
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
-      {isOpen && (
+      {mounted && (
         // max-h (not a fixed h) keeps the panel inside the viewport on every
         // screen size, so a long transcript scrolls inside the transcript
         // instead of overflowing up over the header.
-        <div className="w-[calc(100vw-2.5rem)] max-w-[380px] max-h-[calc(100dvh-2.5rem)] bg-white dark:bg-ink-card border border-gray-100 dark:border-white/[0.08] rounded-2xl shadow-xl overflow-hidden flex flex-col">
+        <div
+          ref={panelRef}
+          className="w-[calc(100vw-2.5rem)] max-w-[380px] max-h-[calc(100dvh-2.5rem)] bg-white dark:bg-ink-card border border-gray-100 dark:border-white/[0.08] rounded-2xl shadow-xl overflow-hidden flex flex-col"
+        >
           <div className="shrink-0 p-4 bg-gray-900 dark:bg-ink text-white flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-white/10 text-white font-bold text-xs flex items-center justify-center border border-white/15">
@@ -231,11 +294,28 @@ export default function ChatWidget() {
 
       <button
         className="inline-flex items-center gap-2 px-4 sm:px-5 py-3 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black text-[13px] sm:text-sm font-semibold shadow-lg hover:opacity-90 active:scale-95 transition-all whitespace-nowrap"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleOpen}
         aria-label={isOpen ? 'Close chat' : 'Chat with Kyan AI Assistant'}
         aria-expanded={isOpen}
       >
-        <span className="text-[18px] leading-none">{isOpen ? '✕' : '💬'}</span>
+        {/* Both glyphs are stacked and crossfaded, so the button icon morphs
+            instead of snapping between chat bubble and close mark. */}
+        <span className="relative inline-block w-[18px] h-[18px] text-[18px] leading-none" aria-hidden="true">
+          <span
+            className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ease-out ${
+              isOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
+            }`}
+          >
+            💬
+          </span>
+          <span
+            className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ease-out ${
+              isOpen ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'
+            }`}
+          >
+            ✕
+          </span>
+        </span>
         <span className="sm:hidden">{isOpen ? 'Close' : 'Chat with Kyan AI'}</span>
         <span className="hidden sm:inline">
           {isOpen ? 'Close' : 'Chat with Kyan AI Assistant'}

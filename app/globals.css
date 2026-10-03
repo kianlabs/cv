@@ -32,6 +32,20 @@ input:focus-visible {
 }
 
 /*
+ * Theme switch: the incoming theme is revealed as a circle growing from the
+ * toggle button (see ThemeToggle.tsx). The browser's default cross-fade is
+ * switched off on both snapshots so only that clip-path animation plays;
+ * `mix-blend-mode: normal` keeps the colours from washing out mid-transition.
+ * Browsers without the View Transitions API ignore all of this and simply
+ * swap the theme, which is the previous behaviour.
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/*
  * Pre-paint hide for GSAP-managed elements. The inline script in the layout
  * adds `.gsap-init` to <html> synchronously, so animated blocks never flash in
  * their final position before the timeline starts. MotionProvider removes the

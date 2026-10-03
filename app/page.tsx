@@ -22,15 +22,6 @@ export default function Home() {
             </div>
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <a
-              href="/cv-ridzkyan.pdf"
-              className="inline-flex items-center gap-1 px-2.5 sm:px-3.5 py-1.5 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black text-[11px] sm:text-[12px] font-medium hover:opacity-90 transition-opacity whitespace-nowrap"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span>Resume</span>
-              <span className="text-[13px] leading-none">›</span>
-            </a>
             <ThemeToggle />
           </div>
         </nav>

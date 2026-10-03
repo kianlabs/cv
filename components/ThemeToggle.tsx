@@ -68,7 +68,7 @@ export default function ThemeToggle() {
             ],
           },
           {
-            duration: 560,
+            duration: 800,
             easing: 'ease-in-out',
             pseudoElement: '::view-transition-new(root)',
           },

@@ -52,21 +52,33 @@ one token, works while your PC is off.
    Leave `LLM_API_KEY` empty — the route auto-selects `CLOUDFLARE_API_TOKEN`.
    Free tier: 10,000 Neurons/day (~130 chat replies).
 
-**Option B — 9router via Cloudflare Tunnel.** Uses your local models, but the
-deployed site only works while your PC and the tunnel are running.
+**Option B — 9router via a named Cloudflare Tunnel.** Uses your local models at a
+**stable** URL (`llm.kianlabs.my.id`). The deployed site works while your PC and
+the tunnel are running.
 
-1. Install `cloudflared` (e.g. `pacman -S cloudflared`).
-2. Start the tunnel: `scripts/tunnel-9router.sh` — it prints a
-   `https://<name>.trycloudflare.com` URL.
-3. Chat env:
+1. The tunnel is already set up on this machine and runs as a systemd user
+   service (`cloudflared-9router`), enabled at boot. Manage it with:
+   ```bash
+   scripts/tunnel-9router.sh status    # URL, service state, reachability
+   scripts/tunnel-9router.sh restart
+   scripts/tunnel-9router.sh logs
    ```
-   LLM_BASE_URL=https://<name>.trycloudflare.com/v1
-   LLM_MODEL=kr/claude-haiku-4.5
-   LLM_FALLBACKS=kr/claude-sonnet-4.5,kr/auto
+2. Chat env:
+   ```
+   LLM_BASE_URL=https://llm.kianlabs.my.id/v1
+   LLM_MODEL=ag/gemini-3.8-flash
+   LLM_FALLBACKS=kr/claude-haiku-4.5,ag/gemini-3.7-flash
    ```
    Leave `LLM_API_KEY` empty — the route auto-selects `NINE_ROUTER_API_KEY`.
-   ⚠️ The quick-tunnel URL **changes on every restart**: update `LLM_BASE_URL`
-   and redeploy when it does.
+   The hostname is permanent, so this never needs updating.
+3. One-time setup (already done here):
+   ```bash
+   cloudflared tunnel login                              # authorise the zone
+   cloudflared tunnel create 9router                     # named tunnel
+   cloudflared tunnel route dns 9router llm.kianlabs.my.id
+   ```
+   Config lives in `~/.cloudflared/config.yml`; the unit in
+   `~/.config/systemd/user/cloudflared-9router.service`.
 
 ### Deploy
 

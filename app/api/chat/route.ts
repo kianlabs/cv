@@ -33,23 +33,20 @@ const BASE_URL = (
  * the URL (rather than a flat fallback chain) means a Cloudflare token can never
  * be sent to the 9router, or vice versa — a mismatch that would otherwise fail
  * with a confusing 401.
+ *
+ * Cloudflare's own endpoint is the only one that wants CLOUDFLARE_API_TOKEN;
+ * everything else (localhost, a quick tunnel, or a named tunnel like
+ * llm.kianlabs.my.id) is the 9router gateway.
  */
 function defaultKeyFor(baseUrl: string): string {
   if (baseUrl.includes('api.cloudflare.com')) {
     return process.env.CLOUDFLARE_API_TOKEN ?? '';
   }
-  if (
-    baseUrl.includes('localhost') ||
-    baseUrl.includes('127.0.0.1') ||
-    baseUrl.includes('trycloudflare.com')
-  ) {
-    return (
-      process.env.NINE_ROUTER_API_KEY ??
-      process.env.HERMES_CUSTOM_LOCALHOST_20128_API_KEY ??
-      ''
-    );
-  }
-  return '';
+  return (
+    process.env.NINE_ROUTER_API_KEY ??
+    process.env.HERMES_CUSTOM_LOCALHOST_20128_API_KEY ??
+    ''
+  );
 }
 
 const API_KEY = (process.env.LLM_API_KEY || defaultKeyFor(BASE_URL)).trim();

@@ -111,7 +111,7 @@ export default function GitHubHeatmap({ username }: { username: string }) {
 
   if (status === 'error') {
     return (
-      <div className="border border-gray-100 dark:border-white/[0.08] rounded-xl p-6 bg-white dark:bg-ink-card text-center">
+      <div className="border border-dashed border-gray-300 dark:border-white/[0.18] rounded-xl p-6 bg-white dark:bg-ink-card text-center">
         <p className="text-[13px] text-gray-500 dark:text-gray-400">
           Couldn&apos;t load contribution data.{' '}
           <a href={`https://github.com/${username}`} className="underline" target="_blank" rel="noopener noreferrer">
@@ -151,7 +151,7 @@ export default function GitHubHeatmap({ username }: { username: string }) {
   );
 
   return (
-    <div className="border border-gray-100 dark:border-white/[0.08] rounded-xl p-4 sm:p-5 bg-white dark:bg-ink-card">
+    <div className="border border-dashed border-gray-300 dark:border-white/[0.18] rounded-xl p-4 sm:p-5 bg-white dark:bg-ink-card">
       <div className="flex items-center justify-between mb-3">
         <p className="text-[12px] font-mono text-gray-400 dark:text-gray-500">CONTRIBUTIONS — LAST 12 MONTHS</p>
         {total !== null && (
